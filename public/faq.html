@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - UNIFAHRT</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome für Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Header-Styling */
+        header {
+            background-color: #28a745; /* Grüner Hintergrund */
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        header nav ul li {
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        header nav ul li a:hover {
+            background-color: #218838; /*  Grün  Hover */
+            border-radius: 5px;
+        }
+
+        /* Abstand zew. Hauptinhalt und Headers */
+        main {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        /* FAQ Abschnitt */
+        .faq {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq h2 {
+            color: #28a745;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .faq .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .faq .answer {
+            display: none;
+            margin-left: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .faq .active .answer {
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #f1f1f1;
+            margin-top: 40px;
+        }
+
+        /* Media Queries für Mobilgeräte */
+        @media (max-width: 768px) {
+            header nav ul {
+                flex-direction: column;
+            }
+
+            header nav ul li {
+                margin: 10px 0;
+            }
+
+            main {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header mit Navigation -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="home.html" class="home"><i class="fa fa-home"></i> Zurück zur Startseite</a></li>
+                <li><a href="mitfahrgelegenheiten.html">Mitfahrgelegenheit anbieten</a></li>
+                <li><a href="mitfahrgelegenheiten.html">Mitfahrgelegenheit suchen</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- FAQ Abschnitt -->
+        <section class="faq">
+            <h2>Häufig gestellte Fragen (FAQ)</h2>
+
+            <div class="question-answer">
+                <p class="question" onclick="toggleAnswer(this)">Wie kann ich eine Mitfahrgelegenheit anbieten?</p>
+                <p class="answer">Um eine Mitfahrgelegenheit anzubieten, fülle einfach das Formular aus, das du unter dem Abschnitt "Mitfahrgelegenheit anbieten" findest.</p>
+            </div>
+
+            <div class="question-answer">
+                <p class="question" onclick="toggleAnswer(this)">Wie finde ich eine Mitfahrgelegenheit?</p>
+                <p class="answer">Gehe zum Abschnitt "Mitfahrgelegenheit suchen" und gib die gewünschten Abfahrts- und Zielorte sowie das Datum ein, um passende Angebote zu finden.</p>
+            </div>
+
+            <div class="question-answer">
+                <p class="question" onclick="toggleAnswer(this)">Was muss ich tun, wenn ich eine Mitfahrgelegenheit gefunden habe?</p>
+                <p class="answer">Kontaktiere den Anbieter der Mitfahrgelegenheit direkt über die bereitgestellten Kontaktmöglichkeiten, um weitere Details zu klären.</p>
+            </div>
+
+            <div class="question-answer">
+                <p class="question" onclick="toggleAnswer(this)">Sind die Mitfahrgelegenheiten kostenlos?</p>
+                <p class="answer">Die Mitfahrgelegenheiten können kostenpflichtig sein. Die Preisgestaltung wird von den Anbietern der Fahrten festgelegt.</p>
+            </div>
+
+            <div class="question-answer">
+                <p class="question" onclick="toggleAnswer(this)">Wie kann ich sicherstellen, dass meine Fahrt sicher ist?</p>
+                <p class="answer">Wir empfehlen, dass du mit dem Fahrer in Kontakt trittst und vorher alle Fragen zu Fahrzeug, Route und Sicherheit klärst. Deine Sicherheit hat bei uns höchste Priorität.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 UNIFAHRT. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        function toggleAnswer(questionElement) {
+            const answerElement = questionElement.nextElementSibling;
+            questionElement.parentElement.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>

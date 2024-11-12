@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIFAHRT</title>
+    <link rel="stylesheet" href="style.css"> <!-- Optional: CSS für Styling -->
+    <style>
+        /* Layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Header-Styling */
+        header {
+            background-color: #28a745; /* Grüner Hintergrund */
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        header h4 {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        nav ul li a:hover {
+            background-color: #218838; /*  Grün  Hover */
+            border-radius: 5px;
+        }
+
+        /* Main Bereich */
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        main p {
+            font-size: 20px;
+            color: #555;
+        }
+
+        /* Mobile Optimierung */
+        @media (max-width: 768px) {
+            header h4 {
+                font-size: 24px;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header mit Begrüßung -->
+    <header>
+        <h4>Willkommen bei UNIFAHRT</h4>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Startseite</a></li>
+            <li><a href="mitfahrgelegenheiten.html">Mitfahrgelegenheiten</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hauptinhalt -->
+    <main>
+        <p>Diese Plattform bringt Studenten zusammen, die gemeinsam zur Uni pendeln möchten.</p>
+    </main>
+
+</body>
+</html>
+
+
+
