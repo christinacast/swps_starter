@@ -1,0 +1,36 @@
+<template>
+    <header class="top-bar">
+      <h1>Uni drive</h1>
+      <div class="center-items">
+        <a href="index.html" class="nav-link">
+          <img src="/images/icons8-home.pdf" alt="home" class="nav-icon" />
+        </a>
+        <a href="index.html" class="nav-link">
+          <img src="/images/icons8-messages-64.png" alt="messages" class="nav-icon" />
+        </a>
+        <a href="index.html" class="nav-link">
+          <img src="/images/icons8-map-64.png" alt="maps" class="nav-icon" />
+        </a>
+        <a href="index.html" class="nav-link">
+          <img src="/images/icons8-calendar-64.png" alt="calendar" class="nav-icon" />
+        </a>
+      </div>
+      <div class="profile">
+        <a href="index.html" class="nav-link">
+          <img src="/images/icons8-admin-settings-male-64.png" alt="profile" class="nav-icon" />
+        </a>
+      </div>
+    </header>
+  </template>
+  
+  <script>
+  export default {
+    name: 'HeaderComponent',
+  };
+  </script>
+  
+  <style scoped>
+  /* Add specific styles for this component here */
+  @import '@/assets/css/base.css'; 
+  @import '@/assets/css/layout.css'; 
+  </style>
