@@ -2,7 +2,9 @@
   <v-app>
     <v-main>
       <HeaderComponent /> <!-- Static Header -->
-      <HomePage />
+      <div id="app">
+        <router-view /> <!-- Dynamically loads the component for the current route -->
+      </div>
       <FooterComponent /> <!-- Static Footer -->
     </v-main>
   </v-app>
@@ -11,13 +13,11 @@
 <script>
 import FooterComponent from './components/FooterComponent.vue';
 import HeaderComponent from './components/HeaderComponent.vue';
-import HomePage from './pages/HomePage.vue'
 
 export default {
   name: 'App',
 
   components: {
-    HomePage,
     FooterComponent,
     HeaderComponent,
   },
