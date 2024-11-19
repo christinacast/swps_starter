@@ -1,0 +1,71 @@
+/* layout.css */
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between header, center icons, and right icon */
+    padding: 10px 20px;
+    background-color: #009260;
+    color: white;
+}
+
+.top-bar h1 {
+    margin: 0;
+    color: white;
+    font-size: 36px;
+}
+
+/* Center the icons in the middle */
+.center-icons {
+    display: flex;
+    gap: 10px; /* Space between icons */
+    margin: 0 auto; /* Centers this div within the top-bar */
+}
+
+/* Profile icon on the far right */
+.profile-icon {
+    margin-left: auto; /* Pushes the profile icon to the far right */
+}
+
+/* Icon styles */
+.nav-icon {
+    width: 64px; /* Icon size */
+    height: 64px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    padding: 8px;
+    border-radius: 50%; /* Circle effect around the icon */
+}
+
+/* Hover and click effects */
+.nav-link:hover .nav-icon {
+    background-color: rgba(255, 255, 255, 0.1); /* Background circle on hover */
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.nav-link:active .nav-icon {
+    transform: scale(0.9); /* Shrink effect on click */
+}
+
+.Impressum-bar {
+    background-color: #21c289;          /* Background color */
+    color: white;                    /* Text color */
+    padding: 10px 0;                   /* Padding for spacing */
+    align-content: center;
+    text-align: center;              /* Center-align content */
+    height: 8%;
+    width: 100%;                     /* Full width */
+    position: fixed;                 /* Stick it to the bottom */
+    bottom: 0;                       /* Position at the very bottom */
+    z-index: 1000;                   /* Keep it above other content */
+}
+
+.Impressum-bar .bottom-bar-references {
+    color: #ffffff;                  /* Link color */
+    text-decoration: none;
+    margin: 0 15px;                  /* Spacing between links */
+}
+
+.Impressum-bar .bottom-bar-references:hover {
+    text-decoration: underline;      /* Underline on hover */
+}

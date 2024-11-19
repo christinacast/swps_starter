@@ -1,0 +1,62 @@
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+}
+
+.content-block {
+    position: relative;
+    width: 100%;
+    max-width: 350px;  /* Control the width of each block */
+    height: 400px;      /* Control the height of each block */
+    background-color:aliceblue;
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevent the background from repeating */
+    /* border: 2px solid #ccc;      /* Light gray border */
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: white;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+}
+
+.content-block:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.content-overlay {
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    padding: 20px;
+    width: 100%;
+    text-align: left;
+}
+
+.content-overlay h2 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.content-overlay p {
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+.content-overlay button {
+    background-color: #009260; /* Red button color */
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.content-overlay button:hover {
+    background-color: #1aaf7b; /* lighter green on hover */
+}
