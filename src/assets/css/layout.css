@@ -1,4 +1,11 @@
 /* layout.css */
+.title {
+    font-size: 2rem; /* Schriftgröße */
+    font-weight: bold; /* Schriftstärke */
+    color: #a69d9d; /* Farbe */
+    text-align: center; /* Textzentrierung */
+    margin-bottom: 1rem; /* Abstand nach unten */
+  }
 
 .top-bar {
     display: flex;
