@@ -1,11 +1,5 @@
 /* layout.css */
-.title {
-    font-size: 2rem; /* Schriftgröße */
-    font-weight: bold; /* Schriftstärke */
-    color: #a69d9d; /* Farbe */
-    text-align: center; /* Textzentrierung */
-    margin-bottom: 1rem; /* Abstand nach unten */
-  }
+
 
 .top-bar {
     display: flex;
@@ -18,12 +12,26 @@
 
 .top-bar h1 {
     margin: 0;
-    color: white;
-    font-size: 36px;
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    font-family: 'Montserrat', sans-serif;
 }
+
+.center-items {
+    display: flex;        /* Flexbox verwenden */
+    gap: 50px;            /* Abstand zwischen den Icons (Ändere den Wert nach Bedarf) */
+    margin: 0 auto;       /* Wenn du den Container horizontal zentrieren möchtest */
+}
+
+#filter-button img {
+    width: 30px; /* Breite des Bildes */
+    height: auto; /* Höhe wird automatisch angepasst */
+  }
+  
 
 /* Center the icons in the middle */
 .center-icons {
+    
     display: flex;
     gap: 10px; /* Space between icons */
     margin: 0 auto; /* Centers this div within the top-bar */

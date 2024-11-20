@@ -1,6 +1,6 @@
 <template>
   <header class="top-bar">
-    <h1>Uni drive</h1>
+    <h1>Uni DRIVE</h1>
     <div class="center-items">
       <router-link to="/" class="nav-link">
         <img src="/images/icons8-home.pdf" alt="home" class="nav-icon" />
