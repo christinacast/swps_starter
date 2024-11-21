@@ -1,14 +1,23 @@
 
 <template>
     <footer class="Impressum-bar">
-      <a class="bottom-bar-references" href="index.html">Impressum</a>
-      <a class="bottom-bar-references" href="index.html">Rechtliches (AGB, Datenschutz)</a>
-      <a class="bottom-bar-references" href="index.html">Cookies</a>
-      <a class="bottom-bar-references" href="index.html">Transparenz der Plattform</a>
+      <router-link to="/" class="bottom-bar-references">
+        Impressum
+      </router-link>
+      <router-link to="/" class="bottom-bar-references">
+        Rechtliches (AGB, Datenschutz)
+      </router-link>
+      <router-link to="/" class="bottom-bar-references">
+        Cookies
+      </router-link>
+      <router-link to="/" class="bottom-bar-references">
+        Transparenz der Plattform
+      </router-link>
     </footer>
   </template>
   
   <script>
+
   export default {
     name: 'FooterComponent',
   };
