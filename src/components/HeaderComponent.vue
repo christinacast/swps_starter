@@ -19,7 +19,10 @@
       <router-link to="/profil" class="nav-link">
          <img src="/images/icons8-admin-settings-male-64.png" alt="profile" class="nav-icon" />
      </router-link>
-
+    </div>
+    <div class="login-register-container"> 
+      <button>Login</button>
+      <button>Sign-up</button> 
     </div>
   </header>
 </template>
@@ -32,8 +35,6 @@ export default {
 
 <style scoped>
 /* Spezifische Stile für die Überschrift */
-
-
 @import '@/assets/css/base.css';
 @import '@/assets/css/layout.css';
 </style>
