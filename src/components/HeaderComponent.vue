@@ -15,22 +15,53 @@
         <img src="/images/icons8-calendar-64.png" alt="calendar" class="nav-icon" />
       </router-link>
     </div>
-    <div class="profile">
+    <div class="profile" v-if="user">
+      <!-- Show greeting if user is logged in -->
+      <p class="greeting">Hello, {{ user.name }}</p>
       <router-link to="/profil" class="nav-link">
-         <img src="/images/icons8-admin-settings-male-64.png" alt="profile" class="nav-icon" />
-     </router-link>
+        <img src="/images/icons8-admin-settings-male-64.png" alt="profile" class="nav-icon" />
+      </router-link>
     </div>
-    <div class="login-register-container"> 
-      <button>Login</button>
-      <button>Sign-up</button> 
+    <div class="login-register-container" v-else>
+      <!-- Show login/register if no user is logged in -->
+      <router-link to="/login">
+        Login
+      </router-link>
+      <router-link to="/register"> 
+        Sign-Up 
+      </router-link>
     </div>
   </header>
 </template>
 
 <script>
+import { supabase } from '@/services/supabase.js'
+
 export default {
   name: 'HeaderComponent',
+  data() {
+    return {
+      user: null, // Store the user-data when logged in
+    };
+  },
+  async mounted() {
+  // Check if the user is logged in
+  const { data } = await supabase.auth.getUser();
+    if (data && data.user) {
+      // Fetch additional profile data from the 'profiles' table
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('name')
+        .eq('id', data.user.id)
+        .single();
+
+      if (!profileError) {
+        this.user = { ...data.user, name: profile.name || 'User' }; // Default to 'User' if no name is found
+      }
+    }
+  },
 };
+
 </script>
 
 <style scoped>
