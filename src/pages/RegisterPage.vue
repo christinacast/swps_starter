@@ -25,40 +25,54 @@
   </template>
   
   <script>
-  import { supabase } from '@/services/supabase.js';
-  
-  export default {
-    data() {
-      return {
-        name: '',
-        surname: '',
-        email: '',
-        password: ''
-      };
-    },
-    methods: {
-      async handleRegister() {
-        const { data, error } = await supabase.auth.signUp({
-          email: this.email,
-          password: this.password
-        });
-  
-        if (error) {
-          alert('Error registering: ' + error.message);
-          return;
-        }
-  
-        // Insert additional user details into the profiles table
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([{ id: data.user.id, name: this.name, surname: this.surname, email: this.email }]);
-  
-        if (profileError) {
-          alert('Error creating profile: ' + profileError.message);
-        } else {
-          this.$router.push('/login'); // Redirect to login page on success
-        }
+import { supabase } from '@/services/supabase.js';
+// Import the Supabase client to handle user authentication and database interactions.
+
+export default {
+  data() {
+    return {
+      name: '', // Stores the user's first name entered in the form.
+      surname: '', // Stores the user's last name entered in the form.
+      email: '', // Stores the user's email address entered in the form.
+      password: '' // Stores the user's password entered in the form.
+    };
+  },
+  methods: {
+    async handleRegister() {
+      // This function handles the user registration process when the form is submitted.
+
+      // Step 1: Register the user in Supabase's authentication system
+      const { data, error } = await supabase.auth.signUp({
+        email: this.email, // Use the email provided in the form
+        password: this.password // Use the password provided in the form
+      });
+
+      if (error) {
+        // If an error occurs during the signup process, show an alert with the error message
+        alert('Error registering: ' + error.message);
+        return; // Stop further execution if there's an error
+      }
+
+      // Step 2: Insert additional user details (name, surname, email) into the 'profiles' table
+      const { error: profileError } = await supabase
+        .from('profiles') // Target the 'profiles' table in the database
+        .insert([
+          {
+            id: data.user.id, // Use the user ID provided by Supabase after successful signup
+            name: this.name, // Use the name entered in the form
+            surname: this.surname, // Use the surname entered in the form
+            email: this.email // Use the email entered in the form
+          }
+        ]);
+
+      if (profileError) {
+        // If there's an error inserting the user's profile data, show an alert
+        alert('Error creating profile: ' + profileError.message);
+      } else {
+        // If everything is successful, redirect the user to the login page
+        this.$router.push('/login'); // Vue Router is used to navigate to the Login page
       }
     }
-  };
-  </script>
+  }
+};
+</script>

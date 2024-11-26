@@ -17,25 +17,37 @@
   </template>
   
   <script>
-  import { supabase } from '@/services/supabase.js';
+  import { supabase } from '@/services/supabase.js'; 
+  // Import the Supabase client to handle authentication and API requests.
   
   export default {
     data() {
+      // The `data` function is where we define reactive variables (state) for the component.
       return {
-        email: '',
-        password: ''
+        email: '', // Stores the user's email address entered in the email input field.
+        password: '' // Stores the user's password entered in the password input field.
       };
     },
     methods: {
       async handleLogin() {
+        // This method is triggered when the user submits the login form.
+        // It communicates with Supabase to authenticate the user.
+  
+        // Step 1: Attempt to log the user in using their email and password
         const { error } = await supabase.auth.signInWithPassword({
-          email: this.email,
-          password: this.password
+          email: this.email, // The email address entered by the user
+          password: this.password // The password entered by the user
         });
+  
+        // Step 2: Handle login errors
         if (error) {
+          // If the login fails, show an alert with the error message.
+          // This could happen if the email or password is incorrect or the account does not exist.
           alert('Error logging in: ' + error.message);
         } else {
-          this.$router.push('/dashboard'); // Redirect to dashboard on success
+          // Step 3: Redirect the user to the dashboard if the login is successful
+          // `this.$router.push` navigates to the specified route using Vue Router.
+          this.$router.push('/profile');
         }
       }
     }
