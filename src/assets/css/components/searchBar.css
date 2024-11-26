@@ -31,3 +31,8 @@
 #search-button:hover {
     background-color: #1aaf7b;  /* Darker shade on hover */
 }
+
+#filter-button img {
+    width: 30px; /* Breite des Bildes */
+    height: auto; /* Höhe wird automatisch angepasst */
+  }
