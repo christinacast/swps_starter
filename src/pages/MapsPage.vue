@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Hallo, {{ userName }}!</h1> <!-- Zeige den Namen des Benutzers an -->
+    <h1>Wo soll es hin gehen?</h1> <!-- Zeige den Namen des Benutzers an -->
     <div id="map" style="height: 400px; width: 100%;"></div>
   </div>
 </template>
