@@ -1,3 +1,8 @@
+# Für den Kalender:
+npm install @fullcalendar/core @fullcalendar/daygrid
+
+
+
 # SWPS Starter
 
 This is an example project that shows how Vue + Vuetify + Supabase + Leaflet can be used together.
