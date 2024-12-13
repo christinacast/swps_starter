@@ -20,19 +20,21 @@
 .center-items {
     display: flex;
     /* Flexbox verwenden */
-    gap: 50px;
+    gap: 60px;
     /* Abstand zwischen den Icons (Ändere den Wert nach Bedarf) */
     margin: 0 auto;
-    /* Wenn du den Container horizontal zentrieren möchtest */
+    /* Center the icons in the middle */
 }
 
-/* Center the icons in the middle */
+
 .center-icons {
     display: flex;
     gap: 10px;
     /* Space between icons */
-    margin: 0 auto;
-    /* Centers this div within the top-bar */
+   
+    margin: 10px auto; /* Zentrierung und vertikaler Abstand */
+    /* Neuer Abstand zur Suchleiste */
+    margin-bottom: 100px; /* Abstand unterhalb der Center Items */
 }
 
 /* Profile icon on the far right */

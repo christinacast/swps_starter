@@ -45,11 +45,13 @@
           // This could happen if the email or password is incorrect or the account does not exist.
           alert('Error logging in: ' + error.message);
         } else {
-          // Step 3: Redirect the user to the dashboard if the login is successful
-          // `this.$router.push` navigates to the specified route using Vue Router.
-          this.$router.push('/profile');
-        }
+        // Benutzername und Passwort weiterleiten, um zur Map-Seite zu navigieren
+        this.$router.push({
+          name: 'MapsPage',
+          params: { userName: this.email, userPassword: this.password }
+        });
       }
     }
-  };
+      }
+    };
   </script>

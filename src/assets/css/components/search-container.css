@@ -1,0 +1,43 @@
+@import '../base.css';
+@import '../layout.css';
+
+/* Container zentrieren und im oberen Drittel platzieren */
+.search-container {
+  display: flex;
+  align-items: center; /* Vertikale Zentrierung der Elemente */
+  justify-content: center; /* Horizontale Zentrierung der Elemente */
+  margin-top: 5vh; /* Position im oberen Drittel */
+  gap: 10px; /* Abstand zwischen den Elementen */
+}
+
+/* Kasten für die Eingabefelder */
+.search-box {
+  display: flex;
+  gap: 10px; /* Abstand zwischen Abfahrts- und Zielort */
+}
+
+/* Eingabefelder */
+#departure-input,
+#destination-input {
+  width: 250px; /* Breite der Felder */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Such-Button */
+#search-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#search-button:hover {
+  background-color: #0056b3;
+}
+
