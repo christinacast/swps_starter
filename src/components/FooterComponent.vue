@@ -1,4 +1,3 @@
-
 <template>
     <footer class="Impressum-bar">
       <router-link to="/" class="bottom-bar-references">
