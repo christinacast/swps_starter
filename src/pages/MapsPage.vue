@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Wo soll es hin gehen?</h1> <!-- Zeige den Namen des Benutzers an -->
+    <h1>Route von {{ departure }} nach {{ destination }}</h1>
+    <!-- Karte anzeigen -->
     <div id="map" style="height: 400px; width: 100%;"></div>
   </div>
 </template>
@@ -10,25 +11,26 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { nextTick } from 'vue';
 import { createClient } from '@supabase/supabase-js';
+import 'leaflet-routing-machine'; // Importiere das Routing-Plugin, sodass die Route zwischen 2 Orten berechnet wird
 
 export default {
   props: {
-    userName: {
+    departure: {
       type: String,
-      required: true, // Benutzername ist erforderlich
+      required: true, // Abfahrtsort als Prop
     },
-    userPassword: {
+    destination: {
       type: String,
-      required: true, // Passwort ist erforderlich
+      required: true, // Zielort als Prop
     },
   },
   data() {
     return {
       map: null,
+      locations: [], // Standortdaten speichern
     };
   },
   async mounted() {
-    // Warten, bis das DOM vollständig gerendert ist
     await nextTick();
 
     // Überprüfen, ob die Karte bereits existiert und entfernen, falls ja
@@ -36,16 +38,21 @@ export default {
       this.map.remove();
     }
 
-    // Initialisiere die Karte nur, wenn sie noch nicht existiert
+    // Initialisiere die Karte mit einem Standardort
     this.map = L.map('map').setView([49.9427, 11.5760], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(this.map);
 
+    // Lade die Marker-Daten
     await this.loadMarkers();
+
+    // Füge die Route hinzu
+    this.addRoute();
   },
   methods: {
+    // Lädt alle Orte aus Supabase
     async loadMarkers() {
       const supabaseUrl = 'https://ldpsaujnvjyjtflecpgb.supabase.co';
       const supabaseKey = this.userPassword + 'OiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkcHNhdWpudmp5anRmbGVjcGdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU5NTc4NDcsImV4cCI6MjA0MTUzMzg0N30.56c2P7OPQyNd1flTA4vlyZ7Hn_8sFAWG8ThW6Q341DI';
@@ -65,6 +72,9 @@ export default {
         return;
       }
 
+      this.locations = locations; // Speicher die Orte in der Komponente
+
+      // Füge Marker für alle Orte hinzu
       locations.forEach((location) => {
         const { ort_name, x_koordinate, y_koordinate, link } = location;
 
@@ -81,6 +91,54 @@ export default {
           console.warn(`Invalid coordinates for ${ort_name}`);
         }
       });
+
+      // Füge Marker für Abfahrts- und Zielort hinzu
+      this.addDepartureMarker();
+      this.addDestinationMarker();
+    },
+
+    // Sucht einen Ort in den Locations anhand des Namens
+    findLocationByName(name) {
+      return this.locations.find(location => location.ort_name.toLowerCase() === name.toLowerCase());
+    },
+
+    // Fügt einen Marker für den Abfahrtsort hinzu
+    addDepartureMarker() {
+      const departureLocation = this.findLocationByName(this.departure);
+      if (departureLocation) {
+        L.marker([departureLocation.y_koordinate, departureLocation.x_koordinate])
+          .addTo(this.map)
+          .bindPopup(`<b>${this.departure}</b><br>Abfahrtsort`);
+      }
+    },
+
+    // Fügt einen Marker für den Zielort hinzu
+    addDestinationMarker() {
+      const destinationLocation = this.findLocationByName(this.destination);
+      if (destinationLocation) {
+        L.marker([destinationLocation.y_koordinate, destinationLocation.x_koordinate])
+          .addTo(this.map)
+          .bindPopup(`<b>${this.destination}</b><br>Zielort`);
+      }
+    },
+
+    // Fügt eine Route zwischen Abfahrts- und Zielort hinzu
+    addRoute() {
+      const departureLocation = this.findLocationByName(this.departure);
+      const destinationLocation = this.findLocationByName(this.destination);
+
+      if (departureLocation && destinationLocation) {
+        // Initialisiere das Routing
+        L.Routing.control({
+          waypoints: [
+            L.latLng(departureLocation.y_koordinate, departureLocation.x_koordinate), // Abfahrtsort
+            L.latLng(destinationLocation.y_koordinate, destinationLocation.x_koordinate), // Zielort
+          ],
+          routeWhileDragging: true,
+        }).addTo(this.map);
+      } else {
+        console.error('Abfahrts- oder Zielort konnte nicht gefunden werden.');
+      }
     }
   },
 };
@@ -91,6 +149,3 @@ export default {
   height: 400px;
 }
 </style>
-
-
-
