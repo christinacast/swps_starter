@@ -3,17 +3,16 @@
       <SearchComponent />
     </div>
     <div class="main-content">
-    <div
-      class="content-block"
-      style="background-image: url('/images/icons8-traffic-jam-64.png')"
-    >
-      <div class="content-overlay">
+      <div class="content-block" style="background-image: url('/images/icons8-traffic-jam-64.png')">
+        <router-link to="/rides">
+    <div class="content-overlay">
         <h2>Wer fährt heute?</h2>
         <p>
           Hier kannst du einsehen wer heute alles fährt und für dich noch einen Platz frei hat
         </p>
-        <button>Learn More</button>
-      </div>
+          <button>Learn More</button>
+        </div>
+      </router-link>
     </div>
 
     <div
