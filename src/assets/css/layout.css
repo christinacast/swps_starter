@@ -1,47 +1,67 @@
-/* layout.css */
-
+/* Modernisierte Top-Bar mit abgerundeten Ecken */
 .top-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* Space between header, center icons, and right icon */
-    padding: 10px 20px;
-    background-color: #009260;
+    padding: 15px 30px; /* Etwas mehr Padding für eine elegantere Erscheinung */
+    background-color: #23a983; /* Ein dunkleres Grün für ein moderneres Aussehen */
     color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ein sanfter Schatten für mehr Tiefe */
+    border-bottom: 2px solid #18aa81; /* Dezenter unterer Rand für mehr Struktur */
+    border-radius: 15px; /* Abgerundete Ecken für die gesamte Box */
 }
 
+/* Titel-Style mit weißer Schrift */
 .top-bar h1 {
     margin: 0;
-    color: rgb(255, 255, 255);
-    font-size: 40px;
+    font-size: 36px;
     font-family: 'Montserrat', sans-serif;
+    font-weight: 600; /* Etwas fetterer Text für mehr Präsenz */
+    letter-spacing: 1px; /* Leichter Abstand zwischen den Buchstaben für einen moderneren Look */
+    color: white; /* Weiß für die Schriftfarbe */
 }
 
+/* Mittige Icons */
 .center-items {
     display: flex;
-    /* Flexbox verwenden */
-    gap: 60px;
-    /* Abstand zwischen den Icons (Ändere den Wert nach Bedarf) */
+    gap: 40px; /* Reduzierter Abstand zwischen den Icons für eine kompaktere Darstellung */
     margin: 0 auto;
-    /* Center the icons in the middle */
 }
 
-
-.center-icons {
+/* Stil für die einzelnen Icons */
+.nav-icon {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1); /* Sanfte Hintergrundfarbe */
     display: flex;
-    gap: 10px;
-    /* Space between icons */
-   
-    margin: 10px auto; /* Zentrierung und vertikaler Abstand */
-    /* Neuer Abstand zur Suchleiste */
-    margin-bottom: 100px; /* Abstand unterhalb der Center Items */
+    align-items: center;
+    justify-content: center; /* Icons zentrieren */
 }
 
-/* Profile icon on the far right */
-.profile-icon {
-    margin-left: auto;
-    /* Pushes the profile icon to the far right */
+/* Hover-Effekt für Icons */
+.nav-link:hover .nav-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05); /* Etwas sanfterer Zoom-Effekt */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sanfte Schattenwirkung */
 }
+
+.nav-link:active .nav-icon {
+    transform: scale(0.95); /* Kleinerer Shrink-Effekt beim Klicken */
+}
+
+/* Profil-Icon ganz rechts */
+.profile-icon {
+    margin-left: auto; /* Positioniert das Profil-Icon nach rechts */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 
 /* Icon styles */
 .nav-icon {
