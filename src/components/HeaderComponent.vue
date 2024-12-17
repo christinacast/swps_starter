@@ -5,15 +5,16 @@
       <router-link to="/" class="nav-link">
         <img src="/images/icons8-home.pdf" alt="home" class="nav-icon" />
       </router-link>
-      <router-link to="/" class="nav-link">
-        <img src="/images/icons8-messages-64.png" alt="messages" class="nav-icon" />
-      </router-link>
       <router-link to="/maps" class="nav-link">
         <img src="/images/icons8-map-64.png" alt="maps" class="nav-icon" />
       </router-link>
       <router-link to="/calendar" class="nav-link">
         <img src="/images/icons8-calendar-64.png" alt="calendar" class="nav-icon" />
       </router-link>
+      <router-link to="/chat" class="nav-link">
+        <img src="/images/icons8-messages-64.png" alt="messages" class="nav-icon" />
+</router-link>
+
     </div>
     <div class="profile" v-if="user">
       <router-link to="/profile" class="nav-link-profile">

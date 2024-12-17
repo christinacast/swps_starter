@@ -3,8 +3,9 @@ import HomePage from '@/pages/HomePage.vue'; // Home page
 import MapsPage from '@/pages/MapsPage.vue'; // maps page
 import CalendarPage from '@/pages/CalendarPage.vue'; // calendar page
 import ProfilePage from '@/pages/ProfilePage.vue';
-import LoginPage from '@/pages/LoginPage.vue';
+import LoginPage from '@/pages/LoginPage.vue'; 
 import RegisterPage from '@/pages/RegisterPage.vue';
+import ChatPage from '@/pages/ChatPage.vue';
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -13,6 +14,7 @@ const routes = [
     { path: '/profile', name: 'Profile', component: ProfilePage },
     { path: '/login', name: 'Login', component: LoginPage },
     { path: '/register', name: 'Register', component: RegisterPage },
+    { path: '/chat', name: 'ChatPage', component: ChatPage },  // Hier korrigiert!
 ];
 
 const router = createRouter({
