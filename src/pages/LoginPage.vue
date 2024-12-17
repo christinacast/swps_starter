@@ -1,57 +1,127 @@
 <template>
-    <div>
-      <h1>Login</h1>
-      <form @submit.prevent="handleLogin">
-        <div>
-          <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" required />
-        </div>
-        <div>
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" required />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      <p>Don't have an account? <router-link to="/register">Register</router-link></p>
-    </div>
-  </template>
-  
-  <script>
-  import { supabase } from '@/services/supabase.js'; 
-  // Import the Supabase client to handle authentication and API requests.
-  
-  export default {
-    data() {
-      // The `data` function is where we define reactive variables (state) for the component.
-      return {
-        email: '', // Stores the user's email address entered in the email input field.
-        password: '' // Stores the user's password entered in the password input field.
-      };
-    },
-    methods: {
-      async handleLogin() {
-        // This method is triggered when the user submits the login form.
-        // It communicates with Supabase to authenticate the user.
-  
-        // Step 1: Attempt to log the user in using their email and password
-        const { error } = await supabase.auth.signInWithPassword({
-          email: this.email, // The email address entered by the user
-          password: this.password // The password entered by the user
-        });
-  
-        // Step 2: Handle login errors
-        if (error) {
-          // If the login fails, show an alert with the error message.
-          // This could happen if the email or password is incorrect or the account does not exist.
-          alert('Error logging in: ' + error.message);
-        } else {
-        // Benutzername und Passwort weiterleiten, um zur Map-Seite zu navigieren
+  <div class="login-container">
+    <h1 class="login-title">Login</h1>
+    <form @submit.prevent="handleLogin" class="login-form">
+      
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" v-model="email" class="form-input" placeholder="Enter your email" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" v-model="password" class="form-input" placeholder="Enter your password" required />
+      </div>
+      
+      <button type="submit" class="form-button">Login</button>
+    </form>
+    <p class="register-link">Don't have an account? <router-link to="/register" class="link">Register</router-link></p>
+  </div>
+</template>
+
+<script>
+import { supabase } from '@/services/supabase.js';
+
+export default {
+  data() {
+    return {
+      email: '',
+      password: ''
+    };
+  },
+  methods: {
+    async handleLogin() {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: this.email,
+        password: this.password
+      });
+
+      if (error) {
+        alert('Error logging in: ' + error.message);
+      } else {
         this.$router.push({
           name: 'MapsPage',
           params: { userName: this.email, userPassword: this.password }
         });
       }
     }
-      }
-    };
-  </script>
+  }
+};
+</script>
+
+<style scoped>
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+.form-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form-button:hover {
+  background-color: #0056b3;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.link {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+</style>
