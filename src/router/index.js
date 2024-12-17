@@ -8,19 +8,11 @@ import RegisterPage from '@/pages/RegisterPage.vue';
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
-    {
-        path: '/maps',
-        name: 'MapsPage',
-        component: MapsPage,
-      },
-      {
-        path: '/login',
-        name: 'Login',
-        component: () => import('@/pages/LoginPage.vue'),
-      },
-    { path: '/profile', name: 'Profil', component: ProfilePage },
-    { path: '/login', name: 'Login', component: LoginPage},
-    { path: '/register', name: 'Register', component: RegisterPage}
+    { path: '/maps', name: 'MapsPage', component: MapsPage },
+    { path: '/calendar', name: 'CalendarPage', component: CalendarPage },
+    { path: '/profile', name: 'Profile', component: ProfilePage },
+    { path: '/login', name: 'Login', component: LoginPage },
+    { path: '/register', name: 'Register', component: RegisterPage },
 ];
 
 const router = createRouter({
