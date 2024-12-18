@@ -9,7 +9,7 @@ function validateAddressInput(address) {
         return { isValid: false, message: "Address cannot be empty." };
     }
 
-    const regex = /^[a-zA-Z0-9\s,.'ßÄäÜüÖö-]+$/; // Allows letters, numbers, spaces, and common address symbols
+    const regex = /^[a-zA-Z0-9\s,.'ßÄäÜüÖö -]+$/; // Allows letters, numbers, spaces, and common address symbols
     if (!regex.test(address)) {
         return { isValid: false, message: "Address contains invalid characters." };
     }
