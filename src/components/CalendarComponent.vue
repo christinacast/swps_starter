@@ -3,7 +3,7 @@
     <!-- FullCalendar -->
     <div id="calendar" ref="calendarEl"></div>
 
-    <!-- Modales Fenster für Termindetails -->
+    <!-- Fenster mit Termindetails und Löschoption -->
     <div v-if="showDetailsDialog" class="modal-overlay">
       <div class="modal-content">
         <h3>Details zum Termin</h3>

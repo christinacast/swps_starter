@@ -74,3 +74,12 @@ yarn serve -o
   1. https://google.com/
   1. https://ddg.co/
   1. https://chat.openai.com
+
+#  Kalender:
+## CalendarPage.vue
+
+
+## CalendarComponent.vue
+
+
+## ErstelleTermin.vue
