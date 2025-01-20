@@ -2,13 +2,13 @@
 .top-bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 15px 30px; /* Etwas mehr Padding für eine elegantere Erscheinung */
-    background-color: #23a983; /* Ein dunkleres Grün für ein moderneres Aussehen */
+    justify-content: flex-start; /* Alle Elemente auf der linken Seite ausrichten */
+    padding: 7px 30px; /* Etwas mehr Padding für eine elegantere Erscheinung */
+    background-color: #388E3C; /* Ein dunkleres Grün für ein moderneres Aussehen */
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ein sanfter Schatten für mehr Tiefe */
-    border-bottom: 2px solid #18aa81; /* Dezenter unterer Rand für mehr Struktur */
-    border-radius: 15px; /* Abgerundete Ecken für die gesamte Box */
+    border-bottom: 2px solid #388E3C; /* Dezenter unterer Rand für mehr Struktur */
+    border-radius: 0px; /* Abgerundete Ecken für die gesamte Box */
 }
 
 /* Titel-Style mit weißer Schrift */
@@ -24,8 +24,8 @@
 /* Mittige Icons */
 .center-items {
     display: flex;
-    gap: 40px; /* Reduzierter Abstand zwischen den Icons für eine kompaktere Darstellung */
-    margin: 0 auto;
+    gap: 50px; /* Reduzierter Abstand zwischen den Icons für eine kompaktere Darstellung */
+    margin: auto;
 }
 
 /* Stil für die einzelnen Icons */
@@ -55,194 +55,115 @@
 
 /* Profil-Icon ganz rechts */
 .profile-icon {
-    margin-left: auto; /* Positioniert das Profil-Icon nach rechts */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-
-
-/* Icon styles */
-.nav-icon {
-    width: 64px;
-    /* Icon size */
-    height: 64px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
-    padding: 8px;
-    border-radius: 50%;
-    /* Circle effect around the icon */
+/* Container für Login, Register und Profil */
+.login-register-container {
+    display: flex;
+    gap: 15px; /* Abstände zwischen den Buttons */
+    align-items: right;
+    justify-content: right;
 }
 
-/* Hover and click effects */
-.nav-link:hover .nav-icon {
-    background-color: rgba(255, 255, 255, 0.1);
-    /* Background circle on hover */
-    transform: scale(1.1);
-    /* Slight zoom on hover */
-}
-
-.nav-link:active .nav-icon {
-    transform: scale(0.9);
-    /* Shrink effect on click */
-}
-
+/* Impressum-Bar */
 .Impressum-bar {
     background-color: #21c289;
-    /* Background color */
     color: white;
-    /* Text color */
     padding: 10px 0;
-    /* Padding for spacing */
     align-content: center;
     text-align: center;
-    /* Center-align content */
     height: 8%;
     width: 100%;
-    /* Full width */
     position: fixed;
-    /* Stick it to the bottom */
     bottom: 0;
-    /* Position at the very bottom */
     z-index: 1000;
-    /* Keep it above other content */
 }
 
 .Impressum-bar .bottom-bar-references {
     color: #ffffff;
-    /* Link color */
     text-decoration: none;
     margin: 0 15px;
-    /* Spacing between links */
 }
 
-.Impressum-bar .bottom-bar-references:hover {
+.Impressum-Bar .bottom-bar-references:hover {
     text-decoration: underline;
-    /* Underline on hover */
 }
 
 .greeting {
     color: white;
 }
 
-/* Container styling */
-.login-register-container {
-    display: flex;
-    /* Align buttons horizontally */
-    gap: 15px;
-    /* Add spacing between buttons */
-    align-items: center;
-    /* Vertically align buttons */
-}
-
 /* General button styling */
 .user-link {
     display: inline-block;
-    /* Allows padding and width control */
     padding: 5px 20px;
-    /* Add padding for a button-like feel */
     text-decoration: none;
-    /* Remove link underline */
     font-size: 16px;
-    /* Adjust font size */
     font-weight: bold;
-    /* Bold text */
     text-align: center;
-    /* Center text */
     border-radius: 8px;
-    /* Rounded corners */
     transition: all 0.3s ease;
-    /* Smooth hover transitions */
     cursor: pointer;
-    /* Pointer cursor on hover */
 }
 
-/* Specific styles for the Login button */
+/* Spezifische Stile für Login-Button */
 .login-button {
     background-color: transparent;
-    /* Transparent background */
     color: white;
-    /* White text */
     border: 2px solid white;
-    /* White border */
 }
 
 .login-button:hover {
     background-color: white;
-    /* Change background color on hover */
     color: #009260;
-    /* Green text */
 }
 
-/* Specific styles for the Sign-Up button */
+/* Spezifische Stile für Sign-Up-Button */
 .signup-button {
     background-color: white;
-    /* Solid white background */
     color: #009260;
-    /* Green text */
     border: 2px solid white;
-    /* White border */
 }
 
 .signup-button:hover {
     background-color: transparent;
-    /* Transparent background on hover */
     color: white;
-    /* White text */
 }
 
-/* Profile container styling */
+/* Profil-Button */
 .profile {
     display: flex;
-    /* Align greeting and icon horizontally */
-    align-items: center;
-    /* Vertically center content */
+    align-items: right;
     justify-content: space-between;
-    /* Space between the greeting and icon */
     background-color: transparent;
-    /* Match the header background */
     border: 2px solid white;
-    /* Same border as the login button */
     border-radius: 8px;
-    /* Rounded corners */
     padding: 6px 15px;
-    /* Padding for consistency with other buttons */
     height: 40px;
-    /* Match the height of the login and sign-up buttons */
     cursor: pointer;
-    /* Pointer cursor for interactivity */
     transition: all 0.3s ease;
-    /* Smooth hover effect */
     max-width: 200px;
-    /* Prevent overly wide profile button */
     gap: 10px;
 }
-
 
 /* Greeting text styling */
 .profile .greeting {
     font-size: 16px;
-    /* Match button text size */
     font-weight: bold;
-    /* Bold text for emphasis */
     color: white;
-    /* White text by default */
     margin: 0;
-    /* Remove default margin */
     transition: color 0.3s ease;
-    /* Smooth color transition on hover */
 }
 
 /* Profile hover effect */
 .profile:hover {
     background-color: white;
-    /* Invert colors on hover */
     color: #009260;
-    /* Green text on hover */
 }
 
-/* Profile text hover effect */
 .profile .greeting:hover {
     color: #009260;
 }
@@ -250,23 +171,110 @@
 /* Profile icon styling */
 .profile .profile-nav-icon {
     width: 32px;
-    /* Match other icons' size */
     height: 32px;
-    /* Keep icon square */
     border-radius: 50%;
-    /* Make the icon circular */
     object-fit: cover;
-    /* Ensure the image scales properly */
     background-color: transparent;
-    /* Remove any white background */
     transition: transform 0.3s ease, opacity 0.3s ease;
-    /* Smooth hover effects */
 }
 
 /* Profile icon hover effect */
 .profile .profile-nav-icon:hover {
     transform: scale(1.1);
-    /* Slight zoom on hover */
     opacity: 0.8;
-    /* Reduce opacity slightly */
+}
+
+/* Suchleiste mit Hintergrundbild */
+.search-container {
+    position: relative;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.7);
+    z-index: -1;
+}
+
+.search-wrapper {
+    z-index: 1;
+    padding: 20px;
+    background: transparent;
+    border-radius: 12px;
+}
+
+/* Container für Content-Blöcke */
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.content-block {
+    position: relative;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+    background-size: 64px;
+    background-repeat: no-repeat;
+    background-position: 20px center;
+}
+
+.content-overlay {
+    margin-left: 80px;
+}
+
+.content-block h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.content-block p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #a4dfce;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1ea874;
+}
+
+.start_pic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/Uni_Bayreuth.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(1.0);
+    opacity: 0.7;
+    z-index: 0;
+}
+
+.small-icon {
+    width: 30px; /* Breite anpassen */
+    height: 25px; /* Höhe anpassen */
 }

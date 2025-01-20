@@ -47,7 +47,7 @@
     
     <!-- Filter-Button -->
     <button type="menu" id="filter-button">
-      <img src="/images/icons8-filter-50.png" alt="filter" />
+      <img src="/images/filter-icon.png" alt="filter" class="small-icon"/>
     </button>
   </div>
 </template>
@@ -114,6 +114,7 @@ export default {
 @import '@/assets/css/components/search-container.css';
 
 /* Stil für die Dropdown-Vorschläge */
+
 ul {
   list-style: none;
   padding: 0;

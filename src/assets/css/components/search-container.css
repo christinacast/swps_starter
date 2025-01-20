@@ -11,9 +11,14 @@
 }
 
 /* Kasten für die Eingabefelder */
+/* Kasten für die Eingabefelder */
 .search-box {
   display: flex;
-  gap: 10px; /* Abstand zwischen Abfahrts- und Zielort */
+  gap: 10px;
+  border: 8px solid #009260 !important; /* Dicker Rand */
+  padding: 10px;
+  border-radius: 8px;
+  background-color: white; /* Hintergrundfarbe auf Weiß setzen */
 }
 
 /* Eingabefelder */
@@ -21,16 +26,18 @@
 #destination-input {
   width: 250px; /* Breite der Felder */
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2.5px solid white;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 20px;
+  background-color: white; /* Hintergrundfarbe der Eingabefelder auf Weiß setzen */
+  color: #333; /* Schriftfarbe für den Text */
 }
 
 /* Such-Button */
 #search-button {
   padding: 10px 20px;
   border: none;
-  background-color: #007BFF;
+  background-color: #a4dfce;
   color: white;
   font-size: 16px;
   border-radius: 4px;
@@ -38,6 +45,8 @@
 }
 
 #search-button:hover {
-  background-color: #0056b3;
+  background-color: #25755f
+  ;
 }
+
 
