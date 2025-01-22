@@ -1,5 +1,18 @@
 /* base.css */
 
+/* CSS-Variablen */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #009260;
+    --accent-color: #ff6f61;
+    --text-color: #333;
+    --light-text-color: #555;
+    --background-color: #f9f9f9;
+    --heading-color: #111; /*Überschrift */
+    --border-color: #ddd; /* Standardfarbe - Ränder */
+    --radius: 8px; /* Standardradius */
+}
+
 /* Basic Reset */
 *,
 *::before,
@@ -10,35 +23,61 @@
 }
 
 body {
-    font-family: Arial, sans-serif; /* Set a global font */
-    line-height: 1.6;
-    color: #333; /* Default text color */
-    background-color: #f9f9f9; /* Light background color for the whole site */
+    font-family: 'Arial', sans-serif; /* globale Schriftart */
+    font-size: 16px; /* Schriftgröße */
+    line-height: 1.6; /* Optimale Zeilenhöhe */
+    color: var(--text-color); /* Standardfarbe */
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
 }
 
-/* Typography */
+/* Typografie */
 h1, h2, h3, h4, h5, h6 {
-    color: #111; /* Heading color */
+    color: var(--heading-color); /* Überschriftenfarbe */
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1.3;
+    margin-bottom: 1rem;
 }
 
 p {
-    margin-bottom: 1rem; /* Space after each paragraph */
-    color: #555; /* Slightly lighter text color */
+    margin-bottom: 1rem;
+    color: var(--light-text-color);
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 a {
-    color: #009260; /* Default link color */
+    color: var(--primary-color);
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #21c289; /* Hover color for links */
-    text-decoration: none;
+    color: var(--secondary-color); /* Hover-Farbe für Links */
+    text-decoration: underline;
 }
 
-/* Utility Classes */
+/* Container und Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.col {
+    flex: 1;
+    min-width: 200px;
+    max-width: 100%;
+}
+
+/* Utility-Klassen */
 .text-center {
     text-align: center;
 }
@@ -57,12 +96,60 @@ a:hover {
 
 .flex-center {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+.border-radius {
+    border-radius: var(--radius);
+}
+
+/* Buttons und interaktive Elemente */
+button, input[type="submit"] {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+button:disabled {
+    background-color: var(--border-color);
+    cursor: not-allowed;
+}
+
+/* Box-Shadow und Übergangseffekte */
+.shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transition {
+    transition: all 0.3s ease;
+}
+
+/* Responsives Design */
+@media (max-width: 768px) {
+    body {
+        font-size: 90%; /* Schriftgröße leicht reduziert*/
+    }
+
+    .container {
+        padding: 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .row {
+        flex-direction: column;
+    }
 }

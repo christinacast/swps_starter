@@ -8,13 +8,25 @@
       </div>
     </div>
 
+
+<!-- Sticky Note: UNI-Fahrt -->
+<div class="static-text1">
+      <h2>Preisgünstig unterwegs - Die UNI-Fahrt macht es möglich ! </h2>
+      <p>
+        Egal, ob du zur Uni fährst, Freunde besuchst oder einen Ausflug machst – mit einer Mitfahrt bist du immer günstiger unterwegs. Spare Geld, rette die Umwelt und genieße die Fahrt!
+      </p>
+</div>
+
+
+
     <!-- Content-Blöcke untereinander -->
     <div class="content-container">
+
       <!-- "Wer fährt heute?" Block -->
       <div
         class="content-block"
         style="background-image: url('/images/icons8-traffic-jam-64.png')"
-      >
+            >
         <div class="content-overlay">
           <router-link to="/rides">
             <h2>Wer fährt heute?</h2>

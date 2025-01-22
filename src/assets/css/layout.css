@@ -1,84 +1,144 @@
-/* Modernisierte Top-Bar mit abgerundeten Ecken */
+/* General Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Top Bar Styles */
 .top-bar {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Alle Elemente auf der linken Seite ausrichten */
-    padding: 7px 30px; /* Etwas mehr Padding für eine elegantere Erscheinung */
-    background-color: #388E3C; /* Ein dunkleres Grün für ein moderneres Aussehen */
+    justify-content: space-between;
+    padding: 7px 30px;
+    background-color: #009260;
     color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ein sanfter Schatten für mehr Tiefe */
-    border-bottom: 2px solid #388E3C; /* Dezenter unterer Rand für mehr Struktur */
-    border-radius: 0px; /* Abgerundete Ecken für die gesamte Box */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #009260;
+    border-radius: 0px;
 }
 
-/* Titel-Style mit weißer Schrift */
 .top-bar h1 {
     margin: 0;
     font-size: 36px;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600; /* Etwas fetterer Text für mehr Präsenz */
-    letter-spacing: 1px; /* Leichter Abstand zwischen den Buchstaben für einen moderneren Look */
-    color: white; /* Weiß für die Schriftfarbe */
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: white;
 }
 
-/* Mittige Icons */
-.center-items {
-    display: flex;
-    gap: 50px; /* Reduzierter Abstand zwischen den Icons für eine kompaktere Darstellung */
-    margin: auto;
-}
-
-/* Stil für die einzelnen Icons */
-.nav-icon {
-    width: 60px;
-    height: 60px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-    padding: 10px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1); /* Sanfte Hintergrundfarbe */
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Icons zentrieren */
-}
-
-/* Hover-Effekt für Icons */
-.nav-link:hover .nav-icon {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05); /* Etwas sanfterer Zoom-Effekt */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sanfte Schattenwirkung */
+/* Navigation Links */
+.nav-link {
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: all 0.1s ease;
+    display: inline-block;
 }
 
 .nav-link:active .nav-icon {
-    transform: scale(0.95); /* Kleinerer Shrink-Effekt beim Klicken */
+    transform: scale(0.95);
 }
 
-/* Profil-Icon ganz rechts */
-.profile-icon {
+/* Profile Section */
+.profile {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 8px;
+    padding: 6px 15px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    max-width: 200px;
+    gap: 10px;
 }
 
-/* Container für Login, Register und Profil */
-.login-register-container {
-    display: flex;
-    gap: 15px; /* Abstände zwischen den Buttons */
-    align-items: right;
-    justify-content: right;
+.profile .greeting {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    transition: color 0.3s ease;
 }
 
-/* Impressum-Bar */
+.profile:hover {
+    background-color: white;
+    color: #009260;
+}
+
+.profile .greeting:hover {
+    color: #009260;
+}
+
+.profile .profile-nav-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: transparent;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.profile .profile-nav-icon:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+/* Buttons */
+button {
+    background-color: #a4dfce;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1ea874;
+}
+
+.login-button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.login-button:hover {
+    background-color: white;
+    color: #009260;
+}
+
+.signup-button {
+    background-color: white;
+    color: #009260;
+    border: 2px solid white;
+}
+
+.signup-button:hover {
+    background-color: transparent;
+    color: white;
+}
+
+/* Impressum Bar */
 .Impressum-bar {
-    background-color: #21c289;
+    background-color: #009260;
     color: white;
     padding: 10px 0;
-    align-content: center;
     text-align: center;
-    height: 8%;
-    width: 100%;
     position: fixed;
     bottom: 0;
+    width: 100%;
     z-index: 1000;
 }
 
@@ -92,99 +152,7 @@
     text-decoration: underline;
 }
 
-.greeting {
-    color: white;
-}
-
-/* General button styling */
-.user-link {
-    display: inline-block;
-    padding: 5px 20px;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-/* Spezifische Stile für Login-Button */
-.login-button {
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.login-button:hover {
-    background-color: white;
-    color: #009260;
-}
-
-/* Spezifische Stile für Sign-Up-Button */
-.signup-button {
-    background-color: white;
-    color: #009260;
-    border: 2px solid white;
-}
-
-.signup-button:hover {
-    background-color: transparent;
-    color: white;
-}
-
-/* Profil-Button */
-.profile {
-    display: flex;
-    align-items: right;
-    justify-content: space-between;
-    background-color: transparent;
-    border: 2px solid white;
-    border-radius: 8px;
-    padding: 6px 15px;
-    height: 40px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    max-width: 200px;
-    gap: 10px;
-}
-
-/* Greeting text styling */
-.profile .greeting {
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    margin: 0;
-    transition: color 0.3s ease;
-}
-
-/* Profile hover effect */
-.profile:hover {
-    background-color: white;
-    color: #009260;
-}
-
-.profile .greeting:hover {
-    color: #009260;
-}
-
-/* Profile icon styling */
-.profile .profile-nav-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: transparent;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* Profile icon hover effect */
-.profile .profile-nav-icon:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
-}
-
-/* Suchleiste mit Hintergrundbild */
+/* Search Section */
 .search-container {
     position: relative;
     height: 400px;
@@ -213,7 +181,7 @@
     border-radius: 12px;
 }
 
-/* Container für Content-Blöcke */
+/* Content Section */
 .content-container {
     display: flex;
     flex-direction: column;
@@ -246,18 +214,10 @@
     margin-bottom: 15px;
 }
 
-button {
-    background-color: #a4dfce;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #1ea874;
+/* Utility Classes */
+.small-icon {
+    width: 30px;
+    height: 25px;
 }
 
 .start_pic {
@@ -272,9 +232,4 @@ button:hover {
     filter: brightness(1.0);
     opacity: 0.7;
     z-index: 0;
-}
-
-.small-icon {
-    width: 30px; /* Breite anpassen */
-    height: 25px; /* Höhe anpassen */
 }

@@ -1,18 +1,20 @@
 <template>
   <header class="top-bar">
     <div class="center-items">
+      
+      
       <router-link to="/" class="nav-link">
     <span class="nav-icon">Home</span>
-</router-link>
+      </router-link>
 
       <router-link to="/maps" class="nav-link">
-        <img src="/images/icons8-map-64.png" alt="maps" class="nav-icon" />
+        Karten
       </router-link>
       <router-link to="/calendar" class="nav-link">
-        <img src="/images/icons8-calendar-64.png" alt="calendar" class="nav-icon" />
+        Fahrten
       </router-link>
       <router-link to="/chat" class="nav-link">
-        <img src="/images/icons8-messages-64.png" alt="messages" class="nav-icon" />
+        Chats
       </router-link>
     </div>
     

@@ -1,71 +1,187 @@
-.main-content {
-    height: 100vh;
-    overflow-y:auto;
-    display: flex;
-    justify-content: flex-start;
-    padding: 50px;
-    gap: 30px;
-    margin-bottom: 0px;
+/* CSS-Variablen */
+:root {
+    --primary-color: #009260;
+    --hover-color: #009260;
+    --text-color: #ffffff;
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+    --font-size-base: 1rem;
+    --font-size-large: 1.8rem;
 }
 
+/* standard Abstände */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Hauptinhalt */
+.main-content {
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap; /* Passt Blöcke bei Bedarf an */
+    padding: 50px;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Blöcke */
 .content-block {
     position: relative;
     width: 100%;
-    max-width: 350px;  /* Control the width of each block */
-    height: 400px;      /* Control the height of each block */
-    background-color:aliceblue;
+    max-width: 350px;
+    height: 400px;
+    background-color: aliceblue;
     background-size: 60%;
     background-position: center;
-    background-repeat: no-repeat; /* Prevent the background from repeating */
-    /* border: 2px solid #ccc;      /* Light gray border */
+    background-repeat: no-repeat;
     border-radius: 10px;
     overflow: hidden;
     text-decoration: none;
     color: white;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     display: flex;
     align-items: flex-end;
 }
 
 .content-block:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: #f0f8ff; /* Helleres AliceBlue */
 }
 
+/* Overlay */
 .content-overlay {
-    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    background: var(--overlay-bg);
     padding: 20px;
     width: 100%;
     text-align: left;
 }
 
 .content-overlay h2 {
-    color: #ffffff;
-    margin: 0;
-    font-size: 1.5em;
+    color: var(--text-color);
+    margin: 0 0 0.5em;
+    font-size: var(--font-size-large);
 }
 
 .content-overlay p {
-    color: #ffffff;
-    margin: 10px 0;
+    color: var(--text-color);
+    margin: 0.5em 0;
+    line-height: 1.5;
+    font-size: var(--font-size-base);
 }
 
+/* Buttons */
 .content-overlay button {
-    background-color: #009260; /* Red button color */
+    background-color: var(--primary-color);
     border: none;
     padding: 10px 20px;
-    color: white;
-    font-size: 1em;
+    color: var(--text-color);
+    font-size: var(--font-size-base);
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .content-overlay button:hover {
-    background-color: #1aaf7b; /* lighter green on hover */
+    background-color: var(--hover-color);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
 }
 
-.color-element{
-    width: 100%;
-    height: 50px;
-    background-color: #009260
+/* Responsives Design - flexibles Layout um auf versch. Bildschirmgrößen */
+@media (max-width: 768px) {
+    :root {
+        --font-size-base: 0.9rem;
+        --font-size-large: 1.5rem;
+    }
+
+    .main-content {
+        flex-direction: column; /* Stapelt die Blöcke übereinander */
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .content-block {
+        max-width: 100%;
+        height: auto; /* Automatische Höhe */
+    }
+}
+/* Filterbereich */
+.filter-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.filter-button {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.filter-button:hover {
+    background-color: var(--hover-color);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+/* Dropdown-Filter */
+.filter-options {
+    margin-top: 10px;
+    display: block;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    margin: 10px auto;
+    text-align: left;
+}
+
+.filter-options label {
+    display: block;
+    margin: 8px 0;
+    font-size: var(--font-size-base);
+}
+
+.filter-options input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Sticky Text für die UNI-Fahrt */
+.static-text1 {
+    font-family: 'Roboto', sans-serif; /* Schriftart */
+    font-size: 1.5rem; /* Schriftgröße */
+    font-weight: bold; /* Fettgedruckt */
+    color: #009260; /* Textfarbe */
+    padding: 20px; /* Innenabstand */
+    border-radius: 10px; /* Abgerundete Ecken */
+    max-width: 600px; /* Maximale Breite */
+    margin: 20px auto; /* Zentrierung */
+    text-align: center; /* Text zentrieren */
+    position: sticky;
+    top: 0; /* Fixiert am oberen Bildschirmrand */
+    z-index: 10; /* Stellt sicher, dass es über anderen Elementen bleibt */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.static-text h2 {
+    color: var(--primary-color); /* Schriftfarbe für den Titel */
+    margin-bottom: 10px;
+}
+
+.static-text p {
+    color: #848484; /* Textfarbe für den Text */
+    line-height: 1.6;
+    font-size: 1.1rem;
 }
