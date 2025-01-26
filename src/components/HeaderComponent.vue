@@ -5,7 +5,7 @@
       <router-link to="/" class="nav-link">
         <img src="/images/icons8-home.pdf" alt="home" class="nav-icon" />
       </router-link>
-      <router-link to="/maps" class="nav-link">
+      <router-link to="/maps?start=11.57549, 48.17405&end=11.57549, 48.17405" class="nav-link">
         <img src="/images/icons8-map-64.png" alt="maps" class="nav-icon" />
       </router-link>
       <router-link to="/calendar" class="nav-link">
