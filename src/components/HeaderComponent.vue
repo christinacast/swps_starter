@@ -80,7 +80,7 @@ export default {
           // Step 3: Query the 'profiles' table in Supabase to fetch the user's profile data (e.g., name)
           const { data: profile, error: profileError } = await supabase
             .from('profiles') // Target the 'profiles' table
-            .select('name') // Select the 'name' column only (you can add more columns if needed)
+            .select('name') // Select the 'name' column only 
             .eq('id', data.user.id)
             // Use the `.eq()` method to filter the rows where the `id` matches the user's ID.
             // This ensures we only get the profile data for the logged-in user.

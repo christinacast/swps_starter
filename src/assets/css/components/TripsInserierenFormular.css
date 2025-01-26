@@ -1,12 +1,16 @@
-/* General Styles */
-.rides-page {
-  margin: 0;
-  padding: 1rem;
-  height: 100%;
-  padding-bottom: 8%;
+/* 
+   TripsInserierenFormular.css
+*/
+
+/* Wrapper Styles */
+.trips-inserieren-form {
+  margin: 0 auto;
+  padding: 1rem 1rem 8rem; /* extra bottom padding */
+  max-width: 800px;       /* limit form width on large screens */
+  box-sizing: border-box;
 }
 
-header h1 {
+.trips-inserieren-form h1 {
   text-align: center;
   margin-bottom: 2rem;
   font-size: 1.8rem;
@@ -19,10 +23,9 @@ header h1 {
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 0 auto;
 }
 
+/* Fieldset + Legend */
 fieldset {
   border: none;
   margin: 1rem 0;
@@ -30,12 +33,13 @@ fieldset {
 }
 
 legend {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  color: #333;
 }
 
-/* Form Group */
+/* Form Groups + Labels */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -43,8 +47,9 @@ legend {
 .form-group label {
   display: block;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #333;
 }
 
 .form-group input {
@@ -56,9 +61,10 @@ legend {
   transition: border-color 0.3s ease;
 }
 
+/* Focus State */
 .form-group input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #007bff; 
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
 }
 
@@ -68,6 +74,7 @@ legend {
   gap: 1rem;
 }
 
+/* Ensures each form-group in a row shares space evenly */
 .form-row .form-group {
   flex: 1;
 }
@@ -79,18 +86,41 @@ legend {
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 1rem;
 }
 
+/* Hover + Disabled State */
 .btn-submit:hover:not(:disabled) {
-  background-color: #21c289;
+  background-color: #21c289; /* greenish hover, change as you like */
+}
+.btn-submit:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.btn-submit:disabled {
-  background-color: #de3d76;
-  cursor: not-allowed;
+/* Basic Responsive Adjustments */
+@media (max-width: 600px) {
+  .form-row {
+    display: block; /* stack columns on smaller screens */
+  }
+
+  .form-row .form-group {
+    margin-bottom: 1rem;
+    flex: none;  /* let them resize naturally */
+    width: 100%;
+  }
+
+  fieldset {
+    margin: 0.5rem 0;
+  }
+
+  legend {
+    margin-bottom: 0.5rem;
+  }
 }
