@@ -1,15 +1,15 @@
 <template>
     <footer class="Impressum-bar">
-      <router-link to="/" class="bottom-bar-references">
+      <router-link to="/impressum" class="bottom-bar-references">
         Impressum
       </router-link>
-      <router-link to="/" class="bottom-bar-references">
-        Rechtliches (AGB, Datenschutz)
+      <router-link to="/testprojekt-hinweise" class="bottom-bar-references">
+        Testprojekt-Hinweise
       </router-link>
-      <router-link to="/" class="bottom-bar-references">
+      <router-link to="/cookies" class="bottom-bar-references">
         Cookies
       </router-link>
-      <router-link to="/" class="bottom-bar-references">
+      <router-link to="/transparenz" class="bottom-bar-references">
         Transparenz der Plattform
       </router-link>
     </footer>

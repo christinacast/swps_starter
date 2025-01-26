@@ -7,6 +7,10 @@ import LoginPage from '@/pages/LoginPage.vue';
 import RegisterPage from '@/pages/RegisterPage.vue';
 import ChatPage from '@/pages/ChatPage.vue';
 import RidesPage from '@/pages/RidesPage.vue';
+import ImpressumPage from '@/pages/ImpressumPage.vue';
+import TestprojektHinweise from '@/pages/TestprojektHinweise.vue';
+import CookiesPage from '@/pages/CookiesPage.vue';
+import TransparenzPage from '@/pages/TransparenzPage.vue';
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -17,7 +21,11 @@ const routes = [
     { path: '/register', name: 'Register', component: RegisterPage },
     { path: '/chat', name: 'ChatPage', component: ChatPage },  // Hier korrigiert!
     { path: '/register', name: 'Register', component: RegisterPage},
-    { path: '/rides', name: "Rides", component: RidesPage}
+    { path: '/rides', name: "Rides", component: RidesPage},
+    { path: '/impressum', name: "Impressum", component: ImpressumPage},
+    { path: '/testprojekt-hinweise', name:"testprojekt-hinweise", component: TestprojektHinweise},
+    { path: '/cookies', name: "Cookies", component: CookiesPage},
+    { path: '/transparenz', name: "Transparenz", component: TransparenzPage}
 ];
 
 const router = createRouter({
