@@ -2,12 +2,15 @@
     <header>
         <h1 class="rides-heading">Hier werden dir Fahrten vermittelt.</h1>
     </header>
-    <div class="TripsInserieren">
-        <TripsInserierenFormular />
-    </div>
-    <div class="TripsSuchen">
-        <TripsSuchenFormular />
-    </div>
+    <form class="trips-formular-wrapper">
+
+        <div class="TripsInserieren">
+            <TripsInserierenFormular />
+        </div>
+        <div class="TripsSuchen">
+            <TripsSuchenFormular />
+        </div>
+    </form>
 </template>
 
 <script>
@@ -44,6 +47,35 @@ export default {
     font-size: 2rem; /* Reduce font size for smaller screens */
     margin-top: 15px; /* Adjust spacing for mobile view */
     margin-bottom: 15px;
+  }
+}
+
+/* Wrapper für die Formulare */
+.trips-formular-wrapper {
+  display: flex; /* Flexbox aktivieren */
+  gap: 1%; /* Abstand zwischen den Formularen */
+  justify-content: center; /* Zentriert auf dem Bildschirm */
+  flex-wrap: wrap; /* Ermöglicht das Springen in die nächste Zeile */
+  margin-top: 2rem;
+}
+
+/* Stellt sicher, dass beide Formulare gleich breit sind */
+.TripsInserieren,
+.TripsSuchen {
+  flex: 1; /* Gleiche Flex-Basis für beide Formulare */
+  max-width: 700px; /* Maximale Breite für die Formulare */
+  min-width: 500px; /* Mindestbreite für die Formulare */
+  box-sizing: border-box; /* Padding und Border werden in die Breite einberechnet */
+}
+
+/* Media Query für kleinere Bildschirme */
+@media (max-width: 768px) {
+  .rides-form-wrapper {
+    flex-direction: column; /* Formulare untereinander anordnen */
+  }
+
+  .trips-suchen-form {
+    max-width: 100%; /* Volle Breite für jedes Formular */
   }
 }
 </style>

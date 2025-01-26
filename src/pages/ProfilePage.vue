@@ -2,22 +2,22 @@
   <div class="profile-container">
     <h1 class="profile-title">Profile Seite</h1>
     <p class="profile-description">Hier kannst du deine eigenen Daten einsehen.</p>
-    
+
     <div v-if="user" class="profile-card">
       <!-- Display user details -->
       <div class="profile-item">
-        <strong>Name:</strong> 
+        <strong>Name:</strong>
         <span>{{ profile.name || 'Unknown' }}</span>
       </div>
       <div class="profile-item">
-        <strong>Nachname:</strong> 
+        <strong>Nachname:</strong>
         <span>{{ profile.surname || 'Unknown' }}</span>
       </div>
       <div class="profile-item">
-        <strong>Email:</strong> 
+        <strong>Email:</strong>
         <span>{{ user.email }}</span>
       </div>
-      
+
       <!-- Logout button -->
       <button class="form-button" @click="logout">Logout</button>
     </div>
@@ -29,60 +29,60 @@
 
   <!-- Fahrten Section -->
   <div v-if="user" class="fahrten-container">
-      <div class="fahrten-section">
-        <h2 class="fahrten-heading">Deine anstehenden Fahrten</h2>
-        <table class="fahrten-table">
-          <thead>
-            <tr>
-              <th>Datum</th>
-              <th>Uhrzeit</th>
-              <th>Abreiseort</th>
-              <th>Zielort</th>
-              <th>Status</th>
-              <th>Plätze</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="ride in upcomingRides" :key="ride.id">
-              <td>{{ ride.ride_date }}</td>
-              <td>{{ ride.ride_time }}</td>
-              <td>{{ ride.start_string }}</td>
-              <td>{{ ride.end_string }}</td>
-              <td>{{ ride.status }}</td>
-              <td>{{ ride.available_seats }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="fahrten-section">
-        <h2 class="fahrten-heading">Deine vergangenen Fahrten</h2>
-        <table class="fahrten-table">
-          <thead>
-            <tr>
-              <th>Datum</th>
-              <th>Uhrzeit</th>
-              <th>Abreiseort</th>
-              <th>Zielort</th>
-              <th>Status</th>
-              <th>Plätze</th>
-              <th>eingespartes CO₂</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="ride in pastRides" :key="ride.id">
-              <td>{{ ride.ride_date }}</td>
-              <td>{{ ride.ride_time }}</td>
-              <td>{{ ride.start_string }}</td>
-              <td>{{ ride.end_string }}</td>
-              <td>{{ ride.status }}</td>
-              <td>{{ ride.seats }}</td>
-              <td>{{  }} kg</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="fahrten-section">
+      <h2 class="fahrten-heading">Deine anstehenden Fahrten</h2>
+      <table class="fahrten-table">
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Uhrzeit</th>
+            <th>Abreiseort</th>
+            <th>Zielort</th>
+            <th>Status</th>
+            <th>Plätze</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="ride in upcomingRides" :key="ride.id">
+            <td>{{ ride.ride_date }}</td>
+            <td>{{ ride.ride_time }}</td>
+            <td>{{ ride.start_string }}</td>
+            <td>{{ ride.end_string }}</td>
+            <td>{{ ride.status }}</td>
+            <td>{{ ride.available_seats }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
+    <div class="fahrten-section">
+      <h2 class="fahrten-heading">Deine vergangenen Fahrten</h2>
+      <table class="fahrten-table">
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Uhrzeit</th>
+            <th>Abreiseort</th>
+            <th>Zielort</th>
+            <th>Status</th>
+            <th>Plätze</th>
+            <th>eingespartes CO₂</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="ride in pastRides" :key="ride.id">
+            <td>{{ ride.ride_date }}</td>
+            <td>{{ ride.ride_time }}</td>
+            <td>{{ ride.start_string }}</td>
+            <td>{{ ride.end_string }}</td>
+            <td>{{ ride.status }}</td>
+            <td>{{ ride.seats }}</td>
+            <td>{{ }} kg</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -121,10 +121,10 @@ export default {
       // Filters
       .eq('status', 'Offen für Mitfahrer')
       .eq('user_id', this.user.id)
-    
-      if (!error) {
-        this.upcomingRides = rides  
-        console.log("hey", this.upcomingRides);
+
+    if (!error) {
+      this.upcomingRides = rides
+      console.log("hey", this.upcomingRides);
     }
 
   },
@@ -143,9 +143,8 @@ export default {
 </script>
 
 <style scoped>
-
 .fahrten-container {
- padding-bottom: 7%;
+  padding-bottom: 7%;
 }
 
 .fahrten-section {

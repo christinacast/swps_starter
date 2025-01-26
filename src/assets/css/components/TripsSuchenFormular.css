@@ -6,19 +6,19 @@
 .trips-suchen-form {
     margin: 0 auto;
     padding: 1rem 1rem 6rem; /* extra bottom padding */
-    max-width: 800px;       /* limit form width on large screens */
+    max-width: 650px;       /* limit form width on large screens */
     box-sizing: border-box;
   }
   
   .trips-suchen-form h1 {
-    text-align: center;
+    text-align: left;
     margin-bottom: 1rem;
     font-size: 1.6rem;
-    color: #444;
+    color: #009260;
   }
 
   .trips-suchen-form h2 {
-    text-align: center;
+    text-align: left;
     margin-bottom: 2rem;
     font-size: 1.3rem;
     color: #444;

@@ -11,6 +11,7 @@ import ImpressumPage from '@/pages/ImpressumPage.vue';
 import TestprojektHinweise from '@/pages/TestprojektHinweise.vue';
 import CookiesPage from '@/pages/CookiesPage.vue';
 import TransparenzPage from '@/pages/TransparenzPage.vue';
+import ViewAllTripsPage from '@/pages/ViewAllTripsPage.vue';
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -25,7 +26,8 @@ const routes = [
     { path: '/impressum', name: "Impressum", component: ImpressumPage},
     { path: '/testprojekt-hinweise', name:"testprojekt-hinweise", component: TestprojektHinweise},
     { path: '/cookies', name: "Cookies", component: CookiesPage},
-    { path: '/transparenz', name: "Transparenz", component: TransparenzPage}
+    { path: '/transparenz', name: "Transparenz", component: TransparenzPage},
+    { path: '/view-all-Trips', name:"ViewAllTrips", component: ViewAllTripsPage}
 ];
 
 const router = createRouter({

@@ -9,7 +9,7 @@
       style="background-image: url('/images/icons8-traffic-jam-64.png')"
     >
       <div class="content-overlay">
-        <router-link to="/rides">
+        <router-link to="/view-all-Trips">
           <h2>Wer fährt heute?</h2>
           <p>
             Hier kannst du einsehen wer heute alles fährt und für dich noch einen Platz frei hat
