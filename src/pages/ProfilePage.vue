@@ -1,13 +1,17 @@
 <template>
   <div class="profile-container">
-    <h1 class="profile-title">Profile Page</h1>
-    <p class="profile-description">Here you can view your personal information.</p>
+    <h1 class="profile-title">Profile Seite</h1>
+    <p class="profile-description">Hier kannst du deine eigenen Daten einsehen.</p>
     
     <div v-if="user" class="profile-card">
       <!-- Display user details -->
       <div class="profile-item">
         <strong>Name:</strong> 
         <span>{{ profile.name || 'Unknown' }}</span>
+      </div>
+      <div class="profile-item">
+        <strong>Nachname:</strong> 
+        <span>{{ profile.surname || 'Unknown' }}</span>
       </div>
       <div class="profile-item">
         <strong>Email:</strong> 
@@ -22,6 +26,63 @@
       <p>You are not logged in. <router-link to="/login" class="link">Login here</router-link></p>
     </div>
   </div>
+
+  <!-- Fahrten Section -->
+  <div v-if="user" class="fahrten-container">
+      <div class="fahrten-section">
+        <h2 class="fahrten-heading">Deine anstehenden Fahrten</h2>
+        <table class="fahrten-table">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Uhrzeit</th>
+              <th>Abreiseort</th>
+              <th>Zielort</th>
+              <th>Status</th>
+              <th>Plätze</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="ride in upcomingRides" :key="ride.id">
+              <td>{{ ride.ride_date }}</td>
+              <td>{{ ride.ride_time }}</td>
+              <td>{{ ride.start_string }}</td>
+              <td>{{ ride.end_string }}</td>
+              <td>{{ ride.status }}</td>
+              <td>{{ ride.available_seats }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="fahrten-section">
+        <h2 class="fahrten-heading">Deine vergangenen Fahrten</h2>
+        <table class="fahrten-table">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Uhrzeit</th>
+              <th>Abreiseort</th>
+              <th>Zielort</th>
+              <th>Status</th>
+              <th>Plätze</th>
+              <th>eingespartes CO₂</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="ride in pastRides" :key="ride.id">
+              <td>{{ ride.ride_date }}</td>
+              <td>{{ ride.ride_time }}</td>
+              <td>{{ ride.start_string }}</td>
+              <td>{{ ride.end_string }}</td>
+              <td>{{ ride.status }}</td>
+              <td>{{ ride.seats }}</td>
+              <td>{{  }} kg</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -33,6 +94,7 @@ export default {
     return {
       user: null,
       profile: {},
+      upcomingRides: {},
     };
   },
   async mounted() {
@@ -52,6 +114,19 @@ export default {
         console.error('Error fetching profile:', error.message);
       }
     }
+
+    let { data: rides, error } = await supabase
+      .from('rides')
+      .select("*")
+      // Filters
+      .eq('status', 'Offen für Mitfahrer')
+      .eq('user_id', this.user.id)
+    
+      if (!error) {
+        this.upcomingRides = rides  
+        console.log("hey", this.upcomingRides);
+    }
+
   },
   methods: {
     async logout() {
@@ -68,6 +143,65 @@ export default {
 </script>
 
 <style scoped>
+
+.fahrten-container {
+ padding-bottom: 7%;
+}
+
+.fahrten-section {
+  max-width: 1300px;
+  margin: 40px auto 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.fahrten-heading {
+  font-size: 20px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.fahrten-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.fahrten-table th,
+.fahrten-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.fahrten-table th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+}
+
+.fahrten-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.fahrten-table tr:hover {
+  background-color: #e9e9e9;
+}
+
+@media (max-width: 600px) {
+  .fahrten-table {
+    font-size: 12px;
+  }
+
+  .fahrten-table th,
+  .fahrten-table td {
+    padding: 5px;
+  }
+}
+
 .profile-container {
   max-width: 500px;
   margin: 0 auto;
@@ -138,4 +272,3 @@ export default {
   text-decoration: underline;
 }
 </style>
-

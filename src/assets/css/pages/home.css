@@ -60,3 +60,37 @@
 .content-overlay button:hover {
     background-color: #1aaf7b; /* lighter green on hover */
 }
+
+/* Styling für den Bereich des neuen Buttons */
+.insert-ride-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+    padding: 20px;
+  }
+  
+  /* Button Styling */
+  .insert-ride-btn {
+    display: inline-block;
+    background-color: #009260;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .insert-ride-btn:hover {
+    background-color: #1aaf7b;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    color: #ffff;
+  }
+  
+  .insert-ride-btn:active {
+    background-color: #1aaf7b;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  }

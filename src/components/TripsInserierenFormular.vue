@@ -5,6 +5,8 @@
       <section class="add-ride">
         <!-- Notice each input now has v-model binding (e.g. v-model="streetStart") -->
         <form @submit.prevent="handleSubmit" class="form-container">
+          <h1>Du suchst noch Mitfahrer für dein Fahrtziel?</h1>
+          <h2>Super, inseriere hier eine Fahrt</h2>
           <!-- Start Address -->
           <fieldset>
             <legend>Startpunkt</legend>
@@ -212,13 +214,13 @@ export default {
       console.log("here the route:", geoJSONRoute)
       console.log(this.user.id, `${this.date}T${this.time}:00Z`)
       
-      await this.insertToDatabase(startAddressGeoJSON, destAddressGeoJSON, geoJSONRoute)
+      await this.insertToDatabase(startAddressGeoJSON, destAddressGeoJSON, geoJSONRoute, startAddressString, destAddressString)
       
       this.resetForm()
             },
 
     // Insert the GeoJSON data into your Supabase database
-    async insertToDatabase(startGeoJSON, endGeoJSON, routeGeoJSON) {
+    async insertToDatabase(startGeoJSON, endGeoJSON, routeGeoJSON, startString, endString) {
       console.log(startGeoJSON.geometry, endGeoJSON.geometry, routeGeoJSON.geometry)
       const { data, error } = await supabase
         .from('rides')
@@ -227,9 +229,13 @@ export default {
           start_point: startGeoJSON.geometry,
           end_point: endGeoJSON.geometry,
           route: routeGeoJSON.geometry,
-          status: "searching",
+          status: "Offen für Mitfahrer",
           available_seats: this.seats,
-          ride_date: `${this.date}T${this.time}:00Z`
+          ride_date: this.date,
+          start_string: startString,
+          end_string: endString,
+          ride_time: this.time,
+          role: "Fahrer"
         })
         .select();
 

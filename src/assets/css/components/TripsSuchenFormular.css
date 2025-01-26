@@ -1,0 +1,133 @@
+/* 
+   TripssuchenFormular.css
+*/
+
+/* Wrapper Styles */
+.trips-suchen-form {
+    margin: 0 auto;
+    padding: 1rem 1rem 6rem; /* extra bottom padding */
+    max-width: 800px;       /* limit form width on large screens */
+    box-sizing: border-box;
+  }
+  
+  .trips-suchen-form h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #444;
+  }
+
+  .trips-suchen-form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+    color: #444;
+  }
+  
+  /* Form Container */
+  .form-container {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Fieldset + Legend */
+  fieldset {
+    border: none;
+    margin: 1rem 0;
+    padding: 0;
+  }
+  
+  legend {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  /* Form Groups + Labels */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  /* Focus State */
+  .form-group input:focus {
+    outline: none;
+    border-color: #007bff; 
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Row Layout */
+  .form-row {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  /* Ensures each form-group in a row shares space evenly */
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  /* Submit Button */
+  .btn-submit {
+    display: block;
+    width: 100%;
+    background-color: #009260;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+  }
+  
+  /* Hover + Disabled State */
+  .btn-submit:hover:not(:disabled) {
+    background-color: #1aaf7b; /* greenish hover, change as you like */
+  }
+  .btn-submit:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  /* Basic Responsive Adjustments */
+  @media (max-width: 600px) {
+    .form-row {
+      display: block; /* stack columns on smaller screens */
+    }
+  
+    .form-row .form-group {
+      margin-bottom: 1rem;
+      flex: none;  /* let them resize naturally */
+      width: 100%;
+    }
+  
+    fieldset {
+      margin: 0.5rem 0;
+    }
+  
+    legend {
+      margin-bottom: 0.5rem;
+    }
+  }

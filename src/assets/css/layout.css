@@ -4,11 +4,10 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px 30px; /* Etwas mehr Padding für eine elegantere Erscheinung */
-    background-color: #23a983; /* Ein dunkleres Grün für ein moderneres Aussehen */
+    background-color: #009260; /* Ein dunkleres Grün für ein moderneres Aussehen */
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ein sanfter Schatten für mehr Tiefe */
     border-bottom: 2px solid #18aa81; /* Dezenter unterer Rand für mehr Struktur */
-    border-radius: 15px; /* Abgerundete Ecken für die gesamte Box */
 }
 
 /* Titel-Style mit weißer Schrift */

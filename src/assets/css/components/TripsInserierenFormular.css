@@ -5,15 +5,22 @@
 /* Wrapper Styles */
 .trips-inserieren-form {
   margin: 0 auto;
-  padding: 1rem 1rem 8rem; /* extra bottom padding */
+  padding: 1rem 1rem 4rem; /* extra bottom padding */
   max-width: 800px;       /* limit form width on large screens */
   box-sizing: border-box;
 }
 
 .trips-inserieren-form h1 {
   text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  color: #444;
+}
+
+.trips-inserieren-form h2 {
+  text-align: center;
   margin-bottom: 2rem;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   color: #444;
 }
 
@@ -83,7 +90,7 @@ legend {
 .btn-submit {
   display: block;
   width: 100%;
-  background-color: #007bff;
+  background-color: #009260;
   color: #fff;
   border: none;
   padding: 0.75rem 1rem;
@@ -96,7 +103,7 @@ legend {
 
 /* Hover + Disabled State */
 .btn-submit:hover:not(:disabled) {
-  background-color: #21c289; /* greenish hover, change as you like */
+  background-color: #1aaf7b; /* greenish hover, change as you like */
 }
 .btn-submit:disabled {
   background-color: #999;
