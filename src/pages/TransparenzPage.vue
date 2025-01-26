@@ -27,7 +27,7 @@
         <p>
           Die Entwicklung von Uni DRIVE basiert auf einem Open-Source-Ansatz. Der gesamte Code ist öffentlich einsehbar, 
           und Sie können jederzeit nachvollziehen, wie unser System aufgebaut ist. Unser Code ist auf 
-          <a href="https://github.com" target="_blank">GitHub</a> verfügbar, und wir laden alle ein, Feedback zu geben 
+          <a href="https://github.com/christinacast/swps_starter_group1" target="_blank">GitHub</a> verfügbar, und wir laden alle ein, Feedback zu geben 
           oder Verbesserungen vorzuschlagen.
         </p>
       </section>
