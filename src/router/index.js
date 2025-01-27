@@ -6,6 +6,7 @@ import ProfilePage from '@/pages/ProfilePage.vue';
 import LoginPage from '@/pages/LoginPage.vue'; 
 import RegisterPage from '@/pages/RegisterPage.vue';
 import ChatPage from '@/pages/ChatPage.vue';
+import ForumPage from "@/pages/ForumPage.vue";
 import RidesPage from '@/pages/RidesPage.vue';
 import ImpressumPage from '@/pages/ImpressumPage.vue';
 import TestprojektHinweise from '@/pages/TestprojektHinweise.vue';
@@ -20,6 +21,7 @@ const routes = [
     { path: '/profile', name: 'Profile', component: ProfilePage },
     { path: '/login', name: 'Login', component: LoginPage },
     { path: '/register', name: 'Register', component: RegisterPage },
+    { path: "/forum", name: "ForumPage", component: ForumPage },
     { path: '/chat', name: 'ChatPage', component: ChatPage },  // Hier korrigiert!
     { path: '/register', name: 'Register', component: RegisterPage},
     { path: '/rides', name: "Rides", component: RidesPage},

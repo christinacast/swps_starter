@@ -3,7 +3,7 @@
     <!-- FullCalendar -->
     <div id="calendar" ref="calendarEl"></div>
 
-    <!-- Modales Fenster für Termindetails -->
+    <!-- Fenster mit Termindetails und Löschoption -->
     <div v-if="showDetailsDialog" class="modal-overlay">
       <div class="modal-content">
         <h3>Details zum Termin</h3>
@@ -197,7 +197,7 @@ export default {
 }
 
 .modal-buttons button {
-  background-color: #007bff;
+  background-color: #009260;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -208,7 +208,7 @@ export default {
 }
 
 .modal-buttons button:hover {
-  background-color: #0056b3;
+  background-color: #3b7b5b;
 }
 
 .modal-buttons button:last-child {
