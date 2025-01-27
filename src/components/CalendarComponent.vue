@@ -197,7 +197,7 @@ export default {
 }
 
 .modal-buttons button {
-  background-color: #007bff;
+  background-color: #009260;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -208,7 +208,7 @@ export default {
 }
 
 .modal-buttons button:hover {
-  background-color: #0056b3;
+  background-color: #3b7b5b;
 }
 
 .modal-buttons button:last-child {

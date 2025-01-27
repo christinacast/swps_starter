@@ -5,6 +5,7 @@ import CalendarPage from '@/pages/CalendarPage.vue'; // calendar page
 import ProfilePage from '@/pages/ProfilePage.vue';
 import LoginPage from '@/pages/LoginPage.vue'; 
 import RegisterPage from '@/pages/RegisterPage.vue';
+import ForumPage from "@/pages/ForumPage.vue";
 import ChatPage from '@/pages/ChatPage.vue';
 import RidesPage from '@/pages/RidesPage.vue';
 
@@ -15,7 +16,8 @@ const routes = [
     { path: '/profile', name: 'Profile', component: ProfilePage },
     { path: '/login', name: 'Login', component: LoginPage },
     { path: '/register', name: 'Register', component: RegisterPage },
-    { path: '/chat', name: 'ChatPage', component: ChatPage },  // Hier korrigiert!
+    { path: "/forum", name: "ForumPage", component: ForumPage },
+    { path: '/chat', name: 'ChatPage', component: ChatPage },
     { path: '/register', name: 'Register', component: RegisterPage},
     { path: '/rides', name: "Rides", component: RidesPage}
 ];
