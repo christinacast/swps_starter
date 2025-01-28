@@ -1,179 +1,250 @@
 <template>
-    <div class="chat-page">
-      <!-- Sidebar mit der Benutzerliste -->
-      <div class="sidebar">
-        <h2>Benutzer</h2>
-        <ul>
-          <li v-for="user in users" :key="user.id" @click="selectUser(user)">
-            <div class="user-item">
-              <img :src="user.avatar" alt="User Avatar" class="user-avatar" />
-              <span>{{ user.name }}</span>
-            </div>
-          </li>
-        </ul>
-        <button @click="startNewChat">Neuen Chat starten</button>
-      </div>
-  
-      <!-- Chat-Bereich -->
-      <div class="chat-container">
-        <div v-if="selectedUser" class="chat-header">
-          <img :src="selectedUser.avatar" alt="Selected User Avatar" class="chat-avatar" />
-          <h3>{{ selectedUser.name }}</h3>
+  <div class="chat-page">
+    <h1>Gruppenübersicht</h1>
+    <div class="rides-list">
+      <div
+        v-for="ride in ridesWithLastMessage"
+        :key="ride.ride_id"
+        class="ride-item"
+      >
+        <!-- Fahrtbeschreibung -->
+        <div class="ride-info" @click="toggleChat(ride.ride_id)">
+          [FahrtID: {{ ride.ride_id }}] Von {{ ride.start_string }} nach {{ ride.end_string }} - {{ ride.ride_date }} {{ ride.ride_time }}
         </div>
-        <div class="chat-messages">
-          <div v-for="message in chatMessages" :key="message.id" class="message">
-            <div :class="{'message-sent': message.sender === 'me', 'message-received': message.sender !== 'me'}">
-              <p>{{ message.content }}</p>
+
+        <!-- Letzte Nachricht -->
+        <p class="last-message">
+          <span v-if="ride.lastMessage">
+            {{ formatTimestamp(ride.lastMessage.zeitstempel) }} - {{ ride.lastMessage.inhalt }}
+          </span>
+          <span v-else>Noch keine Nachricht</span>
+        </p>
+
+        <!-- Chat-Komponente, wenn die Fahrt ausgewählt ist -->
+        <div v-if="openChatId === ride.ride_id" class="chat-container">
+          <div class="messages-container">
+            <div
+              v-for="message in ride.messages"
+              :key="message.id"
+              class="message"
+            >
+              <p>
+                <strong>{{ message.inhalt }}</strong>
+              </p>
+              <small class="timestamp">
+                {{ formatTimestamp(message.zeitstempel) }}
+              </small>
             </div>
           </div>
-        </div>
-        <div v-if="selectedUser" class="chat-input">
-          <input v-model="message" @keyup.enter="sendMessage" placeholder="Nachricht eingeben..." />
-          <button @click="sendMessage">Senden</button>
+
+          <!-- Neue Nachricht schreiben -->
+          <form @submit.prevent="submitMessage(ride.ride_id)" class="new-message-form">
+            <textarea
+              v-model="newMessage"
+              placeholder="Nachricht schreiben..."
+              required
+            ></textarea>
+            <button type="submit">Senden</button>
+          </form>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        users: [
-          { id: 1, name: 'Max Mustermann', avatar: 'https://via.placeholder.com/50' },
-          { id: 2, name: 'Erika Mustermann', avatar: 'https://via.placeholder.com/50' },
-          // Füge hier weitere Benutzer hinzu
-        ],
-        selectedUser: null,
-        chatMessages: [],
-        message: '',
-      };
+  </div>
+</template>
+
+<script>
+import { supabase } from "@/services/supabase.js";
+
+export default {
+  name: "ChatPage",
+  data() {
+    return {
+      ridesWithLastMessage: [], // Fahrten mit letzter Nachricht
+      openChatId: null, // ID der Fahrt, deren Chat geöffnet ist
+      newMessage: "", // Eingabefeld für neue Nachrichten
+    };
+  },
+  async mounted() {
+    await this.fetchRidesWithLastMessage();
+  },
+  methods: {
+    // Fahrten und Nachrichten abrufen
+    async fetchRidesWithLastMessage() {
+      // Abrufen aller Fahrten aus der Tabelle rides
+      const { data: rides, error: ridesError } = await supabase.from("rides").select("*");
+
+      if (ridesError) {
+        console.error("Fehler beim Abrufen der Fahrten:", ridesError.message);
+        return;
+      }
+
+      // Für jede Fahrt die letzte Nachricht und alle Nachrichten abrufen
+      const ridesWithMessages = await Promise.all(
+        rides.map(async (ride) => {
+          const { data: lastMessage, error: messageError } = await supabase
+            .from("gruppenchats")
+            .select("*")
+            .eq("fahrt_id", ride.ride_id)
+            .order("zeitstempel", { ascending: false })
+            .limit(1)
+            .single();
+
+          const { data: allMessages, error: allMessagesError } = await supabase
+            .from("gruppenchats")
+            .select("*")
+            .eq("fahrt_id", ride.ride_id)
+            .order("zeitstempel", { ascending: true });
+
+          if (messageError && messageError.code !== "PGRST116") {
+            console.error(`Fehler beim Abrufen der letzten Nachricht für Fahrt ${ride.ride_id}:`, messageError.message);
+          }
+
+          if (allMessagesError) {
+            console.error(`Fehler beim Abrufen aller Nachrichten für Fahrt ${ride.ride_id}:`, allMessagesError.message);
+          }
+
+          return {
+            ...ride,
+            lastMessage: lastMessage || null, // Letzte Nachricht oder null
+            messages: allMessages || [], // Alle Nachrichten oder leer
+          };
+        })
+      );
+
+      this.ridesWithLastMessage = ridesWithMessages;
     },
-    methods: {
-      selectUser(user) {
-        this.selectedUser = user;
-        this.chatMessages = []; // Setze die Nachrichten zurück, wenn ein neuer Chat ausgewählt wird
-      },
-      startNewChat() {
-        this.selectedUser = null;
-        this.chatMessages = []; // Setze die Nachrichten zurück für den neuen Chat
-      },
-      sendMessage() {
-        if (this.message.trim()) {
-          this.chatMessages.push({
-            id: this.chatMessages.length + 1,
-            sender: 'me',
-            content: this.message.trim(),
-          });
-          this.message = ''; // Eingabefeld zurücksetzen
-        }
-      },
+
+    // Zeitstempel formatieren
+    formatTimestamp(timestamp) {
+      return new Date(timestamp).toLocaleString();
     },
-  };
-  </script>
-  
-  <style scoped>
-  .chat-page {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .sidebar {
-    width: 250px;
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-  }
-  
-  .sidebar h2 {
-    font-size: 1.5em;
-  }
-  
-  .user-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .chat-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-  }
-  
-  .chat-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .chat-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 20px;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-  }
-  
-  .message-sent {
-    background-color: #d1ffd6;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 60%;
-    align-self: flex-end;
-  }
-  
-  .message-received {
-    background-color: #f1f1f1;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 60%;
-    align-self: flex-start;
-  }
-  
-  .chat-input {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    outline: none;
-  }
-  
-  .chat-input button {
-    padding: 10px 20px;
-    background-color: #009260;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-  }
-  
-  .chat-input button:hover {
-    background-color: #007c4c;
-  }
-  </style>
-  
+
+    // Chat ein-/ausblenden
+    toggleChat(rideId) {
+      this.openChatId = this.openChatId === rideId ? null : rideId; // Toggle-Logik
+    },
+
+    // Neue Nachricht speichern
+    async submitMessage(rideId) {
+      const user = (await supabase.auth.getUser()).data.user;
+
+      if (!user) {
+        alert("Sie müssen eingeloggt sein, um Nachrichten zu schreiben.");
+        return;
+      }
+
+      // Vorname des Nutzers abrufen
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !profile) {
+        console.error("Fehler beim Abrufen des Nutzernamens:", profileError.message);
+        alert("Fehler beim Abrufen Ihres Profils.");
+        return;
+      }
+
+      const fullMessage = `${profile.name}: ${this.newMessage}`;
+
+      const { error } = await supabase.from("gruppenchats").insert([
+        {
+          fahrt_id: rideId,
+          inhalt: fullMessage,
+          zeitstempel: new Date().toISOString(),
+        },
+      ]);
+
+      if (error) {
+        console.error("Fehler beim Senden der Nachricht:", error.message);
+        alert("Fehler beim Senden der Nachricht.");
+        return;
+      }
+
+      // Nachricht erfolgreich gespeichert, Chat aktualisieren
+      this.newMessage = "";
+      await this.fetchRidesWithLastMessage();
+    },
+  },
+};
+</script>
+
+<style scoped>
+.chat-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.rides-list {
+  margin-top: 20px;
+}
+
+.ride-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ride-info {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.last-message {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.chat-container {
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.messages-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.message {
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #888;
+}
+
+.new-message-form textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.new-message-form button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.new-message-form button:hover {
+  background-color: #0056b3;
+}
+</style>
