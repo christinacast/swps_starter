@@ -40,7 +40,7 @@ export default {
         alert('Error logging in: ' + error.message);
       } else {
         this.$router.push({
-          name: 'MapsPage',
+          name: 'Profile',
           params: { userName: this.email, userPassword: this.password }
         });
       }
