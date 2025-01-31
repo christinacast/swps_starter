@@ -235,7 +235,7 @@ export default {
           start_string: startString,
           end_string: endString,
           ride_time: this.time,
-          role: "Fahrer"
+          participants: JSON.stringify([this.user.id]),
         })
         .select();
 

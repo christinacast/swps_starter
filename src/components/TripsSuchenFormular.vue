@@ -235,7 +235,7 @@
             start_string: startString,
             end_string: endString,
             ride_time: this.time,
-            role: "Mitfahrer"
+            participants: JSON.stringify([this.user.id]),
           })
           .select();
   
