@@ -110,6 +110,42 @@ legend {
   cursor: not-allowed;
   opacity: 0.6;
 }
+.status-message {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.status-message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.debug-logs {
+  margin-top: 20px;
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.debug-logs h3 {
+  margin-top: 0;
+}
+
+.debug-logs ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.debug-logs li {
+  margin-bottom: 5px;
+  font-family: monospace; /* helps to differentiate log messages visually */
+}
 
 /* Basic Responsive Adjustments */
 @media (max-width: 600px) {

@@ -7,23 +7,18 @@
         <div class="TripsInserieren">
             <TripsInserierenFormular />
         </div>
-        <div class="TripsSuchen">
-            <TripsSuchenFormular />
-        </div>
     </form>
 </template>
 
 <script>
 
 import TripsInserierenFormular from '@/components/TripsInserierenFormular.vue';
-import TripsSuchenFormular from '@/components/TripsSuchenFormular.vue';
 
 export default {
     name: "RidesPage",
 
     components: {
         TripsInserierenFormular,
-        TripsSuchenFormular
     }
 };
 
