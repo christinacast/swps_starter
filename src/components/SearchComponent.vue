@@ -1,141 +1,182 @@
 <template>
   <div class="search-container">
-    <!-- Abfahrtsort -->
-    <div class="search-input-container">
-      <input 
-        type="text" 
-        id="departure-input" 
-        placeholder="Abfahrtsort..." 
-        v-model="departure" 
-        @input="filterSuggestions('departure')" 
-      />
-      <ul v-if="filteredDepartureSuggestions.length > 0">
-        <li 
-          v-for="(suggestion, index) in filteredDepartureSuggestions" 
-          :key="index"
-          @click="selectSuggestion('departure', suggestion)"
-        >
-          {{ suggestion.text }}
-        </li>
-      </ul>
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <input type="date" v-model="filters.date" placeholder="Datum auswählen" class="filter-input"
+        title="Filtere ab einem spezifischen Datum." />
+      <select v-model="filters.status" class="filter-select"
+        title="Wähle den Status der Fahrt: Offen, Suche Fahrer oder andere.">
+        <option value="">Jeglicher Status</option>
+        <option value="Offen für Mitfahrer">Offen für Mitfahrer</option>
+        <option value="Suche Fahrer">Suche Fahrer</option>
+      </select>
+      <input type="text" v-model="filters.start" placeholder="Abreiseort" class="filter-input"
+        title="Gib den Abreiseort ein, um die Suche einzugrenzen." />
+      <input type="text" v-model="filters.end" placeholder="Zielort" class="filter-input"
+        title="Gib den Zielort ein, um die Suche einzugrenzen." />
+      <button @click="applyFilters" class="filter-button" title="Klicke, um die Filter anzuwenden.">Suchen</button>
+      <button @click="clearFilters" class="filter-clear" title="Setze alle Filter zurück.">Zurücksetzen</button>
+      <button @click="toggleAdvancedFilter" class="filter-advanced" title="Zeige weitere Filteroptionen an.">
+        Erweiterter Filter
+      </button>
     </div>
-    
-    <!-- Zielort -->
-    <div class="search-input-container">
-      <input 
-        type="text" 
-        id="destination-input" 
-        placeholder="Zielort..." 
-        v-model="destination" 
-        @input="filterSuggestions('destination')" 
-      />
-      <ul v-if="filteredDestinationSuggestions.length > 0">
-        <li 
-          v-for="(suggestion, index) in filteredDestinationSuggestions" 
-          :key="index"
-          @click="selectSuggestion('destination', suggestion)"
-        >
-          {{ suggestion.text }}
-        </li>
-      </ul>
+
+    <!-- Erweiterte Filter-Leiste -->
+    <div v-if="showAdvancedFilter" class="advanced-filter-bar">
+      <input type="date" v-model="advancedFilters.exactDate" placeholder="Exaktes Datum" class="filter-input"
+        title="Hier kanst du nach einem exakten Datum filtern" />
+      <input type="number" v-model="advancedFilters.minSeats" placeholder="Min. Plätze" class="filter-input" />
+      <input type="text" v-model="advancedFilters.stopover" placeholder="Zwischenziel" class="filter-input" />
+      <p>Zum sortieren der Tabelle, einfach auf den jeweiligen Header der Spalte klicken</p>
     </div>
-    
-    <!-- Such-Button -->
-    <button type="button" id="search-button" @click="search">
-      Search
-    </button>
-    
-    <!-- Filter-Button -->
-    <button type="menu" id="filter-button">
-      <img src="/images/icons8-filter-50.png" alt="filter" />
-    </button>
   </div>
 </template>
 
 <script>
-import cities from '/public/cities.json'; // Importiere die Städte-JSON-Datei
 
 export default {
-  name: 'SearchComponent',
   data() {
     return {
-      departure: '', // Abfahrtsort
-      destination: '', // Zielort
-      allCities: cities, // Alle Städte aus der JSON-Datei
-      filteredDepartureSuggestions: [], // Gefilterte Abfahrtsort-Vorschläge
-      filteredDestinationSuggestions: [], // Gefilterte Zielort-Vorschläge
+      filters: {
+        date: "",
+        status: "",
+        start: "",
+        end: "",
+      },
+      showAdvancedFilter: false,
+      advancedFilters: {
+        exactDate: "",
+        minSeats: "",
+        stopover: "",
+      },
     };
   },
   methods: {
-    // Filtert die Städte basierend auf der Benutzereingabe
-    filterSuggestions(type) {
-      const query = type === 'departure' ? this.departure : this.destination;
-      const filteredSuggestions = this.allCities.filter(city =>
-        city.text.toLowerCase().includes(query.toLowerCase())
-      );
-      
-      if (type === 'departure') {
-        this.filteredDepartureSuggestions = filteredSuggestions;
-      } else {
-        this.filteredDestinationSuggestions = filteredSuggestions;
-      }
+    clearFilters() {
+      this.filters = {
+        date: "",
+        status: "",
+        start: "",
+        end: "",
+      };
+      this.filteredRides = [...this.allRides];
     },
-    // Wählt einen Vorschlag aus und setzt den entsprechenden Wert
-    selectSuggestion(type, suggestion) {
-      if (type === 'departure') {
-        this.departure = suggestion.text;
-        this.filteredDepartureSuggestions = []; // Löscht Vorschläge nach Auswahl
-      } else {
-        this.destination = suggestion.text;
-        this.filteredDestinationSuggestions = []; // Löscht Vorschläge nach Auswahl
-      }
+    toggleAdvancedFilter() {
+      this.showAdvancedFilter = !this.showAdvancedFilter;
     },
-    // Die Such-Funktion, wenn der Benutzer auf den "Search"-Button klickt
-    search() {
-      if (!this.departure || !this.destination) {
-        alert('Bitte füllen Sie sowohl Abfahrts- als auch Zielort aus.');
-        return;
-      }
-      
-      // Weiterleitung zur MapsPage mit den Parametern für Abfahrts- und Zielort
-      this.$router.push({
-        name: 'MapsPage',
-        params: { departure: this.departure, destination: this.destination }
-      });
+    applyFilters() {
+      // Build query parameters based on filters
+      const queryParams = {
+        date: this.filters.date || undefined,
+        status: this.filters.status || undefined,
+        start: this.filters.start || undefined,
+        end: this.filters.end || undefined,
+        exactDate: this.advancedFilters.exactDate || undefined,
+        minSeats: this.advancedFilters.minSeats || undefined,
+        stopover: this.advancedFilters.stopover || undefined,
+      };
+
+      // Remove undefined query parameters
+      const query = Object.fromEntries(Object.entries(queryParams).filter(([, v]) => v !== undefined));
+
+      console.log(`/view-all-Trips/${query}`)
+
+      // Navigate to another page with query parameters
+      this.$router.push({ name: "ViewAllTrips", query});
     }
   }
-};
+}
+
 </script>
 
 
 <style scoped>
 @import '@/assets/css/base.css';
 @import '@/assets/css/layout.css';
-@import '@/assets/css/components/search-container.css';
 
-/* Stil für die Dropdown-Vorschläge */
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  position: absolute;
-  width: 100%;
-  z-index: 10; /* Sicherstellen, dass die Liste oben angezeigt wird */
+.advanced-filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 20px;
+  background-color: #eaf4f1;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-li {
-  padding: 8px;
+.filter-advanced {
+  padding: 10px 20px;
+  background-color: #006b4c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
-li:hover {
-  background-color: #f1f1f1;
+.filter-advanced:hover {
+  background-color: #004c3a;
 }
 
-/* Styling für die Such-Eingabefelder */
-.search-input-container {
-  position: relative;
+/* Filter Bar */
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.filter-input,
+.filter-select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 180px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  border-color: #009260;
+}
+
+.filter-button {
+  padding: 10px 20px;
+  background-color: #009260;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #007b4c;
+}
+
+.filter-clear {
+  padding: 10px 20px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.filter-clear:hover {
+  background-color: #c0392b;
 }
 </style>

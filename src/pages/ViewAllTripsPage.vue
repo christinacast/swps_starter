@@ -21,7 +21,7 @@
       </button>
     </div>
 
-    <!-- Erweiterte Filter-Leiste -->
+    <!-- Erweiterte Fil<ter-Leiste -->
     <div v-if="showAdvancedFilter" class="advanced-filter-bar">
       <input type="date" v-model="advancedFilters.exactDate" placeholder="Exaktes Datum" class="filter-input"
         title="Hier kanst du nach einem exakten Datum filtern" />
@@ -56,8 +56,7 @@
             <td>{{ ride.available_seats }}</td>
             <td v-if="ride.status == 'Offen für Mitfahrer' && ride.available_seats > 0"> Fahrer kontaktieren</td>
             <td v-else>Ich suche auch noch einen Fahrer</td>
-            <td> <router-link
-                :to="`/maps?start=${ride.start_point.coordinates}&end=${ride.end_point.coordinates}`">
+            <td> <router-link :to="`/maps?start=${ride.start_point.coordinates}&end=${ride.end_point.coordinates}`">
                 Karte
               </router-link></td>
           </tr>
@@ -92,6 +91,7 @@ export default {
   },
 
   async mounted() {
+    console.log("Query Parameters:", this.$route.query);
     const { data: rides, error } = await supabase
       .from('rides')
       .select("*");
@@ -102,6 +102,11 @@ export default {
     }
 
     console.log(this.allRides[1].start_point.coordinates)
+
+    // Apply filters if query parameters are provided
+    if (Object.keys(this.$route.query).length > 0) {
+      this.applyFiltersWhenRedirect(this.$route.query);
+    }
 
   },
 
@@ -137,6 +142,7 @@ export default {
         return 0; // Gleichstand
       });
     },
+
     clearFilters() {
       this.filters = {
         date: "",
@@ -146,9 +152,11 @@ export default {
       };
       this.filteredRides = [...this.allRides];
     },
+
     toggleAdvancedFilter() {
       this.showAdvancedFilter = !this.showAdvancedFilter;
     },
+
     applyFilters() {
       this.filteredRides = this.allRides.filter((ride) => {
         return (
@@ -162,8 +170,39 @@ export default {
         );
       });
     },
-  },
-};
+
+    applyFiltersWhenRedirect(query) {
+      // Set filters from query parameters
+      this.filters = {
+        date: query.date || "",
+        status: query.status || "",
+        start: query.start || "",
+        end: query.end || "",
+      };
+
+      this.advancedFilters = {
+        exactDate: query.exactDate || "",
+        minSeats: query.minSeats || "",
+        stopover: query.stopover || "",
+      };
+
+      // Apply filters to rides
+      this.filteredRides = this.allRides.filter((ride) => {
+        return (
+          (!this.filters.date || ride.ride_date >= this.filters.date) &&
+          (!this.filters.status || ride.status === this.filters.status) &&
+          (!this.filters.start || ride.start_string.includes(this.filters.start)) &&
+          (!this.filters.end || ride.end_string.includes(this.filters.end)) &&
+          (!this.advancedFilters.exactDate || ride.ride_date === this.advancedFilters.exactDate) &&
+          (!this.advancedFilters.minSeats || ride.available_seats >= this.advancedFilters.minSeats) &&
+          (!this.advancedFilters.stopover || ride.stopovers?.includes(this.advancedFilters.stopover))
+        );
+      });
+
+      console.log("Filters applied from query:", this.filters, this.advancedFilters);
+    }
+  }
+}
 </script>
 
 <style scoped>
