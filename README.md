@@ -85,7 +85,7 @@ npm run serve
 
 Danach kann das Projekt unter http://localhost:3000 im Browser aufgerufen werden.
 
-	Hinweis: Ein zusätzliches Setup in Supabase ist nicht nötig, da wir bereits eine fertige Supabase-Datenbank verwenden. Solange supabaseUrl und supabaseKey im Code hinterlegt sind, läuft das Backend automatisch.
+Hinweis: Ein zusätzliches Setup in Supabase ist nicht nötig, da wir bereits eine fertige Supabase-Datenbank verwenden. Solange supabaseUrl und supabaseKey im Code hinterlegt sind, läuft das Backend automatisch.
 
 
 ---
