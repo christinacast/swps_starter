@@ -20,6 +20,16 @@
           <span v-else>Noch keine Nachricht</span>
         </p>
 
+        <!-- Buttons für Gruppe verwalten / verlassen -->
+         <div class="group-buttons">
+          <button v-if="ride.user_id === currentUserId" class="manage-button">
+            Gruppe verwalten
+          </button>
+          <button v-else class="leave-button" @click="leaveGroup(ride.ride_id)">
+            Gruppe verlassen
+          </button>
+        </div>
+
         <!-- Chat-Komponente, wenn die Fahrt ausgewählt ist -->
         <div v-if="openChatId === ride.ride_id" class="chat-container">
           <div class="messages-container">
@@ -62,39 +72,69 @@ export default {
       ridesWithLastMessage: [], // Fahrten mit letzter Nachricht
       openChatId: null, // ID der Fahrt, deren Chat geöffnet ist
       newMessage: "", // Eingabefeld für neue Nachrichten
+      currentUserId: null, // Aktuelle Benutzer-ID
     };
   },
+
   async mounted() {
+    // Aktuelle Benutzer-ID abrufen
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error) {
+      console.error("Fehler beim Abrufen des Benutzers:", error.message);
+    }
+    if (user) {
+      this.currentUserId = user.id;
+    }
     await this.fetchRidesWithLastMessage();
   },
+
   methods: {
     // Fahrten und Nachrichten abrufen
     async fetchRidesWithLastMessage() {
-      // Abrufen aller Fahrten aus der Tabelle rides
-      const { data: rides, error: ridesError } = await supabase.from("rides").select("*");
+      // Aktuellen Benutzer abrufen
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        console.error("Fehler beim Abrufen des Benutzers:", userError?.message);
+        return;
+      }
+      const userId = user.id;
 
+      // Fahrten abrufen
+      const { data: rides, error: ridesError } = await supabase.from("rides").select("*");
       if (ridesError) {
         console.error("Fehler beim Abrufen der Fahrten:", ridesError.message);
         return;
       }
 
-      // Für jede Fahrt die letzte Nachricht und alle Nachrichten abrufen
+      // Fahrten filtern: Nur Fahrten anzeigen, bei denen der Benutzer im participants-Array ist
+      const userRides = rides.filter(ride => {
+        try {
+          const participants = Array.isArray(ride.participants) ? ride.participants : [];
+          return participants.includes(userId);
+        } catch (err) {
+          console.error(`Fehler beim Parsen des participants-Arrays für Fahrt ${ride.ride_id}:`, err);
+          return false;
+        }
+      });
+
+      // Nachrichten für diese Fahrten abrufen
       const ridesWithMessages = await Promise.all(
-        rides.map(async (ride) => {
+        userRides.map(async (ride) => {
           const { data: lastMessage, error: messageError } = await supabase
-            .from("gruppenchats")
-            .select("*")
-            .eq("fahrt_id", ride.ride_id)
-            .order("zeitstempel", { ascending: false })
-            .limit(1)
-            .single();
+          .from("gruppenchats")
+          .select("*")
+          .eq("fahrt_id", ride.ride_id)
+          .order("zeitstempel", { ascending: false })
+          .limit(1)
+          .single();
 
           const { data: allMessages, error: allMessagesError } = await supabase
-            .from("gruppenchats")
-            .select("*")
-            .eq("fahrt_id", ride.ride_id)
-            .order("zeitstempel", { ascending: true });
+          .from("gruppenchats")
+          .select("*")
+          .eq("fahrt_id", ride.ride_id)
+          .order("zeitstempel", { ascending: true });
 
+    
           if (messageError && messageError.code !== "PGRST116") {
             console.error(`Fehler beim Abrufen der letzten Nachricht für Fahrt ${ride.ride_id}:`, messageError.message);
           }
@@ -107,12 +147,14 @@ export default {
             ...ride,
             lastMessage: lastMessage || null, // Letzte Nachricht oder null
             messages: allMessages || [], // Alle Nachrichten oder leer
-          };
-        })
-      );
+            };
+          })
+        );
 
-      this.ridesWithLastMessage = ridesWithMessages;
-    },
+        // Gefilterte Fahrten in die UI laden
+        this.ridesWithLastMessage = ridesWithMessages;
+      },
+
 
     // Zeitstempel formatieren
     formatTimestamp(timestamp) {
@@ -166,6 +208,52 @@ export default {
       this.newMessage = "";
       await this.fetchRidesWithLastMessage();
     },
+
+    // Gruppe verlassen
+    async leaveGroup(rideId) {
+      if (!this.currentUserId) {
+        alert("Bitte einloggen, um eine Gruppe zu verlassen.");
+        return;
+      }
+
+      // Lade die aktuelle participants-Liste aus Supabase
+      let { data: ride, error } = await supabase
+      .from('rides')
+      .select('participants')
+      .eq('ride_id', rideId)
+      .single();
+
+      if (error || !ride) {
+        alert("Fehler beim Laden der Fahrt.");
+        return;
+      }
+
+      // Sicherstellen, dass `participants` ein Array ist
+      let participants = Array.isArray(ride.participants) ? ride.participants : [];
+
+      // Falls der User nicht im participants-Array ist, breche ab
+      if (!participants.includes(this.currentUserId)) {
+        alert("Du bist kein Mitglied dieser Gruppe.");
+        return;
+      }
+      
+      // Entferne den Benutzer aus der Teilnehmerliste
+      participants = participants.filter(id => id !== this.currentUserId);
+
+      // Aktualisiere die Datenbank mit der neuen Teilnehmerliste
+      const { error: updateError } = await supabase
+      .from('rides')
+      .update({ participants: participants }) // `participants` bleibt als Array
+      .eq('ride_id', rideId);
+      
+      if (updateError) {
+        alert("Fehler beim Verlassen der Gruppe.");
+      } else {
+        alert("Du hast die Gruppe erfolgreich verlassen!");
+        // UI aktualisieren: Entferne die Fahrt aus der Liste
+        this.ridesWithLastMessage = this.ridesWithLastMessage.filter(ride => ride.ride_id !== rideId);
+      }
+    }
   },
 };
 </script>
@@ -247,4 +335,37 @@ export default {
 .new-message-form button:hover {
   background-color: #0056b3;
 }
+
+.group-buttons {
+  margin-top: 10px;
+}
+
+.manage-button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.manage-button:hover {
+  background-color: #0056b3;
+}
+
+.leave-button {
+  padding: 8px 16px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.leave-button:hover {
+  background-color: #c0392b;
+}
+
 </style>

@@ -59,6 +59,10 @@
             <td> <router-link :to="`/maps?start=${ride.start_point.coordinates}&end=${ride.end_point.coordinates}`">
                 Karte
               </router-link></td>
+            <td v-if="!ride.participants.includes(currentUserId)"> <button class="join-button" @click="joinRide(ride.ride_id)">Beitreten</button> </td>
+            <td v-else></td> <!-- Leeres Feld, wenn der Nutzer bereits teilnimmt -->
+
+
           </tr>
         </tbody>
       </table>
@@ -74,6 +78,7 @@ export default {
   data() {
     return {
       allRides: [],
+      currentUserId: null,
       filters: {
         date: "",
         status: "",
@@ -92,7 +97,13 @@ export default {
 
   async mounted() {
     console.log("Query Parameters:", this.$route.query);
-    const { data: rides, error } = await supabase
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      this.currentUserId = user.id;
+    }
+
+    const { data: rides, error: error } = await supabase
       .from('rides')
       .select("*");
 
@@ -142,6 +153,69 @@ export default {
         return 0; // Gleichstand
       });
     },
+
+    async joinRide(rideId) {
+  // Aktuelle Benutzer-ID holen
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    alert("Bitte einloggen, um einer Fahrt beizutreten.");
+    return;
+  }
+
+  const userId = user.id;
+
+  // Lade aktuelle participants-Liste
+  let { data: ride, error } = await supabase
+    .from('rides')
+    .select('participants')
+    .eq('ride_id', rideId)
+    .single();
+
+  if (error || !ride) {
+    alert("Fehler beim Laden der Fahrt.");
+    return;
+  }
+
+  // Stelle sicher, dass participants als Array vorliegt
+  let participants = [];
+
+  if (Array.isArray(ride.participants)) {
+    participants = ride.participants; // Falls bereits ein Array, direkt übernehmen
+  } else if (typeof ride.participants === "string") {
+    try {
+      participants = JSON.parse(ride.participants); // Falls String, in Array umwandeln
+    } catch (parseError) {
+      console.error("Fehler beim Parsen von participants:", parseError);
+      participants = []; // Falls Fehler, leeres Array setzen
+    }
+  }
+
+  // Falls der User schon Teilnehmer ist, breche ab
+  if (participants.includes(userId)) {
+    alert("Du bist bereits Teilnehmer dieser Fahrt.");
+    return;
+  }
+
+  // User zur Liste hinzufügen
+  participants.push(userId);
+
+  // Aktualisieren in Supabase ohne erneutes JSON.stringify()
+  const { error: updateError } = await supabase
+    .from('rides')
+    .update({ participants }) // Direkt als Array speichern
+    .eq('ride_id', rideId);
+
+  if (updateError) {
+    alert("Fehler beim Beitreten der Fahrt.");
+  } else {
+    alert("Du hast erfolgreich an der Fahrt teilgenommen!");
+
+    // UI aktualisieren
+    this.filteredRides = this.filteredRides.map(ride =>
+      ride.ride_id === rideId ? { ...ride, participants } : ride
+    );
+  }
+},
 
     clearFilters() {
       this.filters = {
@@ -338,6 +412,21 @@ export default {
 .fahrten-table tr:hover {
   background-color: #e9e9e9;
 }
+
+.join-button {
+  padding: 8px 16px;
+  background-color: #009260;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.join-button:hover {
+  background-color: #007b4c;
+}
+
 
 @media (max-width: 600px) {
   .fahrten-table {
