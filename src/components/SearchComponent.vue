@@ -27,7 +27,6 @@
         title="Hier kanst du nach einem exakten Datum filtern" />
       <input type="number" v-model="advancedFilters.minSeats" placeholder="Min. Plätze" class="filter-input" />
       <input type="text" v-model="advancedFilters.stopover" placeholder="Zwischenziel" class="filter-input" />
-      <p>Zum sortieren der Tabelle, einfach auf den jeweiligen Header der Spalte klicken</p>
     </div>
   </div>
 </template>
@@ -178,5 +177,17 @@ export default {
 
 .filter-clear:hover {
   background-color: #c0392b;
+}
+
+.advanced-filter-bar p {
+  font-size: 14px;
+  color: #555; /* Neutral gray for readability */
+  font-style: italic;
+  margin-top: 10px;
+  text-align: center; /* Center the text */
+  background-color: #f3f7f6; /* Subtle background for contrast */
+  padding: 8px 12px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
 }
 </style>
