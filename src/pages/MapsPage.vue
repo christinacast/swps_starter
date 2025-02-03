@@ -8,8 +8,12 @@
 </template>
 
 <script>
-import L from 'leaflet'; // Leaflet.js importieren
-import "leaflet/dist/leaflet.css";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Import custom images for markers (make sure to have these in your assets folder)
+import startIconImage from '@/../public/images/start-marker-64.png';
+import endIconImage from '@/../public/images/end-marker-64.png';
 
 export default {
   name: "MapViewPage",
@@ -22,7 +26,7 @@ export default {
     };
   },
   mounted() {
-    // Geodaten aus URL-Parametern holen
+    // Parse coordinates from URL parameters
     const urlParams = new URLSearchParams(this.$route.query);
     this.startLocation = urlParams.get("start")
       ? urlParams.get("start").split(",").map(parseFloat).reverse()
@@ -31,34 +35,47 @@ export default {
       ? urlParams.get("end").split(",").map(parseFloat).reverse()
       : null;
 
-    console.log("Parsed startLocation:", this.startLocation);
-    console.log("Parsed endLocation:", this.endLocation);
-
     this.initMap();
   },
   methods: {
     initMap() {
-      // Falls keine Start- und Endpunkte vorhanden sind, Standard-Position nutzen
       const center = this.startLocation && this.endLocation ? this.startLocation : this.defaultLocation;
-      this.map = L.map("map").setView(center, 13);
+      this.map = L.map('map').setView(center, 13);
 
-      // OpenStreetMap-Tiles hinzufügen
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      // Add OSM tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors',
       }).addTo(this.map);
 
-      // Falls Start- und Endpunkte vorhanden sind, Marker & Linie setzen
+      // Define custom icons
+      const startIcon = L.icon({
+        iconUrl: startIconImage,
+        iconSize: [25, 41], // Size of the icon
+        iconAnchor: [12, 41], // Anchor point of the icon
+        popupAnchor: [0, -30], // Point where the popup opens
+      });
+
+      const endIcon = L.icon({
+        iconUrl: endIconImage,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [0, -30],
+      });
+
+      // Add custom markers if start and end locations exist
       if (this.startLocation && this.endLocation) {
-        const startMarker = L.marker(this.startLocation).addTo(this.map);
-        const endMarker = L.marker(this.endLocation).addTo(this.map);
+        const startMarker = L.marker(this.startLocation, { icon: startIcon }).addTo(this.map)
+          .bindPopup('Startpunkt');
+        const endMarker = L.marker(this.endLocation, { icon: endIcon }).addTo(this.map)
+          .bindPopup('Endpunkt');
 
-        console.log(startMarker, endMarker);
+        console.log(startMarker, endMarker)
 
-        // Linie zwischen den Punkten zeichnen
-        const line = L.polyline([this.startLocation, this.endLocation], { color: "blue" }).addTo(this.map);
+        // Draw a line between the points
+        const line = L.polyline([this.startLocation, this.endLocation], { color: 'blue' }).addTo(this.map);
 
-        // Karte auf Linie fokussieren
+        // Adjust the map view to fit the line
         this.map.fitBounds(line.getBounds());
       }
     },
