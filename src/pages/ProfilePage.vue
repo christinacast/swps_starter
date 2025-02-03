@@ -223,7 +223,7 @@ export default {
 .fahrten-heading {
   font-size: 20px;
   color: #2c3e50;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-align: center;
 }
 

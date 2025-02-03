@@ -69,7 +69,14 @@
         </tbody>
       </table>
     </div>
+    <!-- Neuer Button zum Inserieren von Fahrten -->
+    <div class="insert-ride-block">
+        <router-link to="/rides" class="insert-ride-btn">
+          + Neue Fahrt inserieren
+        </router-link>
+      </div>
   </div>
+
 </template>
 
 <script>
