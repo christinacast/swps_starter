@@ -31,15 +31,19 @@
   <div v-if="user" class="fahrten-container">
     <div class="fahrten-section">
       <h2 class="fahrten-heading">Deine anstehenden Fahrten</h2>
+      <p class="table-sort-info">
+        Zum Sortieren der Tabelle, einfach auf den jeweiligen Header der Spalte klicken
+      </p>
       <table class="fahrten-table">
         <thead>
           <tr>
-            <th>Datum</th>
-            <th>Uhrzeit</th>
-            <th>Abreiseort</th>
-            <th>Zielort</th>
-            <th>Status</th>
-            <th>Plätze</th>
+            <th @click="sortTable('ride_date', this.upcomingRides)">Datum</th>
+            <th @click="sortTable('ride_time', this.upcomingRides)">Uhrzeit</th>
+            <th @click="sortTable('start_string', this.upcomingRides)">Abreiseort</th>
+            <th @click="sortTable('end_string', this.upcomingRides)">Zielort</th>
+            <th @click="sortTable('status', this.upcomingRides)">Status</th>
+            <th @click="sortTable('available_seats', this.upcomingRides)">Plätze</th>
+            <th>Fahrt auf der Karte einsehen</th>
           </tr>
         </thead>
         <tbody>
@@ -50,6 +54,9 @@
             <td>{{ ride.end_string }}</td>
             <td>{{ ride.status }}</td>
             <td>{{ ride.available_seats }}</td>
+            <td> <router-link :to="`/maps?start=${ride.start_point.coordinates}&end=${ride.end_point.coordinates}`">
+                Karte
+              </router-link></td>
           </tr>
         </tbody>
       </table>
@@ -60,12 +67,12 @@
       <table class="fahrten-table">
         <thead>
           <tr>
-            <th>Datum</th>
-            <th>Uhrzeit</th>
-            <th>Abreiseort</th>
-            <th>Zielort</th>
-            <th>Plätze</th>
-            <th>eingespartes CO₂</th>
+            <th @click="sortTable('ride_date', this.pastRides)">Datum</th>
+            <th @click="sortTable('ride_time', this.pastRides)">Uhrzeit</th>
+            <th @click="sortTable('start_string', this.pastRides)">Abreiseort</th>
+            <th @click="sortTable('end_string', this.pastRides)">Zielort</th>
+            <th @click="sortTable('available_seats', this.pastRides)">Plätze</th>
+            <th @click="sortTable('co2Saved', this.pastRides)">eingespartes CO₂</th>
           </tr>
         </thead>
         <tbody>
@@ -130,9 +137,9 @@ export default {
         allRides[key] = {
           ...ride,
           co2Saved: ride.available_seats > 0
-            ? parseFloat((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates)) 
-            - ((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates)) 
-            / ride.available_seats )).toFixed(2)
+            ? parseFloat((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates))
+              - ((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates))
+                / ride.available_seats)).toFixed(1)
             : 0,
         };
       });
@@ -164,6 +171,37 @@ export default {
         this.$router.push('/login');
       }
     },
+    sortTable(column, table) {
+      // Wenn dieselbe Spalte erneut geklickt wird, Sortierrichtung umkehren
+      if (this.currentSort === column) {
+        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        // Neue Spalte sortieren, Standard: aufsteigend
+        this.currentSort = column;
+        this.currentSortDir = 'asc';
+      }
+
+      // Sortierlogik anwenden
+      table.sort((a, b) => {
+        let aValue = a[column];
+        let bValue = b[column];
+
+        // Für Datum oder Zeit als JavaScript-Date-Objekt umwandeln, wenn notwendig
+        if (column === 'ride_date' || column === 'ride_time') {
+          aValue = new Date(aValue);
+          bValue = new Date(bValue);
+        }
+
+        // Sortierlogik
+        if (aValue < bValue) {
+          return this.currentSortDir === 'asc' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return this.currentSortDir === 'asc' ? 1 : -1;
+        }
+        return 0; // Gleichstand
+      });
+    },
   },
 };
 </script>
@@ -193,6 +231,18 @@ export default {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+}
+
+.table-sort-info {
+  font-size: 14px;
+  color: #555; /* Neutral text color */
+  font-style: italic; /* Subtle emphasis */
+  text-align: center;
+  margin: 10px 0 20px; /* Space between heading and table */
+  background-color: #f3f7f6; /* Subtle background to separate it */
+  padding: 8px 12px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
 }
 
 .fahrten-table th,
