@@ -64,7 +64,6 @@
             <th>Uhrzeit</th>
             <th>Abreiseort</th>
             <th>Zielort</th>
-            <th>Status</th>
             <th>Plätze</th>
             <th>eingespartes CO₂</th>
           </tr>
@@ -75,9 +74,8 @@
             <td>{{ ride.ride_time }}</td>
             <td>{{ ride.start_string }}</td>
             <td>{{ ride.end_string }}</td>
-            <td>{{ ride.status }}</td>
-            <td>{{ ride.seats }}</td>
-            <td>{{ }} kg</td>
+            <td>{{ ride.available_seats }}</td>
+            <td>{{ ride.co2Saved }} g</td>
           </tr>
         </tbody>
       </table>
@@ -87,6 +85,7 @@
 
 <script>
 import { supabase } from '@/services/supabase.js';
+import { haversineDistance } from '@/services/kmDistanceComputation.js';
 
 export default {
   name: 'ProfilePage',
@@ -95,6 +94,7 @@ export default {
       user: null,
       profile: {},
       upcomingRides: {},
+      pastRides: {},
     };
   },
   async mounted() {
@@ -115,16 +115,42 @@ export default {
       }
     }
 
-    let { data: rides, error } = await supabase
+    let { data: allRides, error } = await supabase
       .from('rides')
       .select("*")
       // Filters
-      .eq('status', 'Offen für Mitfahrer')
       .eq('user_id', this.user.id)
 
     if (!error) {
-      this.upcomingRides = rides
-      console.log("hey", this.upcomingRides);
+
+      Object.keys(allRides).forEach((key) => {
+        const ride = allRides[key];
+
+        // Add new key-value pairs
+        allRides[key] = {
+          ...ride,
+          co2Saved: ride.available_seats > 0
+            ? parseFloat((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates)) 
+            - ((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates)) 
+            / ride.available_seats )).toFixed(2)
+            : 0,
+        };
+      });
+
+      const currentDate = new Date();
+
+      // Separate rides into upcoming and past based on date
+      this.upcomingRides = allRides.filter((ride) => {
+        const rideDate = new Date(`${ride.ride_date}T${ride.ride_time}`);
+        return rideDate >= currentDate; // Upcoming rides
+      });
+
+      this.pastRides = allRides.filter((ride) => {
+        const rideDate = new Date(`${ride.ride_date}T${ride.ride_time}`);
+        return rideDate < currentDate; // Past rides
+      });
+    } else {
+      console.error('Error fetching rides:', error.message);
     }
 
   },
