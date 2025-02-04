@@ -231,21 +231,17 @@ export default {
       // Sicherstellen, dass `participants` ein Array ist
       let participants = Array.isArray(ride.participants) ? ride.participants : [];
 
-      // Falls der User nicht im participants-Array ist, breche ab
-      if (!participants.includes(this.currentUserId)) {
-        alert("Du bist kein Mitglied dieser Gruppe.");
-        return;
-      }
-      
       // Entferne den Benutzer aus der Teilnehmerliste
       participants = participants.filter(id => id !== this.currentUserId);
 
-      // Aktualisiere die Datenbank mit der neuen Teilnehmerliste
+      // Setze `verlassen` auf die UUID des Users, der die Gruppe verlassen hat
       const { error: updateError } = await supabase
-      .from('rides')
-      .update({ participants: participants }) // `participants` bleibt als Array
-      .eq('ride_id', rideId);
-      
+      .from("rides")
+      .update({ participants, verlassen: this.currentUserId }) // nur `verlassen` setzen
+      .eq("ride_id", rideId);
+
+
+
       if (updateError) {
         alert("Fehler beim Verlassen der Gruppe.");
       } else {
