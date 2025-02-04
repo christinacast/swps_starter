@@ -62,7 +62,7 @@
               </router-link></td>
             <td v-if="!ride.participants.includes(currentUserId)"> <button class="join-button"
                 @click="joinRide(ride.ride_id)">Beitreten</button> </td>
-            <td v-else></td> <!-- Leeres Feld, wenn der Nutzer bereits teilnimmt -->
+            <td v-else>Du fährst bereits mit</td> <!-- Leeres Feld, wenn der Nutzer bereits teilnimmt -->
 
 
           </tr>

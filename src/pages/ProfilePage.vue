@@ -122,14 +122,21 @@ export default {
       }
     }
 
-    let { data: allRides, error } = await supabase
+    let { data: rides, error } = await supabase
       .from('rides')
       .select("*")
-      // Filters
-      .eq('user_id', this.user.id);
-
 
     if (!error) {
+      // Fahrten filtern: Nur Fahrten anzeigen, bei denen der Benutzer im participants-Array ist
+      const allRides = rides.filter(ride => {
+        try {
+          const participants = Array.isArray(ride.participants) ? ride.participants : [];
+          return participants.includes(this.user.id);
+        } catch (err) {
+          console.error(`Fehler beim Parsen des participants-Arrays für Fahrt ${ride.ride_id}:`, err);
+          return false;
+        }
+      });
 
       Object.keys(allRides).forEach((key) => {
         const ride = allRides[key];
