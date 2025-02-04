@@ -22,9 +22,9 @@
 
         <!-- Buttons für Gruppe verwalten / verlassen -->
          <div class="group-buttons">
-          <button v-if="ride.user_id === currentUserId" class="manage-button">
-            Gruppe verwalten
-          </button>
+          <button v-if="ride.user_id === currentUserId" class="delete-button" @click="deleteRide(ride.ride_id)">
+        Gruppe löschen
+      </button>
           <button v-else class="leave-button" @click="leaveGroup(ride.ride_id)">
             Gruppe verlassen
           </button>
@@ -209,6 +209,27 @@ export default {
       await this.fetchRidesWithLastMessage();
     },
 
+    //Gruppe löschen
+    async deleteRide(rideId) {
+      const confirmation = confirm("Möchtest du diese Fahrt wirklich löschen?");
+      if (!confirmation) return;
+
+      const { error } = await supabase
+      .from("rides")
+      .delete()
+      .eq("ride_id", rideId);
+
+      if (error) {
+        alert("Fehler beim Löschen der Fahrt.");
+        console.error("Fehler beim Löschen:", error.message);
+      } else {
+        alert("Fahrt erfolgreich gelöscht!");
+    
+        // Entferne die Fahrt aus der UI
+        this.ridesWithLastMessage = this.ridesWithLastMessage.filter(ride => ride.ride_id !== rideId);
+      }
+    },
+
     // Gruppe verlassen
     async leaveGroup(rideId) {
       if (!this.currentUserId) {
@@ -239,8 +260,6 @@ export default {
       .from("rides")
       .update({ participants, verlassen: this.currentUserId }) // nur `verlassen` setzen
       .eq("ride_id", rideId);
-
-
 
       if (updateError) {
         alert("Fehler beim Verlassen der Gruppe.");
@@ -336,9 +355,9 @@ export default {
   margin-top: 10px;
 }
 
-.manage-button {
+.leave-button {
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #009260;
   color: white;
   border: none;
   border-radius: 5px;
@@ -346,11 +365,11 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.manage-button:hover {
-  background-color: #0056b3;
+.leave-button:hover {
+  background-color: #007b4c;
 }
 
-.leave-button {
+.delete-button {
   padding: 8px 16px;
   background-color: #e74c3c;
   color: white;
@@ -360,8 +379,9 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.leave-button:hover {
+.delete-button:hover {
   background-color: #c0392b;
 }
+
 
 </style>

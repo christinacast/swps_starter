@@ -126,7 +126,8 @@ export default {
       .from('rides')
       .select("*")
       // Filters
-      .eq('user_id', this.user.id)
+      .eq('user_id', this.user.id);
+
 
     if (!error) {
 
