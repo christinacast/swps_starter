@@ -13,6 +13,19 @@
   </div>
 </div>
 
+<div class="sticky-note">
+    <h2>Willkommen bei UniDrive! 🚗</h2>
+    <p>Schön, dass du hier bist! <strong>UniDrive</strong> ist die Plattform für Studierende, die gemeinsam zur Uni pendeln möchten.  
+    Ob du eine Mitfahrgelegenheit suchst oder selbst eine Fahrt anbietest – hier findest du schnell die passende Verbindung.</p>
+
+    <ul>
+        <li>🌍 <strong>Nachhaltig & Günstig</strong> – Spare Geld und schone die Umwelt.</li>
+        <li>🤝 <strong>Gemeinsam statt einsam</strong> – Lerne neue Leute kennen und teile die Fahrt.</li>
+        <li>📍 <strong>Flexibel & Einfach</strong> – Finde Fahrten, die zu deinem Zeitplan passen.</li>
+    </ul>
+
+    <p><strong>Melde dich jetzt an</strong> und werde Teil unserer Mitfahr-Community! 🚀</p>
+</div>
 
     <!-- Hauptinhalt -->
     <div class="main-content">
@@ -28,6 +41,7 @@
           </router-link>
         </div>
       </div>
+
 
       <!-- "Meine Fahrten" Block -->
       <div class="content-block" style="background-image: url('/images/icons8-steering-wheel-64.png')">
