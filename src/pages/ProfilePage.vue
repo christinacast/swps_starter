@@ -147,7 +147,7 @@ export default {
           co2Saved: ride.available_seats > 0
             ? parseFloat((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates))
               - ((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates))
-                / ride.available_seats)).toFixed(1)
+                / ride.participants.length)).toFixed(1)
             : 0,
         };
       });

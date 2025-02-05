@@ -43,7 +43,6 @@
             <th @click="sortTable('ride_time')">Uhrzeit</th>
             <th @click="sortTable('start_string')">Abreiseort</th>
             <th @click="sortTable('end_string')">Zielort</th>
-            <th @click="sortTable('status')">Status</th>
             <th @click="sortTable('available_seats')">Plätze</th>
             <th>Fahrt auf der Karte einsehen</th>
             <th>Ich möchte mit</th>
@@ -55,7 +54,6 @@
             <td>{{ ride.ride_time }}</td>
             <td>{{ ride.start_string }}</td>
             <td>{{ ride.end_string }}</td>
-            <td>{{ ride.status }}</td>
             <td>{{ ride.available_seats }}</td>
             <td> <router-link :to="`/maps?start=${ride.start_point.coordinates}&end=${ride.end_point.coordinates}`">
                 Karte
@@ -71,10 +69,10 @@
     </div>
     <!-- Neuer Button zum Inserieren von Fahrten -->
     <div class="insert-ride-block">
-        <router-link to="/rides" class="insert-ride-btn">
-          + Neue Fahrt inserieren
-        </router-link>
-      </div>
+      <router-link to="/rides" class="insert-ride-btn">
+        + Neue Fahrt inserieren
+      </router-link>
+    </div>
   </div>
 
 </template>
@@ -410,14 +408,19 @@ export default {
 
 .table-sort-info {
   font-size: 14px;
-  color: #555; /* Neutral text color */
-  font-style: italic; /* Subtle emphasis */
+  color: #555;
+  /* Neutral text color */
+  font-style: italic;
+  /* Subtle emphasis */
   text-align: center;
-  margin: 10px 0 20px; /* Space between heading and table */
-  background-color: #f3f7f6; /* Subtle background to separate it */
+  margin: 10px 0 20px;
+  /* Space between heading and table */
+  background-color: #f3f7f6;
+  /* Subtle background to separate it */
   padding: 8px 12px;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Light shadow for depth */
 }
 
 .fahrten-table th {

@@ -6,38 +6,29 @@
     <!-- Hauptinhalt -->
     <div class="main-content">
       <!-- "Wer fährt heute?" Block -->
-      <div
-        class="content-block"
-        style="background-image: url('/images/icons8-traffic-jam-64.png')"
-      >
+      <div class="content-block" style="background-image: url('/images/icons8-traffic-jam-64.png')">
         <div class="content-overlay">
           <router-link to="/view-all-Trips">
-            <h2>Wer fährt heute?</h2>
+            <h2>Wer fährt demnächst?</h2>
             <p>
-              Hier kannst du einsehen wer heute alles fährt und für dich noch einen Platz frei hat
+              Hier kannst du einsehen welche Fahrten anstehen
             </p>
-            <button>Learn More</button>
+            <button>Erfahre Mehr</button>
           </router-link>
         </div>
       </div>
 
       <!-- "Meine Fahrten" Block -->
-      <div
-        class="content-block"
-        style="background-image: url('/images/icons8-steering-wheel-64.png')"
-      >
-        <router-link to="/calendar" class="content-overlay">
+      <div class="content-block" style="background-image: url('/images/icons8-steering-wheel-64.png')">
+        <router-link to="/profile" class="content-overlay">
           <h2>Meine Fahrten</h2>
           <p>Siehe deine anstehenden Fahrten ein</p>
-          <button class="btn">Learn More</button>
+          <button class="btn">Erfahre Mehr</button>
         </router-link>
       </div>
 
       <!-- Forum-Kasten -->
-      <div
-        class="content-block"
-        style="background-image: url('/images/icons8-messages-64.png')"
-      >
+      <div class="content-block" style="background-image: url('/images/icons8-messages-64.png')">
         <router-link to="/forum" class="content-overlay">
           <div class="forum-preview-content">
             <!-- Titel und Beschreibung -->
@@ -48,11 +39,7 @@
 
             <!-- Nachrichten-Vorschau -->
             <div class="forum-messages">
-              <div
-                v-for="message in recentMessages"
-                :key="message.id"
-                class="forum-message"
-              >
+              <div v-for="message in recentMessages" :key="message.id" class="forum-message">
                 <p>{{ message.inhalt }}</p>
                 <small class="timestamp">
                   {{ formatTimestamp(message.zeitstempel) }}
@@ -122,9 +109,12 @@ export default {
 .content-block {
   position: relative;
   width: 100%;
-  max-width: 350px; /* Gleiche Breite wie andere Blöcke */
-  height: 400px; /* Gleiche Höhe wie andere Blöcke */
-  background-size: 70%; /* Kleinere Icons */
+  max-width: 350px;
+  /* Gleiche Breite wie andere Blöcke */
+  height: 400px;
+  /* Gleiche Höhe wie andere Blöcke */
+  background-size: 70%;
+  /* Kleinere Icons */
   background-position: center;
   border-radius: 10px;
   overflow: hidden;
@@ -136,11 +126,13 @@ export default {
 }
 
 .content-block:hover {
-  transform: scale(1.05); /* Zoom-Effekt bei Hover */
+  transform: scale(1.05);
+  /* Zoom-Effekt bei Hover */
 }
 
 .content-overlay {
-  background: rgba(0, 0, 0, 0.5); /* Halbdurchsichtiger Hintergrund */
+  background: rgba(0, 0, 0, 0.5);
+  /* Halbdurchsichtiger Hintergrund */
   padding: 20px;
   width: 100%;
   height: 100%;
@@ -161,42 +153,54 @@ export default {
 .forum-header h2 {
   margin: 0;
   font-size: 1.5em;
-  color: white; /* Titel bleibt weiß */
+  color: white;
+  /* Titel bleibt weiß */
 }
 
 .forum-header p {
   margin: 10px 0;
-  color: white; /* Beschreibung bleibt weiß */
+  color: white;
+  /* Beschreibung bleibt weiß */
 }
 
 /* Nachrichtenbereich */
 .forum-messages {
   flex: 1;
-  overflow-y: auto; /* Scrollbar bei Überlauf */
+  overflow-y: auto;
+  /* Scrollbar bei Überlauf */
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Abstand zwischen Nachrichten */
-  background-color: rgba(255, 255, 255, 0.8); /* Heller Hintergrund für Nachrichtencontainer */
+  gap: 10px;
+  /* Abstand zwischen Nachrichten */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Heller Hintergrund für Nachrichtencontainer */
   border-radius: 8px;
   padding: 10px;
 }
 
 /* Einzelne Nachricht */
 .forum-message {
-  background-color: #333; /* Dunkler Hintergrund für Nachrichtenfelder */
+  background-color: #333;
+  /* Dunkler Hintergrund für Nachrichtenfelder */
   padding: 8px;
   border-radius: 5px;
   font-size: 14px;
-  color: #f1f1f1; /* Helle Schriftfarbe */
-  max-height: 80px; /* Maximale Höhe für Nachrichtenfelder */
-  overflow-y: auto; /* Scrollbar bei Überlauf */
-  word-wrap: break-word; /* Automatischer Zeilenumbruch */
-  white-space: normal; /* Mehrere Zeilen zulassen */
+  color: #f1f1f1;
+  /* Helle Schriftfarbe */
+  max-height: 80px;
+  /* Maximale Höhe für Nachrichtenfelder */
+  overflow-y: auto;
+  /* Scrollbar bei Überlauf */
+  word-wrap: break-word;
+  /* Automatischer Zeilenumbruch */
+  white-space: normal;
+  /* Mehrere Zeilen zulassen */
 }
 
 .timestamp {
   font-size: 12px;
-  color: #ccc; /* Dezentere Farbe für den Zeitstempel */
+  color: #ccc;
+  /* Dezentere Farbe für den Zeitstempel */
 }
 
 button {
