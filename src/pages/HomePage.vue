@@ -2,6 +2,17 @@
   <div class="homePage">
     <!-- Suchkomponente -->
     <SearchComponent />
+    
+    
+<!-- Abschnitt mit Hintergrundbild -->
+<div class="hero-section">
+  <div class="hero-content">
+    <h2>Willkommen auf unserer Plattform!</h2>
+    <p>Entdecke die neuesten Fahrten, das Forum und vieles mehr!</p>
+    <button>Mehr erfahren</button>
+  </div>
+</div>
+
 
     <!-- Hauptinhalt -->
     <div class="main-content">
