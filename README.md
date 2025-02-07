@@ -26,12 +26,6 @@ Ziel ist es, die **Bildung von Fahrgemeinschaften** zu vereinfachen – sei es f
 - **Pendelverkehr** zwischen Campus Bayreuth und Kulmbach sowie Fahrten in der Region verursachen oft **unnötige CO₂-Emissionen** und hohe Verkehrsdichte.  
 - **Uni Drive** hilft, **Mitfahrgelegenheiten** effizient zu koordinieren, dadurch wird sowohl Zeit als auch CO₂ gespart.
 
-**Was macht das Projekt besonders?**  
-- **Interaktivität**: Jede Fahrt kann entweder als „Suche nach Fahrer“ oder „Suche nach Mitfahrern“ eingestellt werden.  
-- **Gruppenchat**: Interessierte können sich einer Fahrt anschließen und haben direkt einen Chat zur Abstimmung.  
-- **Forum**: Zusätzlich gibt es ein offenes Forum für den Austausch unter allen Usern.  
-- **Visuelle Kartenintegration**: Mithilfe der [Leaflet](https://leafletjs.com/)-Bibliothek und Geoapify-API werden Fahrten auf einer Karte als Route visualisiert.
-
 ---
 
 ## Key Features & USP
@@ -48,7 +42,7 @@ Ziel ist es, die **Bildung von Fahrgemeinschaften** zu vereinfachen – sei es f
    - Zusätzlich zum Chat kann man sich im **allgemeinen Forum** austauschen, Fahrten bewerben oder Feedback geben.
 
 4. **Kartenintegration**  
-   - Die Route wird als **Linie auf einer Leaflet-Karte** dargestellt (basierend auf GeoJSON-Daten).  
+   - Die Route wird als **Linie auf einer Leaflet-Karte** dargestellt (basierend auf GeoJSON-Daten). ([Leaflet](https://leafletjs.com/)-Bibliothek)  
    - So sehen User sofort, welche Orte auf dem Weg liegen und ob ein Zwischeneinstieg möglich ist.
 
 5. **Nachhaltiger Gedanke**  
@@ -95,6 +89,7 @@ Hinweis: Ein zusätzliches Setup in Supabase ist nicht nötig, da wir bereits ei
 1. **Registrierung & Login**  
    - Nach dem Start gelangt man auf die Startseite.  
    - Hier kann man sich **registrieren** oder **einloggen**.
+   - Zur Regestrierung muss eine bestehende valide E-Mail Adresse genommen werden, diese wird nämlich von Supabase verifiziert indem man einen Verifizierungs-Link zugeschickt bekommt, welche selbst besätigt werden muss.
 
 2. **Fahrt erstellen**  
    - Mit `+ Neue Fahrt inserieren` kann eine Fahrt angelegt werden, als „Suche nach Mitfahrern“ oder „Suche nach Fahrer“.  
@@ -196,13 +191,13 @@ swps_starter_group1/
 - **README.md**  
   Diese Dokumentation.
 
-## Components
+**Components**
 
 - **`CalendarComponent.vue`**  
-  Ermöglicht die Anzeige und Verwaltung eines Kalenders mithilfe von FullCalendar. Benutzer können Termine visualisieren und mit anderen Daten interagieren.
+  Ermöglicht die Anzeige und Verwaltung eines Kalenders mithilfe von FullCalendar. Benutzer können Termine visualisieren.
 
 - **`ErstelleTermin.vue`**  
-  Ein Formular, um neue Termine zu erstellen und in die Datenbank einzufügen. Unterstützt die Eingabe von Zeit, Datum und Adresse.
+  Ein Formular, um neue Termine zu erstellen und in die Datenbank einzufügen. Unterstützt die Eingabe von Zeit, Datum, Adresse und einem Wiederholungsmuster.
 
 - **`FooterComponent.vue`**  
   Der Footer der Anwendung. Beinhaltet allgemeine Informationen, Links (z. B. Impressum, Datenschutz) und rechtliche Hinweise.
@@ -221,13 +216,13 @@ swps_starter_group1/
 
 ---
 
-## Pages
+**Pages**
 
 - **`CalendarPage.vue`**  
   Zeigt eine Seite mit einem interaktiven Kalender, der geplante Fahrten und Termine visualisiert.
 
 - **`ChatPage.vue`**  
-  Seite für Gruppen- oder Einzelchats zwischen Benutzern, die an einer Fahrt teilnehmen. Unterstützt die Abstimmung von Details.
+  Seite für Gruppenchats zwischen Benutzern, die an einer Fahrt teilnehmen. Unterstützt die Abstimmung von Details.
 
 - **`CookiesPage.vue`**  
   Informationsseite über die Verwendung von Cookies und Datenschutzrichtlinien.
@@ -245,19 +240,19 @@ swps_starter_group1/
   Ermöglicht Benutzern das Einloggen in ihre Konten. Verbindet sich mit der Supabase-Authentifizierung.
 
 - **`MapsPage.vue`**  
-  Zeigt eine Karte an, auf der alle registrierten Fahrten visualisiert werden. Unterstützt Interaktion und Filter.
+  Zeigt eine Karte an, auf der einzelne registrierten Fahrten visualisiert werden können.
 
 - **`ProfilePage.vue`**  
-  Eine Profilseite, die Benutzerdaten anzeigt. Bietet Optionen zur Verwaltung persönlicher Informationen und einer Übersicht vergangener Fahrten.
+  Eine Profilseite, die Benutzerdaten anzeigt. Bietet Optionen zur Einsicht persönlicher Informationen und einer Übersicht vergangener Fahrten.
 
 - **`RegisterPage.vue`**  
   Ermöglicht Benutzern, ein Konto zu erstellen. Verbindet sich mit der Supabase-Authentifizierung und fügt neue Benutzer zur Datenbank hinzu.
 
 - **`RidesPage.vue`**  
-  Eine Übersicht über alle Fahrten, die derzeit angeboten werden. Unterstützt die Filterung nach verschiedenen Kriterien.
+  Die Seite zum inserieren von Fahrten.
 
 - **`TestprojektHinweise.vue`**  
-  Eine Seite mit Hinweisen und FAQs, die bei der Arbeit mit dem Projekt hilfreich sind.
+  Eine Seite mit Hinweisen, die infos zu unserem Projekt liefern.
 
 - **`TransparenzPage.vue`**  
   Informationen über die Transparenzrichtlinien, Datenschutz und Datennutzung.
@@ -282,7 +277,6 @@ swps_starter_group1/
 ## Lizenz
 
 Dieses Projekt wird **Open Source** entwickelt.  
-Falls nicht anders angegeben, steht es unter einer frei verfügbaren Lizenz.  
 
 ---
 
@@ -302,6 +296,5 @@ Falls nicht anders angegeben, steht es unter einer frei verfügbaren Lizenz.
 
 - **White-Paper**: Enthält detaillierte Informationen zu Scrum, Entwicklungsphasen und technischen Hintergründen.  
 - **Kontakt**: Bei Fragen könnt ihr uns über GitHub Issues oder per E-Mail erreichen.  
-- **Screenshots & GIFs**: *(Platzhalter für Screenshots oder Bewegtbilder)*
 
 ---
