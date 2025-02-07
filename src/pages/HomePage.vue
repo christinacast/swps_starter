@@ -2,8 +2,6 @@
   <div class="homePage">
     <!-- Suchkomponente -->
     <SearchComponent />
-    
-    
 <!-- Abschnitt mit Hintergrundbild -->
 <div class="hero-section">
   <div class="hero-content">
@@ -37,7 +35,7 @@
             <p>
               Hier kannst du einsehen welche Fahrten anstehen
             </p>
-            <button>Erfahre Mehr</button>
+            <button class="btn">Erfahre Mehr</button>
           </router-link>
         </div>
       </div>
@@ -129,117 +127,4 @@ export default {
 
 <style scoped>
 @import "@/assets/css/pages/home.css";
-
-/* Generelle Stile für die Blöcke */
-.content-block {
-  position: relative;
-  width: 100%;
-  max-width: 350px;
-  /* Gleiche Breite wie andere Blöcke */
-  height: 400px;
-  /* Gleiche Höhe wie andere Blöcke */
-  background-size: 70%;
-  /* Kleinere Icons */
-  background-position: center;
-  border-radius: 10px;
-  overflow: hidden;
-  text-decoration: none;
-  color: white;
-  transition: transform 0.3s ease;
-  display: flex;
-  align-items: flex-end;
-}
-
-.content-block:hover {
-  transform: scale(1.05);
-  /* Zoom-Effekt bei Hover */
-}
-
-.content-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  /* Halbdurchsichtiger Hintergrund */
-  padding: 20px;
-  width: 100%;
-  height: 100%;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* Forum-spezifische Anpassungen */
-.forum-preview-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.forum-header h2 {
-  margin: 0;
-  font-size: 1.5em;
-  color: white;
-  /* Titel bleibt weiß */
-}
-
-.forum-header p {
-  margin: 10px 0;
-  color: white;
-  /* Beschreibung bleibt weiß */
-}
-
-/* Nachrichtenbereich */
-.forum-messages {
-  flex: 1;
-  overflow-y: auto;
-  /* Scrollbar bei Überlauf */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  /* Abstand zwischen Nachrichten */
-  background-color: rgba(255, 255, 255, 0.8);
-  /* Heller Hintergrund für Nachrichtencontainer */
-  border-radius: 8px;
-  padding: 10px;
-}
-
-/* Einzelne Nachricht */
-.forum-message {
-  background-color: #333;
-  /* Dunkler Hintergrund für Nachrichtenfelder */
-  padding: 8px;
-  border-radius: 5px;
-  font-size: 14px;
-  color: #f1f1f1;
-  /* Helle Schriftfarbe */
-  max-height: 80px;
-  /* Maximale Höhe für Nachrichtenfelder */
-  overflow-y: auto;
-  /* Scrollbar bei Überlauf */
-  word-wrap: break-word;
-  /* Automatischer Zeilenumbruch */
-  white-space: normal;
-  /* Mehrere Zeilen zulassen */
-}
-
-.timestamp {
-  font-size: 12px;
-  color: #ccc;
-  /* Dezentere Farbe für den Zeitstempel */
-}
-
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
 </style>

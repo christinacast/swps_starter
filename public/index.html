@@ -2,23 +2,33 @@
 <html lang="en">
 
 <head>
+  <!-- Zeichensatz und Browserkompatibilität -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <!-- Favicon der App -->
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+
+  <!-- FullCalendar Stylesheet für Kalenderdarstellung -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css">
+
+  <!-- Dynamischer Titel der App -->
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
 </head>
 
 <body>
+  <!-- Hinweis für Benutzer ohne JavaScript -->
   <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
   </noscript>
+
+  <!-- Haupt-Container für die Vue-App -->
   <div id="app"></div>
-  <!-- built files will be auto injected -->
+  <!-- Die erzeugten Dateien werden hier automatisch eingebunden -->
 </body>
 
 </html>
