@@ -67,6 +67,7 @@
     justify-content: center;
     align-items: center;
     margin: 30px auto;
+    margin-bottom: 2cm;
     padding: 20px;
   }
   
@@ -94,3 +95,41 @@
     background-color: #1aaf7b;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   }
+
+  .sticky-note {
+    backdrop-filter: blur(8px); /* Glaseffekt */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Weicher Schatten */
+    padding: 20px 30px; /* Genügend Innenabstand */
+    color: #ffffff; /* Weißer Text für guten Kontrast */
+    font-size: 1.2em; /* Angenehme Schriftgröße */
+    line-height: 1.6; /* Lesbarer Zeilenabstand */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Animation */
+}
+
+.sticky-note:hover {
+    transform: translateY(-5px); /* Leichtes Heben beim Hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Stärkerer Schatten beim Hover */
+}
+
+.sticky-note h2 {
+    font-size: 2em; /* Größere Überschrift */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.sticky-note ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sticky-note li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sticky-note li::before {
+    content: "✔️"; /* Check-Symbol für Klarheit */
+    margin-right: 10px;
+    color: #ffffff; /* Passend zum Text */
+}

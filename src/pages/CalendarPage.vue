@@ -105,4 +105,10 @@ export default {
   color: #555;
   margin-left: 10px /* Um etwas Platz nach links zu haben */
 }
+
+.form-section {
+  margin: 30px auto; /* Zentriert das Formular und gibt oben/unten Platz */
+  padding: 20px; /* Innenabstand innerhalb des Formulars */
+  max-width: 500px; /* Breite des Formulars begrenzen */
+}
 </style>

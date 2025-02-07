@@ -282,6 +282,7 @@ export default {
 
 .rides-list {
   margin-top: 20px;
+  margin-bottom: 80px;
 }
 
 .ride-item {
