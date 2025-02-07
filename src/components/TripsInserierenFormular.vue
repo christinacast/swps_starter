@@ -4,7 +4,7 @@
     We use "trips-inserieren-form" as a CSS class for potential styling.
   -->
   <div class="trips-inserieren-form">
-    
+
     <!-- 
       This container holds the main content of the form.
       You can style it or add more layout structure if desired.
@@ -17,7 +17,7 @@
         and the submit button that triggers a new ride insertion.
       -->
       <section class="add-ride">
-        
+
         <!-- 
           We use the `@submit.prevent="handleSubmit"` directive
           to handle form submission in the `handleSubmit` method 
@@ -42,13 +42,7 @@
             <!-- Street -->
             <div class="form-group">
               <label for="street-start">Straße</label>
-              <input
-                type="text"
-                id="street-start"
-                placeholder="Beispielstraße"
-                v-model="streetStart"
-                required
-              />
+              <input type="text" id="street-start" placeholder="Beispielstraße" v-model="streetStart" required />
             </div>
 
             <!-- House Number & Postal Code in a row -->
@@ -56,24 +50,12 @@
 
               <div class="form-group">
                 <label for="houseNumber-start">Haus Nr.</label>
-                <input
-                  type="text"
-                  id="houseNumber-start"
-                  placeholder="123"
-                  v-model="houseNumberStart"
-                  required
-                />
+                <input type="text" id="houseNumber-start" placeholder="123" v-model="houseNumberStart" required />
               </div>
 
               <div class="form-group">
                 <label for="postalCode-start">Postleitzahl</label>
-                <input
-                  type="text"
-                  id="postalCode-start"
-                  placeholder="12345"
-                  v-model="postalCodeStart"
-                  required
-                />
+                <input type="text" id="postalCode-start" placeholder="12345" v-model="postalCodeStart" required />
               </div>
 
             </div>
@@ -81,13 +63,7 @@
             <!-- City -->
             <div class="form-group">
               <label for="city-start">Stadt</label>
-              <input
-                type="text"
-                id="city-start"
-                placeholder="Musterstadt"
-                v-model="cityStart"
-                required
-              />
+              <input type="text" id="city-start" placeholder="Musterstadt" v-model="cityStart" required />
             </div>
           </fieldset>
 
@@ -101,13 +77,7 @@
             <!-- Street -->
             <div class="form-group">
               <label for="street-dest">Straße</label>
-              <input
-                type="text"
-                id="street-dest"
-                placeholder="Beispielstraße"
-                v-model="streetDest"
-                required
-              />
+              <input type="text" id="street-dest" placeholder="Beispielstraße" v-model="streetDest" required />
             </div>
 
             <!-- House Number & Postal Code in a row -->
@@ -115,24 +85,12 @@
 
               <div class="form-group">
                 <label for="houseNumber-dest">Haus Nr.</label>
-                <input
-                  type="text"
-                  id="houseNumber-dest"
-                  placeholder="123"
-                  v-model="houseNumberDest"
-                  required
-                />
+                <input type="text" id="houseNumber-dest" placeholder="123" v-model="houseNumberDest" required />
               </div>
 
               <div class="form-group">
                 <label for="postalCode-dest">Postleitzahl</label>
-                <input
-                  type="text"
-                  id="postalCode-dest"
-                  placeholder="12345"
-                  v-model="postalCodeDest"
-                  required
-                />
+                <input type="text" id="postalCode-dest" placeholder="12345" v-model="postalCodeDest" required />
               </div>
 
             </div>
@@ -140,13 +98,7 @@
             <!-- City -->
             <div class="form-group">
               <label for="city-dest">Stadt</label>
-              <input
-                type="text"
-                id="city-dest"
-                placeholder="Musterstadt"
-                v-model="cityDest"
-                required
-              />
+              <input type="text" id="city-dest" placeholder="Musterstadt" v-model="cityDest" required />
             </div>
           </fieldset>
 
@@ -159,33 +111,19 @@
             <!-- Date -->
             <div class="form-group">
               <label for="date-add">Datum</label>
-              <input
-                type="date"
-                id="date-add"
-                v-model="date"
-                required
-              />
+              <input type="date" id="date-add" v-model="date" required />
             </div>
 
             <!-- Time -->
             <div class="form-group">
               <label for="time-add">Uhrzeit</label>
-              <input
-                type="time"
-                id="time-add"
-                v-model="time"
-                required
-              />
+              <input type="time" id="time-add" v-model="time" required />
             </div>
 
           </div>
 
           <!-- Submit Button -->
-          <button 
-            type="submit" 
-            class="btn-submit" 
-            :disabled="isInserting"
-          >
+          <button type="submit" class="btn-submit" :disabled="isInserting">
             <!-- If currently inserting, show a small loading indicator or text -->
             {{ isInserting ? "Wird inseriert..." : "Inserieren" }}
           </button>
@@ -196,22 +134,16 @@
             - successMessage
             - errorMessage
           -->
-          <p 
-            v-if="successMessage" 
-            class="status-message success"
-          >
+          <p v-if="successMessage" class="status-message success">
             {{ successMessage }}
           </p>
-          <p 
-            v-if="errorMessage" 
-            class="status-message error"
-          >
+          <p v-if="errorMessage" class="status-message error">
             {{ errorMessage }}
           </p>
 
         </form>
       </section>
-      
+
       <!-- 
         SECTION: Debug Logs
         A list of every log message we produce while handling submission.

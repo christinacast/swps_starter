@@ -1,0 +1,37 @@
+.help-button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #009260;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px
+        /* Um etwas Platz nach unten zu haben */
+    ;
+    margin-left: 10px
+        /* Um etwas Platz nach links zu haben */
+}
+
+.help-button:hover {
+    background-color: #3b7b5b;
+}
+
+.help-text {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+    margin-left: 10px
+        /* Um etwas Platz nach links zu haben */
+}
+
+.form-section {
+    margin: 30px auto;
+    /* Zentriert das Formular und gibt oben/unten Platz */
+    padding: 20px;
+    /* Innenabstand innerhalb des Formulars */
+    max-width: 500px;
+    /* Breite des Formulars begrenzen */
+}

@@ -2,14 +2,11 @@
   <div class="chat-page">
     <h1>Gruppenübersicht</h1>
     <div class="rides-list">
-      <div
-        v-for="ride in ridesWithLastMessage"
-        :key="ride.ride_id"
-        class="ride-item"
-      >
+      <div v-for="ride in ridesWithLastMessage" :key="ride.ride_id" class="ride-item">
         <!-- Fahrtbeschreibung -->
         <div class="ride-info" @click="toggleChat(ride.ride_id)">
-          [FahrtID: {{ ride.ride_id }}] Von {{ ride.start_string }} nach {{ ride.end_string }} - {{ ride.ride_date }} {{ ride.ride_time }}
+          [FahrtID: {{ ride.ride_id }}] Von {{ ride.start_string }} nach {{ ride.end_string }} - {{ ride.ride_date }} {{
+            ride.ride_time }}
         </div>
 
         <!-- Letzte Nachricht -->
@@ -21,10 +18,10 @@
         </p>
 
         <!-- Buttons für Gruppe verwalten / verlassen -->
-         <div class="group-buttons">
+        <div class="group-buttons">
           <button v-if="ride.user_id === currentUserId" class="delete-button" @click="deleteRide(ride.ride_id)">
-        Gruppe löschen
-      </button>
+            Gruppe löschen
+          </button>
           <button v-else class="leave-button" @click="leaveGroup(ride.ride_id)">
             Gruppe verlassen
           </button>
@@ -33,11 +30,7 @@
         <!-- Chat-Komponente, wenn die Fahrt ausgewählt ist -->
         <div v-if="openChatId === ride.ride_id" class="chat-container">
           <div class="messages-container">
-            <div
-              v-for="message in ride.messages"
-              :key="message.id"
-              class="message"
-            >
+            <div v-for="message in ride.messages" :key="message.id" class="message">
               <p>
                 <strong>{{ message.inhalt }}</strong>
               </p>
@@ -49,11 +42,7 @@
 
           <!-- Neue Nachricht schreiben -->
           <form @submit.prevent="submitMessage(ride.ride_id)" class="new-message-form">
-            <textarea
-              v-model="newMessage"
-              placeholder="Nachricht schreiben..."
-              required
-            ></textarea>
+            <textarea v-model="newMessage" placeholder="Nachricht schreiben..." required></textarea>
             <button type="submit">Senden</button>
           </form>
         </div>
@@ -121,20 +110,20 @@ export default {
       const ridesWithMessages = await Promise.all(
         userRides.map(async (ride) => {
           const { data: lastMessage, error: messageError } = await supabase
-          .from("gruppenchats")
-          .select("*")
-          .eq("fahrt_id", ride.ride_id)
-          .order("zeitstempel", { ascending: false })
-          .limit(1)
-          .single();
+            .from("gruppenchats")
+            .select("*")
+            .eq("fahrt_id", ride.ride_id)
+            .order("zeitstempel", { ascending: false })
+            .limit(1)
+            .single();
 
           const { data: allMessages, error: allMessagesError } = await supabase
-          .from("gruppenchats")
-          .select("*")
-          .eq("fahrt_id", ride.ride_id)
-          .order("zeitstempel", { ascending: true });
+            .from("gruppenchats")
+            .select("*")
+            .eq("fahrt_id", ride.ride_id)
+            .order("zeitstempel", { ascending: true });
 
-    
+
           if (messageError && messageError.code !== "PGRST116") {
             console.error(`Fehler beim Abrufen der letzten Nachricht für Fahrt ${ride.ride_id}:`, messageError.message);
           }
@@ -147,13 +136,13 @@ export default {
             ...ride,
             lastMessage: lastMessage || null, // Letzte Nachricht oder null
             messages: allMessages || [], // Alle Nachrichten oder leer
-            };
-          })
-        );
+          };
+        })
+      );
 
-        // Gefilterte Fahrten in die UI laden
-        this.ridesWithLastMessage = ridesWithMessages;
-      },
+      // Gefilterte Fahrten in die UI laden
+      this.ridesWithLastMessage = ridesWithMessages;
+    },
 
 
     // Zeitstempel formatieren
@@ -215,16 +204,16 @@ export default {
       if (!confirmation) return;
 
       const { error } = await supabase
-      .from("rides")
-      .delete()
-      .eq("ride_id", rideId);
+        .from("rides")
+        .delete()
+        .eq("ride_id", rideId);
 
       if (error) {
         alert("Fehler beim Löschen der Fahrt.");
         console.error("Fehler beim Löschen:", error.message);
       } else {
         alert("Fahrt erfolgreich gelöscht!");
-    
+
         // Entferne die Fahrt aus der UI
         this.ridesWithLastMessage = this.ridesWithLastMessage.filter(ride => ride.ride_id !== rideId);
       }
@@ -239,10 +228,10 @@ export default {
 
       // Lade die aktuelle participants-Liste aus Supabase
       let { data: ride, error } = await supabase
-      .from('rides')
-      .select('participants')
-      .eq('ride_id', rideId)
-      .single();
+        .from('rides')
+        .select('participants')
+        .eq('ride_id', rideId)
+        .single();
 
       if (error || !ride) {
         alert("Fehler beim Laden der Fahrt.");
@@ -257,9 +246,9 @@ export default {
 
       // Setze `verlassen` auf die UUID des Users, der die Gruppe verlassen hat
       const { error: updateError } = await supabase
-      .from("rides")
-      .update({ participants, verlassen: this.currentUserId }) // nur `verlassen` setzen
-      .eq("ride_id", rideId);
+        .from("rides")
+        .update({ participants, verlassen: this.currentUserId }) // nur `verlassen` setzen
+        .eq("ride_id", rideId);
 
       if (updateError) {
         alert("Fehler beim Verlassen der Gruppe.");
@@ -274,115 +263,5 @@ export default {
 </script>
 
 <style scoped>
-.chat-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.rides-list {
-  margin-top: 20px;
-  margin-bottom: 80px;
-}
-
-.ride-item {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 15px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.ride-info {
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.last-message {
-  font-size: 14px;
-  color: #555;
-  margin-top: 5px;
-}
-
-.chat-container {
-  margin-top: 10px;
-  border-top: 1px solid #ddd;
-  padding-top: 10px;
-}
-
-.messages-container {
-  max-height: 300px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 15px;
-  background-color: #fff;
-  border-radius: 5px;
-}
-
-.message {
-  margin-bottom: 10px;
-}
-
-.timestamp {
-  font-size: 12px;
-  color: #888;
-}
-
-.new-message-form textarea {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.new-message-form button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.new-message-form button:hover {
-  background-color: #0056b3;
-}
-
-.group-buttons {
-  margin-top: 10px;
-}
-
-.leave-button {
-  padding: 8px 16px;
-  background-color: #009260;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.leave-button:hover {
-  background-color: #007b4c;
-}
-
-.delete-button {
-  padding: 8px 16px;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.delete-button:hover {
-  background-color: #c0392b;
-}
-
-
+@import '@/assets/css/pages/ChatPage.css';
 </style>

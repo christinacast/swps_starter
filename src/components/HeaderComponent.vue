@@ -6,8 +6,6 @@
       <router-link to="/maps" class="nav-link">Karten</router-link>
       <router-link to="/calendar" class="nav-link">Kalender</router-link>
       <router-link to="/chat" class="nav-link">Chat</router-link>
-    
-
     </div>
     <div class="profile" v-if="user">
       <router-link to="/profile" class="nav-link-profile">

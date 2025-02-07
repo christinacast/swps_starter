@@ -1,10 +1,11 @@
 <template>
-  <div class="impressum-page">
+  <div class="hinweise-pages">
     <h1>Impressum</h1>
     <section>
       <h2>Angaben gemäß § 5 TMG</h2>
       <p>
-        Dieses Projekt wurde von einer Gruppe motivierter (Wirtschafts-)Informatikstudenten im Rahmen eines Studienprojekts erstellt.
+        Dieses Projekt wurde von einer Gruppe motivierter (Wirtschafts-)Informatikstudenten im Rahmen eines
+        Studienprojekts erstellt.
         Wir möchten betonen, dass dieses Projekt keinen kommerziellen Hintergrund hat und ausschließlich zu Lernzwecken
         dient.
       </p>
@@ -50,7 +51,8 @@
     <section>
       <h2>Ein besonderer Dank</h2>
       <p>
-        Wir möchten uns bei unseren Kommilitonen, Professoren und Mentoren insbesondere Anna und Sebastian bedanken, die uns bei der Entwicklung dieses
+        Wir möchten uns bei unseren Kommilitonen, Professoren und Mentoren insbesondere Anna und Sebastian bedanken, die
+        uns bei der Entwicklung dieses
         Projekts unterstützt haben. Dieses Projekt ist ein wichtiger Teil unseres Lernprozesses und gibt uns die
         Möglichkeit, praktische Erfahrungen zu sammeln.
       </p>
@@ -65,34 +67,8 @@ export default {
 </script>
 
 <style scoped>
-.impressum-page {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-  padding-bottom: 80px;
-}
+@import '@/assets/css/base.css';
+@import '@/assets/css/layout.css';
 
-h1 {
-  color: #2c3e50;
-  margin-bottom: 20px;
-}
-
-h2 {
-  color: #34495e;
-  margin-top: 20px;
-}
-
-p {
-  line-height: 1.6;
-}
-
-a {
-  color: #3498db;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
+@import '@/assets/css/pages/HinweisePages.css';
 </style>

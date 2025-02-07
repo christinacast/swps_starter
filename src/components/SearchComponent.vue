@@ -81,7 +81,7 @@ export default {
       console.log(`/view-all-Trips/${query}`)
 
       // Navigate to another page with query parameters
-      this.$router.push({ name: "ViewAllTrips", query});
+      this.$router.push({ name: "ViewAllTrips", query });
     }
   }
 }
@@ -92,102 +92,5 @@ export default {
 <style scoped>
 @import '@/assets/css/base.css';
 @import '@/assets/css/layout.css';
-
-.advanced-filter-bar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 20px;
-  background-color: #eaf4f1;
-  border-radius: 8px;
-  margin-top: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.filter-advanced {
-  padding: 10px 20px;
-  background-color: #006b4c;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.filter-advanced:hover {
-  background-color: #004c3a;
-}
-
-/* Filter Bar */
-.filter-bar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-.filter-input,
-.filter-select {
-  padding: 8px 12px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 180px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.filter-input:focus,
-.filter-select:focus {
-  border-color: #009260;
-}
-
-.filter-button {
-  padding: 10px 20px;
-  background-color: #009260;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.filter-button:hover {
-  background-color: #007b4c;
-}
-
-.filter-clear {
-  padding: 10px 20px;
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.filter-clear:hover {
-  background-color: #c0392b;
-}
-
-.advanced-filter-bar p {
-  font-size: 14px;
-  color: #555; /* Neutral gray for readability */
-  font-style: italic;
-  margin-top: 10px;
-  text-align: center; /* Center the text */
-  background-color: #f3f7f6; /* Subtle background for contrast */
-  padding: 8px 12px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
-}
+@import '@/assets/css/components/SearchComponent.css';
 </style>

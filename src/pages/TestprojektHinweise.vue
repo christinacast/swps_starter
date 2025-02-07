@@ -1,23 +1,23 @@
 <template>
-  <div class="testprojekt-hinweis-page">
+  <div class="hinweise-pages">
     <h1>Hinweis: Testprojekt von Studenten</h1>
     <section>
       <p>
-        Willkommen auf der Plattform <strong>Uni DRIVE</strong>. Wir möchten Sie darauf hinweisen, 
-        dass dieses Projekt ausschließlich als <strong>Test- und Übungsprojekt</strong> von Studenten 
+        Willkommen auf der Plattform <strong>Uni DRIVE</strong>. Wir möchten Sie darauf hinweisen,
+        dass dieses Projekt ausschließlich als <strong>Test- und Übungsprojekt</strong> von Studenten
         erstellt wurde und keinerlei kommerzielle Zwecke verfolgt.
       </p>
     </section>
     <section>
       <h2>Keine Datenspeicherung</h2>
       <p>
-        Uns ist der Schutz Ihrer Daten wichtig. Daher möchten wir betonen, dass in diesem Projekt 
-        <strong>keinerlei personenbezogene Daten gespeichert oder verarbeitet</strong> werden. 
+        Uns ist der Schutz Ihrer Daten wichtig. Daher möchten wir betonen, dass in diesem Projekt
+        <strong>keinerlei personenbezogene Daten gespeichert oder verarbeitet</strong> werden.
         Alle Funktionen der Plattform dienen rein zu Demonstrationszwecken.
       </p>
       <p>
-        Sollten Sie während der Nutzung des Projekts persönliche Daten wie Namen, E-Mail-Adressen 
-        oder Standorte eingeben, werden diese <strong>nicht dauerhaft gespeichert</strong>. 
+        Sollten Sie während der Nutzung des Projekts persönliche Daten wie Namen, E-Mail-Adressen
+        oder Standorte eingeben, werden diese <strong>nicht dauerhaft gespeichert</strong>.
         Jegliche eingegebenen Informationen sind nach Schließen der Seite unwiderruflich gelöscht.
       </p>
     </section>
@@ -25,8 +25,8 @@
     <section>
       <h2>Ziel dieses Projekts</h2>
       <p>
-        Dieses Projekt wurde von Informatikstudenten entwickelt, um das Erstellen moderner Webanwendungen 
-        und die Nutzung von Technologien wie <strong>Vue.js</strong>, <strong>Supabase</strong> und 
+        Dieses Projekt wurde von Informatikstudenten entwickelt, um das Erstellen moderner Webanwendungen
+        und die Nutzung von Technologien wie <strong>Vue.js</strong>, <strong>Supabase</strong> und
         Geodaten-APIs zu üben. Die Hauptziele dieses Projekts sind:
       </p>
       <ul>
@@ -40,11 +40,11 @@
     <section>
       <h2>Keine Haftung</h2>
       <p>
-        Da es sich um ein reines Testprojekt handelt, übernehmen wir keinerlei Haftung für eventuelle 
+        Da es sich um ein reines Testprojekt handelt, übernehmen wir keinerlei Haftung für eventuelle
         Fehlfunktionen oder Missverständnisse bei der Nutzung der Plattform. Wir bitten um Ihr Verständnis.
       </p>
       <p>
-        Bei Fragen oder Anmerkungen können Sie uns gerne kontaktieren. Bitte beachten Sie jedoch, 
+        Bei Fragen oder Anmerkungen können Sie uns gerne kontaktieren. Bitte beachten Sie jedoch,
         dass dieses Projekt nicht aktiv betreut wird und keine Garantie für eine Antwort besteht.
       </p>
     </section>
@@ -52,11 +52,11 @@
     <section>
       <h2>Danke für Ihr Verständnis!</h2>
       <p>
-        Wir danken Ihnen für Ihr Interesse an unserem Testprojekt. Es handelt sich um einen wichtigen 
+        Wir danken Ihnen für Ihr Interesse an unserem Testprojekt. Es handelt sich um einen wichtigen
         Teil unseres Lernprozesses, und wir schätzen Ihre Geduld und Ihr Verständnis sehr.
       </p>
       <p>
-        Sollten Sie an weiteren Projekten von uns interessiert sein oder Feedback geben wollen, 
+        Sollten Sie an weiteren Projekten von uns interessiert sein oder Feedback geben wollen,
         zögern Sie nicht, uns zu kontaktieren.
       </p>
     </section>
@@ -70,53 +70,8 @@ export default {
 </script>
 
 <style scoped>
-.testprojekt-hinweis-page {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-  padding-bottom: 80px; /* Added extra space at the bottom */
-}
+@import '@/assets/css/base.css';
+@import '@/assets/css/layout.css';
 
-h1 {
-  color: #2c3e50;
-  margin-bottom: 20px;
-  font-size: 28px;
-}
-
-h2 {
-  color: #34495e;
-  margin-top: 20px;
-  font-size: 22px;
-}
-
-p {
-  line-height: 1.8;
-  margin-bottom: 15px;
-  color: #4a4a4a;
-}
-
-ul {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding-left: 20px;
-}
-
-li {
-  margin-bottom: 10px;
-  color: #4a4a4a;
-}
-
-strong {
-  color: #2c3e50;
-}
-
-a {
-  color: #3498db;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
+@import '@/assets/css/pages/HinweisePages.css';
 </style>

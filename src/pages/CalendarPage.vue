@@ -5,7 +5,9 @@
     <!-- Hilfe-Knopf -->
     <button @click="showHelp" class="help-button">Hilfe</button>
     <p v-if="showHelpText" class="help-text">
-      Hier werden dir deine Fahrten angezeigt. Wenn du willst, kannst du hier mithilfe des Formulars unter dem Kalender Termine (bspw. Vorlesungen, Arbeit, etc.) hinzufügen. Wenn du auf einen Termin klickst, siehst du weitere Details und kannst ihn dort auch wieder löschen.
+      Hier werden dir deine Fahrten angezeigt. Wenn du willst, kannst du hier mithilfe des Formulars unter dem Kalender
+      Termine (bspw. Vorlesungen, Arbeit, etc.) hinzufügen. Wenn du auf einen Termin klickst, siehst du weitere Details
+      und kannst ihn dort auch wieder löschen.
     </p>
 
     <!-- FullCalendar-Komponente -->
@@ -81,34 +83,8 @@ export default {
 </script>
 
 <style scoped>
-.help-button {
-  margin-top: 10px;
-  padding: 10px 15px;
-  background-color: #009260;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 10px /* Um etwas Platz nach unten zu haben */;
-  margin-left: 10px /* Um etwas Platz nach links zu haben */
-}
+@import '@/assets/css/base.css';
+@import '@/assets/css/layout.css';
 
-.help-button:hover {
-  background-color: #3b7b5b;
-}
-
-.help-text {
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #555;
-  margin-left: 10px /* Um etwas Platz nach links zu haben */
-}
-
-.form-section {
-  margin: 30px auto; /* Zentriert das Formular und gibt oben/unten Platz */
-  padding: 20px; /* Innenabstand innerhalb des Formulars */
-  max-width: 500px; /* Breite des Formulars begrenzen */
-}
+@import '@/assets/css/pages/CalendarPage.css';
 </style>

@@ -4,12 +4,7 @@
     <form @submit.prevent="addTerm">
       <div class="form-group">
         <label for="name">Terminname:</label>
-        <input
-          id="name"
-          v-model="name"
-          placeholder="Geben Sie den Namen des Termins ein"
-          required
-        />
+        <input id="name" v-model="name" placeholder="Geben Sie den Namen des Termins ein" required />
       </div>
 
       <div class="form-group">
@@ -24,12 +19,7 @@
 
       <div class="form-group">
         <label for="address">Adresse:</label>
-        <input
-          id="address"
-          v-model="address"
-          placeholder="Adresse eingeben"
-          required
-        />
+        <input id="address" v-model="address" placeholder="Adresse eingeben" required />
       </div>
 
       <div class="form-group">
@@ -147,68 +137,7 @@ export default {
 };
 </script>
 
-  
-  <style scoped>
-  /* Styling für das Formular */
-  .form-container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 100px /* Um etwas Platz nach unten zu haben */
-  }
-  
-  .form-title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-    color: #333;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #444;
-  }
-  
-  input,
-  select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border-color 0.3s;
-  }
-  
-  input:focus,
-  select:focus {
-    border-color: #007BFF;
-    outline: none;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 10px;
-    font-size: 1.2em;
-    background-color: #009260;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .submit-button:hover {
-    background-color: #3b7b5b;
-  }
-  </style>
-  
+
+<style scoped>
+@import "@/assets/css/components/ErstelleTermine.css";
+</style>

@@ -1,0 +1,49 @@
+.hinweise-pages {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding-bottom: 80px; /* Extra space at the bottom */
+  }
+  
+  h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 28px;
+  }
+  
+  h2 {
+    color: #34495e;
+    margin-top: 20px;
+    font-size: 22px;
+  }
+  
+  p {
+    line-height: 1.8;
+    margin-bottom: 15px;
+    color: #4a4a4a;
+  }
+  
+  ul {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin-bottom: 10px;
+    color: #4a4a4a;
+  }
+  
+  strong {
+    color: #2c3e50;
+  }
+  
+  a {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
