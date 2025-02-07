@@ -117,59 +117,60 @@ Hinweis: Ein zusätzliches Setup in Supabase ist nicht nötig, da wir bereits ei
 
 ```bash
 swps_starter_group1/
-├─ public/
-│  ├─ images/
-│  ├─ cities.json
-│  └─ index.html
-├─ src/
-│  ├─ assets/
-│  │  ├─ css/
-│  │  │  ├─ home.css
-│  │  │  ├─ base.css
-│  │  │  └─ layout.css
-│  │  └─ images/
-│  │     ├─ logo.png
-│  │     └─ logo.svg
-│  ├─ components/
-│  │  ├─ CalendarComponent.vue
-│  │  ├─ ErstelleTermin.vue
-│  │  ├─ FooterComponent.vue
-│  │  ├─ HeaderComponent.vue
-│  │  ├─ MapComponent.vue
-│  │  ├─ SearchComponent.vue
-│  │  └─ TripsSuchenFormular.vue
-│  ├─ pages/
-│  │  ├─ CalendarPage.vue
-│  │  ├─ ChatPage.vue
-│  │  ├─ ForumPage.vue
-│  │  ├─ HomePage.vue
-│  │  ├─ ImpressumPage.vue
-│  │  ├─ LoginPage.vue
-│  │  ├─ MapsPage.vue
-│  │  ├─ ProfilePage.vue
-│  │  ├─ RegisterPage.vue
-│  │  ├─ RidesPage.vue
-│  │  ├─ TestprojektHinweise.vue
-│  │  ├─ TransparenzPage.vue
-│  │  └─ ViewAllTripsPage.vue
-│  ├─ plugins/
-│  │  ├─ vuetify.js
-│  │  └─ webfontloader.js
-│  ├─ router/
-│  │  └─ index.js
-│  ├─ services/
-│  │  ├─ geoUtils.js      // Enthält Funktionen zum Konvertieren von Adressen in GeoJSON mithilfe der Geoapify API
-│  │  ├─ supabase.js      // Erstellt den Supabase-Client (supabaseUrl, supabaseKey)
-│  │  └─ validationService.js
-│  ├─ App.vue
-│  ├─ main.js
-├─ .gitignore
-├─ babel.config.js
-├─ jsconfig.json
-├─ package-lock.json
-├─ package.json
-├─ README.md
-└─ vue.config.js
+├── public/                # Öffentlich zugängliche statische Ressourcen
+│   ├── images/            # genutzte Bilder und Grafiken in unserem Projekt       
+│   ├── index.html         # Haupt-HTML-Datei für den Vue.js-Einstiegspunkt
+├── src/                   # Hauptverzeichnis des Vue.js-Projekts
+│   ├── assets/            # Statische Ressourcen (CSS, Bilder, JSON-Dateien)
+│   │   ├── css/           # Stile für verschiedene Komponenten
+│   │   │   ├── base.css   # Basis-Stile für die gesamte Anwendung
+│   │   │   ├── layout.css # Globale Layout-Stile
+│   │   │   └── ...        # Weitere CSS-Dateien für Seiten und Komponenten
+│   │   └── images/        # Bilder und Icons
+│   │       └── ...        # Spezifische Bilddateien
+│   ├── components/        # Wiederverwendbare Vue-Komponenten
+│   │   ├── CalendarComponent.vue       # Kalender-Komponente mit FullCalendar
+│   │   ├── ErstelleTermin.vue          # Komponente zum Erstellen neuer Termine
+│   │   ├── FooterComponent.vue         # Footer der Anwendung
+│   │   ├── HeaderComponent.vue         # Header mit Navigation und Benutzerinfo
+│   │   ├── MapComponent.vue            # Karte mit Leaflet zur Anzeige von Routen
+│   │   ├── SearchComponent.vue         # Suchleiste für Fahrten
+│   │   └── TripsInserierenFormular.vue # Formular zum Hinzufügen neuer Fahrten
+│   ├── pages/             # Seiten der Anwendung
+│   │   ├── CalendarPage.vue            # Kalender-Seite
+│   │   ├── ChatPage.vue                # Chat-Seite für Benutzer
+│   │   ├── CookiesPage.vue             # Datenschutz- und Cookie-Info-Seite
+│   │   ├── ForumPage.vue               # Forum für Diskussionen
+│   │   ├── HomePage.vue                # Startseite der Anwendung
+│   │   ├── ImpressumPage.vue           # Impressums-Seite
+│   │   ├── LoginPage.vue               # Login-Seite für Benutzer
+│   │   ├── MapsPage.vue                # Karte zur Anzeige von Fahrten
+│   │   ├── ProfilePage.vue             # Benutzerprofil-Seite
+│   │   ├── RegisterPage.vue            # Registrierung neuer Benutzer
+│   │   ├── RidesPage.vue               # Übersicht aller verfügbaren Fahrten
+│   │   ├── TestprojektHinweise.vue     # Hinweise zum Projekt
+│   │   ├── TransparenzPage.vue         # Transparenz- und Datenschutzseite
+│   │   └── ViewAllTripsPage.vue        # Detaillierte Übersicht über alle Fahrten
+│   ├── plugins/           # Vue.js-Plugins und Konfigurationen
+│   │   ├── vuetify.js                  # Konfiguration für Vuetify (UI-Framework)
+│   │   └── webfontloader.js            # Lädt Schriftarten asynchron
+│   ├── router/            # Routing für die Anwendung
+│   │   └── index.js                   # Definition aller Routen für die Seiten
+│   ├── services/          # Hilfsfunktionen und API-Services
+│   │   ├── geoUtils.js                # Konvertiert Adressen in GeoJSON (GeoAPI)
+│   │   ├── kmDistanceComputation.js   # Berechnet Entfernungen zwischen Punkten
+│   │   ├── sortTable.js               # Hilfsfunktionen für Tabellensortierungen
+│   │   └── supabase.js                # Initialisiert Supabase (Datenbankverbindung)
+│   ├── App.vue             # Haupteinstiegspunkt für die Vue.js-Anwendung
+│   ├── main.js             # Initialisiert Vue.js und mountet die App
+│   └── ...                 # Weitere Konfigurationsdateien
+├── .gitignore              # Definiert Dateien/Ordner, die von Git ignoriert werden
+├── babel.config.js         # Konfigurationsdatei für Babel (JS-Compiler)
+├── jsconfig.json           # VSCode-Konfiguration für JavaScript
+├── package-lock.json       # Sperrt Paketversionen für die Anwendung
+├── package.json            # Projekt-Metadaten und Abhängigkeiten
+├── README.md               # Projektbeschreibung und Dokumentation
+└── vue.config.js           # Vue.js-spezifische Konfiguration
 ```
 
 **Wichtige Ordner & Dateien kurz erklärt:**
@@ -185,7 +186,6 @@ swps_starter_group1/
 - **src/services/**  
   - `geoUtils.js`: Nutzt die Geoapify-API zur Adressumwandlung in GeoJSON.  
   - `supabase.js`: Initialisiert den Supabase-Client.  
-  - `validationService.js`: Validierungslogik für Formulare oder Eingaben.  
 - **plugins/**  
   - `vuetify.js`: Bindet das Vuetify-UI-Framework ein.  
   - `webfontloader.js`: Lädt Schriften asynchron.  
@@ -195,6 +195,75 @@ swps_starter_group1/
   Enthält Projektmetadaten, Abhängigkeiten und Skripte.  
 - **README.md**  
   Diese Dokumentation.
+
+## Components
+
+- **`CalendarComponent.vue`**  
+  Ermöglicht die Anzeige und Verwaltung eines Kalenders mithilfe von FullCalendar. Benutzer können Termine visualisieren und mit anderen Daten interagieren.
+
+- **`ErstelleTermin.vue`**  
+  Ein Formular, um neue Termine zu erstellen und in die Datenbank einzufügen. Unterstützt die Eingabe von Zeit, Datum und Adresse.
+
+- **`FooterComponent.vue`**  
+  Der Footer der Anwendung. Beinhaltet allgemeine Informationen, Links (z. B. Impressum, Datenschutz) und rechtliche Hinweise.
+
+- **`HeaderComponent.vue`**  
+  Der Header der Anwendung. Zeigt Navigationselemente (z. B. Links zu Seiten) und Benutzerinformationen (z. B. Login/Logout) an.
+
+- **`MapComponent.vue`**  
+  Bindet die Leaflet-Bibliothek ein, um Karten anzuzeigen. Visualisiert Routen und Standorte basierend auf GeoJSON-Daten.
+
+- **`SearchComponent.vue`**  
+  Eine Suchleiste mit Filtern (z. B. Datum, Startort, Zielort) zur Anzeige relevanter Fahrten. Unterstützt erweiterte Filteroptionen.
+
+- **`TripsInserierenFormular.vue`**  
+  Ein Formular, um neue Fahrten zu erstellen. Konvertiert eingegebene Adressen in GeoJSON, erstellt Routen und speichert sie in der Datenbank.
+
+---
+
+## Pages
+
+- **`CalendarPage.vue`**  
+  Zeigt eine Seite mit einem interaktiven Kalender, der geplante Fahrten und Termine visualisiert.
+
+- **`ChatPage.vue`**  
+  Seite für Gruppen- oder Einzelchats zwischen Benutzern, die an einer Fahrt teilnehmen. Unterstützt die Abstimmung von Details.
+
+- **`CookiesPage.vue`**  
+  Informationsseite über die Verwendung von Cookies und Datenschutzrichtlinien.
+
+- **`ForumPage.vue`**  
+  Ein offenes Forum, in dem Benutzer Fahrten bewerben, Feedback geben oder allgemeine Diskussionen führen können.
+
+- **`HomePage.vue`**  
+  Die Startseite der Anwendung. Bietet eine Übersicht über Funktionen und eine Navigation zu den Hauptfeatures.
+
+- **`ImpressumPage.vue`**  
+  Rechtliche Angaben wie Impressum und Kontaktdaten.
+
+- **`LoginPage.vue`**  
+  Ermöglicht Benutzern das Einloggen in ihre Konten. Verbindet sich mit der Supabase-Authentifizierung.
+
+- **`MapsPage.vue`**  
+  Zeigt eine Karte an, auf der alle registrierten Fahrten visualisiert werden. Unterstützt Interaktion und Filter.
+
+- **`ProfilePage.vue`**  
+  Eine Profilseite, die Benutzerdaten anzeigt. Bietet Optionen zur Verwaltung persönlicher Informationen und einer Übersicht vergangener Fahrten.
+
+- **`RegisterPage.vue`**  
+  Ermöglicht Benutzern, ein Konto zu erstellen. Verbindet sich mit der Supabase-Authentifizierung und fügt neue Benutzer zur Datenbank hinzu.
+
+- **`RidesPage.vue`**  
+  Eine Übersicht über alle Fahrten, die derzeit angeboten werden. Unterstützt die Filterung nach verschiedenen Kriterien.
+
+- **`TestprojektHinweise.vue`**  
+  Eine Seite mit Hinweisen und FAQs, die bei der Arbeit mit dem Projekt hilfreich sind.
+
+- **`TransparenzPage.vue`**  
+  Informationen über die Transparenzrichtlinien, Datenschutz und Datennutzung.
+
+- **`ViewAllTripsPage.vue`**  
+  Zeigt alle Fahrten in einer detaillierten Ansicht an. Unterstützt erweiterte Filteroptionen und die Möglichkeit, einer Fahrt beizutreten.
 
 ---
 
