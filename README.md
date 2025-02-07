@@ -92,11 +92,12 @@ Hinweis: Ein zusätzliches Setup in Supabase ist nicht nötig, da wir bereits ei
    - Zur Regestrierung muss eine bestehende valide E-Mail Adresse genommen werden, diese wird nämlich von Supabase verifiziert indem man einen Verifizierungs-Link zugeschickt bekommt, welche selbst besätigt werden muss.
 
 2. **Fahrt erstellen**  
-   - Mit `+ Neue Fahrt inserieren` kann eine Fahrt angelegt werden, als „Suche nach Mitfahrern“ oder „Suche nach Fahrer“.  
+   - Mit `+ Neue Fahrt inserieren` kann eine Fahrt angelegt werden.  
    - Die Adresse wird per Geoapify-API in **GeoJSON** umgewandelt, um sie auf der Karte darzustellen.
+   - Wichtig! Es müssen alle Felder eingegben werden und die Adressen müssen richtig geschrieben werden und existiern. Falls der Benutzer fehler bei der Eingabe macht wird im Formular darauf hingewiesen und er muss ggf. die Fahrt nocheinmal mit den korrekten Daten inserieren. 
 
 3. **Alle Fahrten ansehen & filtern**  
-   - Die Hauptseite zeigt **alle anstehenden Fahrten** in einer Tabelle an.  
+   - Die "Wer Fährt demnächts" Seite zeigt **alle anstehenden Fahrten** in einer Tabelle an.  
    - Man kann nach Datum, Abfahrtsort, Zielort, Status usw. filtern.
 
 4. **Einer Fahrt beitreten**  
