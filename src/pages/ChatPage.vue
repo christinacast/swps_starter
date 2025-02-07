@@ -58,206 +58,232 @@ export default {
   name: "ChatPage",
   data() {
     return {
-      ridesWithLastMessage: [], // Fahrten mit letzter Nachricht
-      openChatId: null, // ID der Fahrt, deren Chat geöffnet ist
-      newMessage: "", // Eingabefeld für neue Nachrichten
-      currentUserId: null, // Aktuelle Benutzer-ID
+      ridesWithLastMessage: [], // Liste der Fahrten, jede mit der letzten Nachricht und vollständigen Nachrichten
+      openChatId: null, // ID der aktuell geöffneten Fahrt für den Chat
+      newMessage: "", // Inhalt der neuen Nachricht, die der Benutzer eingibt
+      currentUserId: null, // Aktuelle Benutzer-ID, abgerufen nach Login
     };
   },
 
   async mounted() {
-    // Aktuelle Benutzer-ID abrufen
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error) {
-      console.error("Fehler beim Abrufen des Benutzers:", error.message);
+    /**
+     * Beim Mounten der Komponente:
+     * 1. Benutzer-ID abrufen (authentifizierter Benutzer).
+     * 2. Fahrten mit zugehörigen Nachrichten abrufen.
+     */
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Fehler beim Abrufen des Benutzers:", error.message);
+        return;
+      }
+      if (user) {
+        this.currentUserId = user.id;
+        await this.fetchRidesWithLastMessage();
+      }
+    } catch (err) {
+      console.error("Ein Fehler ist beim Initialisieren der Komponente aufgetreten:", err.message);
     }
-    if (user) {
-      this.currentUserId = user.id;
-    }
-    await this.fetchRidesWithLastMessage();
   },
 
   methods: {
-    // Fahrten und Nachrichten abrufen
+    /**
+     * Ruft alle Fahrten ab, an denen der aktuelle Benutzer teilnimmt.
+     * Fügt für jede Fahrt die letzte Nachricht sowie alle zugehörigen Nachrichten hinzu.
+     */
     async fetchRidesWithLastMessage() {
-      // Aktuellen Benutzer abrufen
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      if (userError || !user) {
-        console.error("Fehler beim Abrufen des Benutzers:", userError?.message);
-        return;
-      }
-      const userId = user.id;
+      try {
+        const { data: rides, error: ridesError } = await supabase
+          .from("rides")
+          .select("*");
 
-      // Fahrten abrufen
-      const { data: rides, error: ridesError } = await supabase.from("rides").select("*");
-      if (ridesError) {
-        console.error("Fehler beim Abrufen der Fahrten:", ridesError.message);
-        return;
-      }
-
-      // Fahrten filtern: Nur Fahrten anzeigen, bei denen der Benutzer im participants-Array ist
-      const userRides = rides.filter(ride => {
-        try {
-          const participants = Array.isArray(ride.participants) ? ride.participants : [];
-          return participants.includes(userId);
-        } catch (err) {
-          console.error(`Fehler beim Parsen des participants-Arrays für Fahrt ${ride.ride_id}:`, err);
-          return false;
+        if (ridesError) {
+          console.error("Fehler beim Abrufen der Fahrten:", ridesError.message);
+          return;
         }
-      });
 
-      // Nachrichten für diese Fahrten abrufen
-      const ridesWithMessages = await Promise.all(
-        userRides.map(async (ride) => {
-          const { data: lastMessage, error: messageError } = await supabase
-            .from("gruppenchats")
-            .select("*")
-            .eq("fahrt_id", ride.ride_id)
-            .order("zeitstempel", { ascending: false })
-            .limit(1)
-            .single();
-
-          const { data: allMessages, error: allMessagesError } = await supabase
-            .from("gruppenchats")
-            .select("*")
-            .eq("fahrt_id", ride.ride_id)
-            .order("zeitstempel", { ascending: true });
-
-
-          if (messageError && messageError.code !== "PGRST116") {
-            console.error(`Fehler beim Abrufen der letzten Nachricht für Fahrt ${ride.ride_id}:`, messageError.message);
+        // Filtert Fahrten basierend auf der Teilnehmerliste, um nur relevante Fahrten zu laden
+        const userRides = rides.filter((ride) => {
+          try {
+            const participants = Array.isArray(ride.participants) ? ride.participants : [];
+            return participants.includes(this.currentUserId);
+          } catch (err) {
+            console.error(`Fehler beim Verarbeiten der participants-Liste für Fahrt ${ride.ride_id}:`, err.message);
+            return false;
           }
+        });
 
-          if (allMessagesError) {
-            console.error(`Fehler beim Abrufen aller Nachrichten für Fahrt ${ride.ride_id}:`, allMessagesError.message);
-          }
+        // Abrufen der letzten Nachricht und aller Nachrichten für jede Fahrt
+        this.ridesWithLastMessage = await Promise.all(
+          userRides.map(async (ride) => {
+            const [lastMessage, allMessages] = await Promise.all([
+              supabase
+                .from("gruppenchats")
+                .select("*")
+                .eq("fahrt_id", ride.ride_id)
+                .order("zeitstempel", { ascending: false })
+                .limit(1)
+                .single()
+                .then((response) => response.data)
+                .catch(() => null),
+              supabase
+                .from("gruppenchats")
+                .select("*")
+                .eq("fahrt_id", ride.ride_id)
+                .order("zeitstempel", { ascending: true })
+                .then((response) => response.data)
+                .catch(() => []),
+            ]);
 
-          return {
-            ...ride,
-            lastMessage: lastMessage || null, // Letzte Nachricht oder null
-            messages: allMessages || [], // Alle Nachrichten oder leer
-          };
-        })
-      );
-
-      // Gefilterte Fahrten in die UI laden
-      this.ridesWithLastMessage = ridesWithMessages;
+            return {
+              ...ride,
+              lastMessage: lastMessage || null, // Letzte Nachricht oder null, falls keine vorhanden
+              messages: allMessages || [], // Vollständige Nachrichtenliste
+            };
+          })
+        );
+      } catch (err) {
+        console.error("Fehler beim Abrufen der Fahrten und Nachrichten:", err.message);
+      }
     },
 
-
-    // Zeitstempel formatieren
+    /**
+     * Formatiert einen Zeitstempel in ein lokales Datums- und Zeitformat.
+     * @param {string} timestamp - Zeitstempel im ISO-Format
+     * @returns {string} Formatierter Zeitstempel
+     */
     formatTimestamp(timestamp) {
       return new Date(timestamp).toLocaleString();
     },
 
-    // Chat ein-/ausblenden
+    /**
+     * Öffnet oder schließt den Chat für eine spezifische Fahrt.
+     * @param {number} rideId - ID der Fahrt
+     */
     toggleChat(rideId) {
-      this.openChatId = this.openChatId === rideId ? null : rideId; // Toggle-Logik
+      this.openChatId = this.openChatId === rideId ? null : rideId;
     },
 
-    // Neue Nachricht speichern
+    /**
+     * Speichert eine neue Nachricht in der Datenbank.
+     * Aktualisiert anschließend die Nachrichtenliste.
+     * @param {number} rideId - ID der Fahrt, zu der die Nachricht gehört
+     */
     async submitMessage(rideId) {
-      const user = (await supabase.auth.getUser()).data.user;
-
-      if (!user) {
-        alert("Sie müssen eingeloggt sein, um Nachrichten zu schreiben.");
+      if (!this.currentUserId) {
+        alert("Bitte melden Sie sich an, um Nachrichten zu senden.");
         return;
       }
 
-      // Vorname des Nutzers abrufen
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("name")
-        .eq("id", user.id)
-        .single();
+      try {
+        // Benutzerprofil abrufen, um den Namen anzuzeigen
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("name")
+          .eq("id", this.currentUserId)
+          .single();
 
-      if (profileError || !profile) {
-        console.error("Fehler beim Abrufen des Nutzernamens:", profileError.message);
-        alert("Fehler beim Abrufen Ihres Profils.");
-        return;
+        if (profileError || !profile) {
+          console.error("Fehler beim Abrufen des Profils:", profileError.message);
+          alert("Fehler beim Abrufen des Profils.");
+          return;
+        }
+
+        const fullMessage = `${profile.name}: ${this.newMessage}`;
+
+        // Nachricht in die Datenbank einfügen
+        const { error } = await supabase.from("gruppenchats").insert([
+          {
+            fahrt_id: rideId,
+            inhalt: fullMessage,
+            zeitstempel: new Date().toISOString(),
+          },
+        ]);
+
+        if (error) {
+          console.error("Fehler beim Speichern der Nachricht:", error.message);
+          alert("Fehler beim Speichern der Nachricht.");
+          return;
+        }
+
+        // UI aktualisieren
+        this.newMessage = "";
+        await this.fetchRidesWithLastMessage();
+      } catch (err) {
+        console.error("Fehler beim Senden der Nachricht:", err.message);
       }
-
-      const fullMessage = `${profile.name}: ${this.newMessage}`;
-
-      const { error } = await supabase.from("gruppenchats").insert([
-        {
-          fahrt_id: rideId,
-          inhalt: fullMessage,
-          zeitstempel: new Date().toISOString(),
-        },
-      ]);
-
-      if (error) {
-        console.error("Fehler beim Senden der Nachricht:", error.message);
-        alert("Fehler beim Senden der Nachricht.");
-        return;
-      }
-
-      // Nachricht erfolgreich gespeichert, Chat aktualisieren
-      this.newMessage = "";
-      await this.fetchRidesWithLastMessage();
     },
 
-    //Gruppe löschen
+    /**
+     * Löscht eine Fahrt aus der Datenbank und entfernt sie aus der UI.
+     * @param {number} rideId - ID der Fahrt, die gelöscht werden soll
+     */
     async deleteRide(rideId) {
-      const confirmation = confirm("Möchtest du diese Fahrt wirklich löschen?");
-      if (!confirmation) return;
+      if (!confirm("Möchtest du diese Fahrt wirklich löschen?")) return;
 
-      const { error } = await supabase
-        .from("rides")
-        .delete()
-        .eq("ride_id", rideId);
+      try {
+        const { error } = await supabase
+          .from("rides")
+          .delete()
+          .eq("ride_id", rideId);
 
-      if (error) {
-        alert("Fehler beim Löschen der Fahrt.");
-        console.error("Fehler beim Löschen:", error.message);
-      } else {
+        if (error) {
+          console.error("Fehler beim Löschen der Fahrt:", error.message);
+          alert("Fehler beim Löschen der Fahrt.");
+          return;
+        }
+
         alert("Fahrt erfolgreich gelöscht!");
-
-        // Entferne die Fahrt aus der UI
-        this.ridesWithLastMessage = this.ridesWithLastMessage.filter(ride => ride.ride_id !== rideId);
+        this.ridesWithLastMessage = this.ridesWithLastMessage.filter((ride) => ride.ride_id !== rideId);
+      } catch (err) {
+        console.error("Fehler beim Löschen der Fahrt:", err.message);
       }
     },
 
-    // Gruppe verlassen
+    /**
+     * Entfernt den Benutzer aus der Teilnehmerliste einer Fahrt.
+     * @param {number} rideId - ID der Fahrt
+     */
     async leaveGroup(rideId) {
       if (!this.currentUserId) {
-        alert("Bitte einloggen, um eine Gruppe zu verlassen.");
+        alert("Bitte melden Sie sich an, um eine Gruppe zu verlassen.");
         return;
       }
 
-      // Lade die aktuelle participants-Liste aus Supabase
-      let { data: ride, error } = await supabase
-        .from('rides')
-        .select('participants')
-        .eq('ride_id', rideId)
-        .single();
+      try {
+        // Teilnehmer abrufen und aktuellen Benutzer entfernen
+        const { data: ride, error } = await supabase
+          .from("rides")
+          .select("participants")
+          .eq("ride_id", rideId)
+          .single();
 
-      if (error || !ride) {
-        alert("Fehler beim Laden der Fahrt.");
-        return;
+        if (error || !ride) {
+          console.error("Fehler beim Laden der Fahrt:", error?.message);
+          alert("Fehler beim Laden der Fahrt.");
+          return;
+        }
+
+        const participants = (ride.participants || []).filter((id) => id !== this.currentUserId);
+
+        // Aktualisierte Teilnehmerliste in die Datenbank schreiben
+        const { error: updateError } = await supabase
+          .from("rides")
+          .update({ participants })
+          .eq("ride_id", rideId);
+
+        if (updateError) {
+          console.error("Fehler beim Verlassen der Gruppe:", updateError.message);
+          alert("Fehler beim Verlassen der Gruppe.");
+          return;
+        }
+
+        alert("Gruppe erfolgreich verlassen!");
+        this.ridesWithLastMessage = this.ridesWithLastMessage.filter((ride) => ride.ride_id !== rideId);
+      } catch (err) {
+        console.error("Fehler beim Verlassen der Gruppe:", err.message);
       }
-
-      // Sicherstellen, dass `participants` ein Array ist
-      let participants = Array.isArray(ride.participants) ? ride.participants : [];
-
-      // Entferne den Benutzer aus der Teilnehmerliste
-      participants = participants.filter(id => id !== this.currentUserId);
-
-      // Setze `verlassen` auf die UUID des Users, der die Gruppe verlassen hat
-      const { error: updateError } = await supabase
-        .from("rides")
-        .update({ participants, verlassen: this.currentUserId }) // nur `verlassen` setzen
-        .eq("ride_id", rideId);
-
-      if (updateError) {
-        alert("Fehler beim Verlassen der Gruppe.");
-      } else {
-        alert("Du hast die Gruppe erfolgreich verlassen!");
-        // UI aktualisieren: Entferne die Fahrt aus der Liste
-        this.ridesWithLastMessage = this.ridesWithLastMessage.filter(ride => ride.ride_id !== rideId);
-      }
-    }
+    },
   },
 };
 </script>

@@ -11,17 +11,22 @@
 </template>
 
 <script>
-
-import TripsInserierenFormular from '@/components/TripsInserierenFormular.vue';
+import TripsInserierenFormular from '@/components/TripsInserierenFormular.vue'; // Import der Komponente für das Formular zur Fahrtenvermittlung
 
 export default {
-    name: "RidesPage",
+  name: "RidesPage", // Name der Komponente, wichtig für Debugging und Router-Referenzen
 
-    components: {
-        TripsInserierenFormular,
-    }
+  components: {
+    TripsInserierenFormular, // Registrierung der TripsInserierenFormular-Komponente
+  },
+
+  data() {
+    return {
+      // Hier könnten später datenbezogene Zustände für die Seite hinzugefügt werden,
+      // z. B. Fahrtenliste oder Filteroptionen.
+    };
+  },
 };
-
 </script>
 
 <style scoped>

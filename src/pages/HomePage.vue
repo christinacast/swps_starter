@@ -87,41 +87,64 @@
 </template>
 
 <script>
-import SearchComponent from "@/components/SearchComponent.vue";
-import { supabase } from "@/services/supabase.js";
+import SearchComponent from "@/components/SearchComponent.vue"; // Import der Suchkomponente
+import { supabase } from "@/services/supabase.js"; // Verbindung zur Supabase-Datenbank
 
 export default {
   name: "HomePage",
   components: {
-    SearchComponent,
+    SearchComponent, // Einbinden der Suchkomponente
   },
   data() {
     return {
-      recentMessages: [], // Letzte Hauptnachrichten für die Vorschau
+      recentMessages: [], // Speichert die letzten Hauptnachrichten für die Forums-Vorschau
     };
   },
   async mounted() {
+    /**
+     * Lifecycle-Hook: Wird ausgeführt, sobald die Komponente gerendert wurde.
+     * Aktion: Die letzten Hauptnachrichten aus der Datenbank abrufen, um sie auf der Startseite anzuzeigen.
+     */
     await this.fetchRecentMessages();
   },
   methods: {
-    // Abrufen der letzten Hauptnachrichten aus der Datenbank
+    /**
+     * Lädt die letzten Hauptnachrichten aus der Supabase-Datenbank.
+     * - Abruf erfolgt aus der Tabelle "forum_posts".
+     * - Nur Hauptnachrichten (keine Antworten) werden berücksichtigt.
+     * - Ergebnisse werden chronologisch sortiert und auf zwei Nachrichten begrenzt.
+     */
     async fetchRecentMessages() {
-      const { data, error } = await supabase
-        .from("forum_posts")
-        .select("id, inhalt, zeitstempel") // Zeitstempel abrufen
-        .is("antwort_auf", null) // Nur Hauptnachrichten
-        .order("zeitstempel", { ascending: false }) // Neueste Nachrichten zuerst
-        .limit(2); // Zeige die letzten 2 Hauptnachrichten
+      try {
+        // Abrufen der Hauptnachrichten aus der Tabelle "forum_posts"
+        const { data, error } = await supabase
+          .from("forum_posts") // Tabelle "forum_posts" in der Datenbank
+          .select("id, inhalt, zeitstempel") // Nur relevante Spalten abrufen
+          .is("antwort_auf", null) // Filter: Nur Hauptnachrichten ohne Bezug auf andere Nachrichten
+          .order("zeitstempel", { ascending: false }) // Neueste Nachrichten zuerst
+          .limit(2); // Abrufen der letzten zwei Hauptnachrichten
 
-      if (error) {
-        console.error("Fehler beim Laden der Nachrichten:", error.message);
-      } else {
-        this.recentMessages = data.reverse(); // Chronologisch sortieren
+        if (error) {
+          // Fehlerbehandlung bei Abfragefehlern
+          console.error("Fehler beim Laden der Nachrichten:", error.message);
+          return;
+        }
+
+        // Umkehrung der Reihenfolge, damit die Nachrichten chronologisch angezeigt werden
+        this.recentMessages = data.reverse();
+      } catch (err) {
+        // Allgemeine Fehlerbehandlung für unerwartete Fehler
+        console.error("Ein unerwarteter Fehler ist aufgetreten:", err.message);
       }
     },
-    // Zeitstempel formatieren
+
+    /**
+     * Formatiert einen Zeitstempel in ein lesbares Datums- und Zeitformat.
+     * @param {string} timestamp - Zeitstempel im ISO-Format
+     * @returns {string} Formatierter Zeitstempel (z. B. 07.02.2025, 15:30)
+     */
     formatTimestamp(timestamp) {
-      return new Date(timestamp).toLocaleString(); // Zeitformat (z. B. 20.01.2025, 14:00)
+      return new Date(timestamp).toLocaleString(); // Lokales Datums- und Zeitformat anwenden
     },
   },
 };

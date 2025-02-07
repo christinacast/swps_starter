@@ -27,66 +27,69 @@
 </template>
 
 <script>
-import { supabase } from '@/services/supabase.js'; // Import the configured Supabase client
+import { supabase } from '@/services/supabase.js'; // Importiert die Supabase-Instanz zur Authentifizierung und Datenabfrage
 
 export default {
-  name: 'HeaderComponent', // The name of the Vue.js component
+  name: 'HeaderComponent', // Name der Vue.js-Komponente, wichtig für Debugging und Wiederverwendbarkeit
+
   data() {
     return {
-      user: null, // A reactive property to store the logged-in user's data. Initially set to null, assuming no user is logged in.
+      user: null, // Reaktives Datenobjekt, um Informationen über den aktuell eingeloggten Benutzer zu speichern. Standardmäßig ist kein Benutzer eingeloggt.
     };
   },
-  async mounted() {
-    // The `mounted` lifecycle hook is a special function in Vue.js that is automatically called when the component is fully loaded into the DOM (Document Object Model).
-    // The DOM is a representation of the web page's structure that JavaScript can interact with, such as adding or removing HTML elements dynamically.
 
-    // Step 1: Use Supabase's `auth.getUser` method to check if there's a currently authenticated user
+  async mounted() {
+    /**
+     * Der `mounted` Lifecycle-Hook wird ausgeführt, wenn die Komponente vollständig in den DOM geladen wurde.
+     * Hier werden initiale Daten abgerufen und Listener für Authentifizierungsänderungen eingerichtet.
+     */
+    
+    // Schritt 1: Abrufen der Benutzerinformationen beim Laden der Komponente
     await this.fetchUser();
 
-    // Step 2: Listen for changes in the user's authentication state
-    // Supabase provides an `onAuthStateChange` method that triggers whenever the user logs in or logs out.
+    // Schritt 2: Hinzufügen eines Event-Listeners für Änderungen des Authentifizierungsstatus
+    // `onAuthStateChange` überwacht Anmeldungen, Abmeldungen und andere Authentifizierungsänderungen.
     supabase.auth.onAuthStateChange(async (event, session) => {
       if (session && session.user) {
-        // If a user logs in, fetch their data dynamically
+        // Wenn ein Benutzer angemeldet ist, die Benutzerdaten erneut abrufen
         await this.fetchUser();
       } else {
-        // If the user logs out, reset the `user` property to null
+        // Wenn der Benutzer abgemeldet ist, den `user`-Status zurücksetzen
         this.user = null;
       }
     });
   },
+
   methods: {
+    /**
+     * Ruft die Informationen des aktuell authentifizierten Benutzers ab und lädt zusätzliches Profilwissen aus der Datenbank.
+     */
     async fetchUser() {
-      // This method fetches the logged-in user's data from Supabase
+      try {
+        // Schritt 1: Aktuell eingeloggten Benutzer aus der Supabase-Authentifizierung abrufen
+        const { data } = await supabase.auth.getUser();
 
-      // Step 1: Fetch the currently authenticated user
-      const { data } = await supabase.auth.getUser();
-      // `data` will contain information about the logged-in user if there is one, or it will be `null` if no user is logged in.
-
-      // Step 2: Verify if a user object is present in the returned data
-      if (data && data.user) {
-        // If a user is logged in, proceed to fetch additional profile data
-
-        try {
-          // Step 3: Query the 'profiles' table in Supabase to fetch the user's profile data (e.g., name)
+        if (data && data.user) {
+          // Schritt 2: Wenn ein Benutzer vorhanden ist, zusätzliche Profildaten aus der Tabelle `profiles` abrufen
           const { data: profile, error: profileError } = await supabase
-            .from('profiles') // Target the 'profiles' table
-            .select('name') // Select the 'name' column only 
-            .eq('id', data.user.id)
-            // Use the `.eq()` method to filter the rows where the `id` matches the user's ID.
-            // This ensures we only get the profile data for the logged-in user.
-            .single(); // Ensure only a single row is returned
+            .from('profiles') // Abfragen der Tabelle "profiles" in der Datenbank
+            .select('name') // Nur die Spalte "name" abrufen
+            .eq('id', data.user.id) // Filter: Benutzer-ID muss mit der ID des eingeloggten Benutzers übereinstimmen
+            .single(); // Es wird nur eine Zeile erwartet
 
-          // Step 4: Handle the case where the query is successful
           if (!profileError) {
-            // Merge the user object from Supabase with the profile data.
-            // If the 'name' field is not found in the profile, default it to 'User'.
-            this.user = { ...data.user, name: profile.name || 'User' };
+            // Schritt 3: Benutzer- und Profildaten kombinieren und im `user`-State speichern
+            this.user = {
+              ...data.user, // Enthält Basis-Benutzerdaten wie E-Mail, ID etc.
+              name: profile?.name || 'User', // Fallback: Standardname 'User', falls kein Name im Profil vorhanden ist
+            };
+          } else {
+            console.error('Fehler beim Abrufen der Profilinformationen:', profileError.message);
           }
-        } catch (error) {
-          // Log any unexpected errors during the fetching process
-          console.error('Error fetching profile data:', error);
         }
+      } catch (error) {
+        // Unerwartete Fehler während des Datenabrufs behandeln
+        console.error('Fehler beim Abrufen des Benutzers:', error.message);
       }
     },
   },

@@ -81,62 +81,76 @@
 import { supabase } from '@/services/supabase';
 
 export default {
-  name: "ViewAllTripsPage",
+  name: "ViewAllTripsPage", // Name der Komponente, wichtig für Debugging und Router-Referenzen
+
   data() {
     return {
-      allRides: [],
-      currentUserId: null,
+      allRides: [], // Enthält alle Fahrten, die aus der Datenbank geladen werden
+      currentUserId: null, // Speichert die ID des aktuell eingeloggten Benutzers
       filters: {
-        date: "",
-        status: "",
-        start: "",
-        end: "",
+        date: "", // Filter: Suche nach Fahrten ab einem bestimmten Datum
+        status: "", // Filter: Status der Fahrt (z. B. "Offen für Mitfahrer")
+        start: "", // Filter: Abreiseort
+        end: "", // Filter: Zielort
       },
-      filteredRides: [],
-      showAdvancedFilter: false,
+      filteredRides: [], // Enthält die Fahrten, die nach den aktiven Filtern gefiltert werden
+      showAdvancedFilter: false, // Steuert, ob erweiterte Filteroptionen angezeigt werden
       advancedFilters: {
-        exactDate: "",
-        minSeats: "",
-        stopover: "",
+        exactDate: "", // Erweiterter Filter: Exaktes Datum
+        minSeats: "", // Erweiterter Filter: Mindestanzahl verfügbarer Plätze
+        stopover: "", // Erweiterter Filter: Zwischenziel
       },
     };
   },
 
   async mounted() {
-    console.log("Query Parameters:", this.$route.query);
+    /**
+     * Lifecycle-Hook: Wird ausgeführt, sobald die Komponente in den DOM eingefügt wurde.
+     * 1. Lädt die aktuelle Benutzer-ID aus der Authentifizierung.
+     * 2. Ruft alle verfügbaren Fahrten aus der Datenbank ab.
+     * 3. Wendet Filter basierend auf URL-Parametern an, falls vorhanden.
+     */
+    try {
+      // Benutzer-ID aus der Supabase-Authentifizierung abrufen
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        this.currentUserId = user.id;
+      }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      this.currentUserId = user.id;
+      // Abrufen aller Fahrten aus der Datenbank
+      const { data: rides, error } = await supabase
+        .from('rides') // Tabelle "rides" in der Supabase-Datenbank
+        .select("*"); // Abruf aller Spalten
+
+      if (error) {
+        console.error("Fehler beim Abrufen der Fahrten:", error.message);
+        return;
+      }
+
+      this.allRides = rides; // Speichert alle abgerufenen Fahrten
+      this.filteredRides = rides; // Standardmäßig: Keine Filter angewendet, alle Fahrten anzeigen
+
+      // Überprüfen, ob URL-Parameter vorhanden sind, und Filter anwenden
+      if (Object.keys(this.$route.query).length > 0) {
+        this.applyFiltersWhenRedirect(this.$route.query);
+      }
+    } catch (err) {
+      console.error("Ein unerwarteter Fehler ist aufgetreten:", err.message);
     }
-
-    const { data: rides, error: error } = await supabase
-      .from('rides')
-      .select("*");
-
-    if (!error) {
-      this.allRides = rides;
-      this.filteredRides = rides;
-    }
-
-    console.log(this.allRides[1].start_point.coordinates)
-
-    // Apply filters if query parameters are provided
-    if (Object.keys(this.$route.query).length > 0) {
-      this.applyFiltersWhenRedirect(this.$route.query);
-    }
-
   },
 
   methods: {
+    /**
+     * Sortiert die Tabelle basierend auf einer angegebenen Spalte.
+     * @param {string} column - Name der Spalte, nach der sortiert werden soll.
+     */
     sortTable(column) {
-      // Wenn dieselbe Spalte erneut geklickt wird, Sortierrichtung umkehren
+      // Überprüfung, ob dieselbe Spalte erneut sortiert wird
       if (this.currentSort === column) {
-        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'; // Sortierrichtung umkehren
       } else {
-        // Neue Spalte sortieren, Standard: aufsteigend
-        this.currentSort = column;
-        this.currentSortDir = 'asc';
+        this.currentSort = column; // Neue Spalte festlegen
+        this.currentSortDir = 'asc'; // Standardmäßig aufsteigend sortieren
       }
 
       // Sortierlogik anwenden
@@ -144,13 +158,12 @@ export default {
         let aValue = a[column];
         let bValue = b[column];
 
-        // Für Datum oder Zeit als JavaScript-Date-Objekt umwandeln, wenn notwendig
+        // Sonderfall: Datum und Zeit in Date-Objekte umwandeln
         if (column === 'ride_date' || column === 'ride_time') {
           aValue = new Date(aValue);
           bValue = new Date(bValue);
         }
 
-        // Sortierlogik
         if (aValue < bValue) {
           return this.currentSortDir === 'asc' ? -1 : 1;
         }
@@ -161,69 +174,67 @@ export default {
       });
     },
 
+    /**
+     * Fügt den aktuellen Benutzer zu einer Fahrt hinzu.
+     * @param {number} rideId - ID der Fahrt, der der Benutzer beitreten möchte.
+     */
     async joinRide(rideId) {
-      // Aktuelle Benutzer-ID holen
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      if (authError || !user) {
-        alert("Bitte einloggen, um einer Fahrt beizutreten.");
-        return;
-      }
-
-      const userId = user.id;
-
-      // Lade aktuelle participants-Liste
-      let { data: ride, error } = await supabase
-        .from('rides')
-        .select('participants')
-        .eq('ride_id', rideId)
-        .single();
-
-      if (error || !ride) {
-        alert("Fehler beim Laden der Fahrt.");
-        return;
-      }
-
-      // Stelle sicher, dass participants als Array vorliegt
-      let participants = [];
-
-      if (Array.isArray(ride.participants)) {
-        participants = ride.participants; // Falls bereits ein Array, direkt übernehmen
-      } else if (typeof ride.participants === "string") {
-        try {
-          participants = JSON.parse(ride.participants); // Falls String, in Array umwandeln
-        } catch (parseError) {
-          console.error("Fehler beim Parsen von participants:", parseError);
-          participants = []; // Falls Fehler, leeres Array setzen
+      try {
+        // Benutzer-ID aus der Supabase-Authentifizierung abrufen
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+          alert("Bitte loggen Sie sich ein, um einer Fahrt beizutreten.");
+          return;
         }
-      }
 
-      // Falls der User schon Teilnehmer ist, breche ab
-      if (participants.includes(userId)) {
-        alert("Du bist bereits Teilnehmer dieser Fahrt.");
-        return;
-      }
+        const userId = user.id;
 
-      // User zur Liste hinzufügen
-      participants.push(userId);
+        // Abrufen der Teilnehmerliste der spezifischen Fahrt
+        const { data: ride, error } = await supabase
+          .from('rides')
+          .select('participants') // Nur die Spalte "participants" abrufen
+          .eq('ride_id', rideId) // Filter: Fahrt-ID
+          .single();
 
-      // Aktualisieren in Supabase ohne erneutes JSON.stringify()
-      const { error: updateError } = await supabase
-        .from('rides')
-        .update({ participants }) // Direkt als Array speichern
-        .eq('ride_id', rideId);
+        if (error || !ride) {
+          alert("Fehler beim Abrufen der Fahrt.");
+          return;
+        }
 
-      if (updateError) {
-        alert("Fehler beim Beitreten der Fahrt.");
-      } else {
-        alert("Du hast erfolgreich an der Fahrt teilgenommen!");
+        let participants = Array.isArray(ride.participants)
+          ? ride.participants
+          : [];
 
-        // UI aktualisieren
-        this.filteredRides = this.filteredRides.map(ride =>
-          ride.ride_id === rideId ? { ...ride, participants } : ride
-        );
+        if (participants.includes(userId)) {
+          alert("Du bist bereits Teilnehmer dieser Fahrt.");
+          return;
+        }
+
+        // Benutzer der Teilnehmerliste hinzufügen
+        participants.push(userId);
+
+        // Teilnehmerliste in der Datenbank aktualisieren
+        const { error: updateError } = await supabase
+          .from('rides')
+          .update({ participants })
+          .eq('ride_id', rideId);
+
+        if (updateError) {
+          alert("Fehler beim Beitreten der Fahrt.");
+        } else {
+          alert("Du hast erfolgreich an der Fahrt teilgenommen!");
+          this.filteredRides = this.filteredRides.map(ride =>
+            ride.ride_id === rideId ? { ...ride, participants } : ride
+          );
+        }
+      } catch (err) {
+        console.error("Ein unerwarteter Fehler ist aufgetreten:", err.message);
       }
     },
 
+    /**
+     * Setzt alle aktiven Filter zurück und zeigt alle Fahrten an.
+     */
     clearFilters() {
       this.filters = {
         date: "",
@@ -231,13 +242,19 @@ export default {
         start: "",
         end: "",
       };
-      this.filteredRides = [...this.allRides];
+      this.filteredRides = [...this.allRides]; // Zeigt alle Fahrten ohne Filter an
     },
 
+    /**
+     * Schaltet die Anzeige erweiterter Filteroptionen um.
+     */
     toggleAdvancedFilter() {
-      this.showAdvancedFilter = !this.showAdvancedFilter;
+      this.showAdvancedFilter = !this.showAdvancedFilter; // Sichtbarkeit umschalten
     },
 
+    /**
+     * Wendet die aktuellen Filter auf die Fahrtenliste an.
+     */
     applyFilters() {
       this.filteredRides = this.allRides.filter((ride) => {
         return (
@@ -252,8 +269,11 @@ export default {
       });
     },
 
+    /**
+     * Wendet Filter basierend auf den übergebenen URL-Parametern an.
+     * @param {Object} query - URL-Parameter mit den Filterwerten.
+     */
     applyFiltersWhenRedirect(query) {
-      // Set filters from query parameters
       this.filters = {
         date: query.date || "",
         status: query.status || "",
@@ -267,23 +287,10 @@ export default {
         stopover: query.stopover || "",
       };
 
-      // Apply filters to rides
-      this.filteredRides = this.allRides.filter((ride) => {
-        return (
-          (!this.filters.date || ride.ride_date >= this.filters.date) &&
-          (!this.filters.status || ride.status === this.filters.status) &&
-          (!this.filters.start || ride.start_string.includes(this.filters.start)) &&
-          (!this.filters.end || ride.end_string.includes(this.filters.end)) &&
-          (!this.advancedFilters.exactDate || ride.ride_date === this.advancedFilters.exactDate) &&
-          (!this.advancedFilters.minSeats || ride.available_seats >= this.advancedFilters.minSeats) &&
-          (!this.advancedFilters.stopover || ride.stopovers?.includes(this.advancedFilters.stopover))
-        );
-      });
-
-      console.log("Filters applied from query:", this.filters, this.advancedFilters);
-    }
-  }
-}
+      this.applyFilters(); // Filter anwenden
+    },
+  },
+};
 </script>
 
 <style scoped>

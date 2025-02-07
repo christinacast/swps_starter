@@ -91,102 +91,120 @@
 </template>
 
 <script>
-import { supabase } from '@/services/supabase.js';
-import { haversineDistance } from '@/services/kmDistanceComputation.js';
+import { supabase } from '@/services/supabase.js'; // Verbindung zur Supabase-Datenbank
+import { haversineDistance } from '@/services/kmDistanceComputation.js'; // Import der Funktion zur Berechnung von Distanzen
 
 export default {
   name: 'ProfilePage',
   data() {
     return {
-      user: null,
-      profile: {},
-      upcomingRides: {},
-      pastRides: {},
+      user: null, // Daten des eingeloggten Benutzers
+      profile: {}, // Profildaten des Benutzers (Name, Nachname)
+      upcomingRides: [], // Liste der anstehenden Fahrten
+      pastRides: [], // Liste der vergangenen Fahrten
     };
   },
   async mounted() {
+    /**
+     * Lifecycle-Hook: Wird ausgeführt, sobald die Komponente gerendert wurde.
+     * Aktionen:
+     * 1. Benutzer-Authentifizierungsdaten abrufen.
+     * 2. Profildaten des Benutzers laden.
+     * 3. Fahrten abrufen und in anstehende und vergangene Fahrten trennen.
+     */
     const { data: authData } = await supabase.auth.getUser();
     if (authData && authData.user) {
       this.user = authData.user;
 
-      const { data: profileData, error } = await supabase
-        .from('profiles')
-        .select('name, surname')
-        .eq('id', this.user.id)
-        .single();
+      // Profildaten des Benutzers abrufen
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles') // Tabelle "profiles" in der Datenbank
+        .select('name, surname') // Nur Name und Nachname abrufen
+        .eq('id', this.user.id) // Benutzer-ID als Filter
+        .single(); // Nur ein Datensatz erwartet
 
-      if (!error) {
+      if (!profileError) {
         this.profile = profileData;
       } else {
-        console.error('Error fetching profile:', error.message);
+        console.error('Fehler beim Abrufen der Profildaten:', profileError.message);
       }
     }
 
-    let { data: rides, error } = await supabase
-      .from('rides')
-      .select("*")
+    // Fahrten abrufen
+    let { data: rides, error: ridesError } = await supabase
+      .from('rides') // Tabelle "rides" in der Datenbank
+      .select('*'); // Alle Spalten abrufen
 
-    if (!error) {
-      // Fahrten filtern: Nur Fahrten anzeigen, bei denen der Benutzer im participants-Array ist
-      const allRides = rides.filter(ride => {
+    if (!ridesError) {
+      // Nur Fahrten, an denen der Benutzer teilnimmt, filtern
+      const allRides = rides.filter((ride) => {
         try {
           const participants = Array.isArray(ride.participants) ? ride.participants : [];
-          return participants.includes(this.user.id);
+          return participants.includes(this.user.id); // Benutzer-ID in der Teilnehmerliste
         } catch (err) {
-          console.error(`Fehler beim Parsen des participants-Arrays für Fahrt ${ride.ride_id}:`, err);
+          console.error(`Fehler beim Verarbeiten der Teilnehmerliste für Fahrt ${ride.id}:`, err.message);
           return false;
         }
       });
 
-      Object.keys(allRides).forEach((key) => {
-        const ride = allRides[key];
-
-        // Add new key-value pairs
-        allRides[key] = {
-          ...ride,
-          co2Saved: ride.available_seats > 0
-            ? parseFloat((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates))
-              - ((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates))
-                / ride.participants.length)).toFixed(1)
-            : 0,
-        };
-      });
+      // Berechnung von eingespartem CO₂ für jede Fahrt
+      const processedRides = allRides.map((ride) => ({
+        ...ride,
+        co2Saved: ride.available_seats > 0
+          ? parseFloat(
+            (140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates)) -
+            ((140 * haversineDistance(ride.start_point.coordinates, ride.end_point.coordinates)) /
+              ride.participants.length)
+          ).toFixed(1)
+          : 0,
+      }));
 
       const currentDate = new Date();
 
-      // Separate rides into upcoming and past based on date
-      this.upcomingRides = allRides.filter((ride) => {
+      // Trennen in anstehende und vergangene Fahrten
+      this.upcomingRides = processedRides.filter((ride) => {
         const rideDate = new Date(`${ride.ride_date}T${ride.ride_time}`);
-        return rideDate >= currentDate; // Upcoming rides
+        return rideDate >= currentDate; // Anstehende Fahrten
       });
 
-      this.pastRides = allRides.filter((ride) => {
+      this.pastRides = processedRides.filter((ride) => {
         const rideDate = new Date(`${ride.ride_date}T${ride.ride_time}`);
-        return rideDate < currentDate; // Past rides
+        return rideDate < currentDate; // Vergangene Fahrten
       });
     } else {
-      console.error('Error fetching rides:', error.message);
+      console.error('Fehler beim Abrufen der Fahrten:', ridesError.message);
     }
-
   },
   methods: {
+    /**
+     * Loggt den Benutzer aus.
+     * 1. Meldet den Benutzer von Supabase ab.
+     * 2. Leitet den Benutzer zur Login-Seite weiter.
+     */
     async logout() {
       const { error } = await supabase.auth.signOut();
       if (error) {
-        alert('Error logging out: ' + error.message);
+        alert('Fehler beim Abmelden: ' + error.message);
       } else {
-        this.user = null;
-        this.$router.push('/login');
+        this.user = null; // Benutzer aus dem lokalen Zustand entfernen
+        this.$router.push('/login'); // Zur Login-Seite navigieren
       }
     },
+
+    /**
+     * Sortiert eine Tabelle basierend auf der angegebenen Spalte.
+     * 1. Wenn dieselbe Spalte erneut geklickt wird, wird die Sortierrichtung umgekehrt.
+     * 2. Sortiert die Tabelle entweder auf- oder absteigend.
+     * @param {string} column - Der Name der zu sortierenden Spalte.
+     * @param {Array} table - Die Tabelle, die sortiert werden soll (z. B. upcomingRides).
+     */
     sortTable(column, table) {
-      // Wenn dieselbe Spalte erneut geklickt wird, Sortierrichtung umkehren
+      // Überprüfen, ob die gleiche Spalte erneut sortiert wird
       if (this.currentSort === column) {
         this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
       } else {
-        // Neue Spalte sortieren, Standard: aufsteigend
-        this.currentSort = column;
-        this.currentSortDir = 'asc';
+        this.currentSort = column; // Neue Spalte setzen
+        this.currentSortDir = 'asc'; // Standardmäßig aufsteigend sortieren
       }
 
       // Sortierlogik anwenden
@@ -194,7 +212,7 @@ export default {
         let aValue = a[column];
         let bValue = b[column];
 
-        // Für Datum oder Zeit als JavaScript-Date-Objekt umwandeln, wenn notwendig
+        // Für Datums- und Zeitspalten in Date-Objekte umwandeln
         if (column === 'ride_date' || column === 'ride_time') {
           aValue = new Date(aValue);
           bValue = new Date(bValue);

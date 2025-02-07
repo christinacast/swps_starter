@@ -32,60 +32,90 @@
 </template>
 
 <script>
-
 export default {
+  name: "SearchComponent", // Name der Komponente, wichtig für Debugging und Wiederverwendbarkeit
+
   data() {
     return {
+      // Hauptfilter, die in der Suchleiste angezeigt werden
       filters: {
-        date: "",
-        status: "",
-        start: "",
-        end: "",
+        date: "", // Filter: Datum ab dem gesucht wird
+        status: "", // Filter: Status der Fahrt (z. B. "Offen für Mitfahrer")
+        start: "", // Filter: Abreiseort
+        end: "", // Filter: Zielort
       },
-      showAdvancedFilter: false,
+      showAdvancedFilter: false, // Steuert die Sichtbarkeit der erweiterten Filteroptionen
+      // Erweiterte Filter für präzisere Suchoptionen
       advancedFilters: {
-        exactDate: "",
-        minSeats: "",
-        stopover: "",
+        exactDate: "", // Erweiterter Filter: Exaktes Datum
+        minSeats: "", // Erweiterter Filter: Mindestanzahl verfügbarer Plätze
+        stopover: "", // Erweiterter Filter: Zwischenziel
       },
     };
   },
+
   methods: {
+    /**
+     * Setzt alle Filter (inkl. Haupt- und erweiterte Filter) zurück.
+     * - Stellt sicher, dass die Suchergebnisse auf alle Fahrten zurückgesetzt werden.
+     */
     clearFilters() {
       this.filters = {
-        date: "",
-        status: "",
-        start: "",
-        end: "",
+        date: "", // Setzt das Datumsfeld zurück
+        status: "", // Setzt den Status-Filter zurück
+        start: "", // Setzt den Startort zurück
+        end: "", // Setzt den Zielort zurück
       };
-      this.filteredRides = [...this.allRides];
+
+      this.advancedFilters = {
+        exactDate: "", // Setzt den exakten Datumsfilter zurück
+        minSeats: "", // Setzt den Mindestplätze-Filter zurück
+        stopover: "", // Setzt den Zwischenziel-Filter zurück
+      };
+
+      console.log("Filter wurden zurückgesetzt."); // Debugging-Hinweis
     },
+
+    /**
+     * Schaltet die Anzeige der erweiterten Filteroptionen um.
+     * - Zeigt oder verbirgt die zusätzlichen Filtereingaben.
+     */
     toggleAdvancedFilter() {
-      this.showAdvancedFilter = !this.showAdvancedFilter;
+      this.showAdvancedFilter = !this.showAdvancedFilter; // Sichtbarkeit des erweiterten Filters umschalten
+      console.log(
+        `Erweiterte Filter ${this.showAdvancedFilter ? "aktiviert" : "deaktiviert"}.`
+      ); // Debugging-Hinweis
     },
+
+    /**
+     * Wendet die Filter auf die Suchergebnisse an und navigiert zur Seite mit allen Fahrten.
+     * - Erstellt die Query-Parameter basierend auf den aktiven Filtern.
+     * - Navigiert zur `ViewAllTrips`-Seite mit den ausgewählten Filtern.
+     */
     applyFilters() {
-      // Build query parameters based on filters
+      // Erstellen der Query-Parameter basierend auf den aktiven Filtern
       const queryParams = {
-        date: this.filters.date || undefined,
-        status: this.filters.status || undefined,
-        start: this.filters.start || undefined,
-        end: this.filters.end || undefined,
-        exactDate: this.advancedFilters.exactDate || undefined,
-        minSeats: this.advancedFilters.minSeats || undefined,
-        stopover: this.advancedFilters.stopover || undefined,
+        date: this.filters.date || undefined, // Datum, falls ausgewählt
+        status: this.filters.status || undefined, // Status, falls ausgewählt
+        start: this.filters.start || undefined, // Startort, falls angegeben
+        end: this.filters.end || undefined, // Zielort, falls angegeben
+        exactDate: this.advancedFilters.exactDate || undefined, // Exaktes Datum, falls angegeben
+        minSeats: this.advancedFilters.minSeats || undefined, // Mindestanzahl an Sitzen, falls angegeben
+        stopover: this.advancedFilters.stopover || undefined, // Zwischenziel, falls angegeben
       };
 
-      // Remove undefined query parameters
-      const query = Object.fromEntries(Object.entries(queryParams).filter(([, v]) => v !== undefined));
+      // Entfernt alle Query-Parameter, die undefined sind
+      const query = Object.fromEntries(
+        Object.entries(queryParams).filter(([, v]) => v !== undefined)
+      );
 
-      console.log(`/view-all-Trips/${query}`)
+      console.log("Angewandte Filter:", query); // Debugging: Zeigt die angewandten Filter
 
-      // Navigate to another page with query parameters
+      // Navigiert zur `ViewAllTrips`-Seite und übergibt die Filter als Query-Parameter
       this.$router.push({ name: "ViewAllTrips", query });
-    }
-  }
-}
-
+    },
+  },
+};
 </script>
 
 

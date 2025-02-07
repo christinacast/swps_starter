@@ -22,70 +22,88 @@
 </template>
 
 <script>
-import { Calendar } from "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
-import { supabase } from "@/services/supabase.js";
+import { Calendar } from "@fullcalendar/core"; // Import der FullCalendar-Kalenderbibliothek
+import dayGridPlugin from "@fullcalendar/daygrid"; // Plugin für Monatsansicht
+import timeGridPlugin from "@fullcalendar/timegrid"; // Plugin für Wochen-/Tagesansicht
+import interactionPlugin from "@fullcalendar/interaction"; // Plugin für Interaktion wie Event-Klick
+import { ref, onMounted, onBeforeUnmount, watch } from "vue"; // Vue-Reaktivität und Lifecycle-Hooks
+import { supabase } from "@/services/supabase.js"; // Verbindung zur Supabase-Datenbank
 
 export default {
-  name: "CalendarComponent",
+  name: "CalendarComponent", // Name der Komponente für Debugging und Wiederverwendbarkeit
   props: {
+    /**
+     * @prop {Array} events - Enthält die Liste der Events, die im Kalender angezeigt werden sollen.
+     * Format: [{ id, title, start, end, extendedProps }]
+     */
     events: {
       type: Array,
       default: () => [],
     },
+    /**
+     * @prop {Function} onDelete - Callback-Funktion, die nach dem Löschen eines Events ausgeführt wird.
+     * Wird verwendet, um die Events in der übergeordneten Komponente zu aktualisieren.
+     */
     onDelete: {
       type: Function,
       required: true,
     },
   },
   setup(props) {
-    const calendarEl = ref(null);
-    let calendarInstance = null;
+    // Reaktive Referenzen und Variablen
+    const calendarEl = ref(null); // Referenz für das DOM-Element des Kalenders
+    let calendarInstance = null; // FullCalendar-Instanz
+    const showDetailsDialog = ref(false); // Steuert die Anzeige des Detail-Dialogs
+    const selectedEvent = ref(null); // Speichert die Daten des ausgewählten Events
 
-    // Zustand für das Popup
-    const showDetailsDialog = ref(false);
-    const selectedEvent = ref(null);
-
-    // Kalender initialisieren
+    /**
+     * Initialisiert die FullCalendar-Instanz und rendert den Kalender.
+     * - Plugins und Ansichtseinstellungen werden hier definiert.
+     */
     const initializeCalendar = () => {
       if (calendarEl.value) {
         calendarInstance = new Calendar(calendarEl.value, {
           plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-          initialView: "timeGridWeek",
+          initialView: "timeGridWeek", // Standardansicht: Wochenansicht mit Stundenraster
           headerToolbar: {
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
+            left: "prev,next today", // Navigation (vor/zurück und heute)
+            center: "title", // Titel der aktuellen Ansicht
+            right: "dayGridMonth,timeGridWeek,timeGridDay", // Wechsel zwischen Monats-, Wochen- und Tagesansicht
           },
-          events: props.events,
-          editable: false,
-          selectable: true,
-          eventClick: handleEventClick, // Event-Klick-Handler
+          events: props.events, // Events aus den Props laden
+          editable: false, // Events können nicht per Drag & Drop bearbeitet werden
+          selectable: true, // Benutzer können Events auswählen
+          eventClick: handleEventClick, // Event-Klick-Handler definieren
         });
 
-        calendarInstance.render();
+        calendarInstance.render(); // Kalender rendern
       }
     };
 
-    // Event-Klick-Handler
+    /**
+     * Wird aufgerufen, wenn ein Event im Kalender angeklickt wird.
+     * - Öffnet den Detail-Dialog mit den Daten des angeklickten Events.
+     * @param {Object} info - Informationen über das angeklickte Event.
+     */
     const handleEventClick = (info) => {
       selectedEvent.value = {
-        id: info.event.id,
-        title: info.event.title,
-        start: info.event.start,
-        end: info.event.end,
-        extendedProps: info.event.extendedProps,
+        id: info.event.id, // Event-ID
+        title: info.event.title, // Event-Titel
+        start: info.event.start, // Startdatum/-zeit
+        end: info.event.end, // Enddatum/-zeit
+        extendedProps: info.event.extendedProps, // Erweiterte Eigenschaften (z. B. Adresse)
       };
       showDetailsDialog.value = true; // Dialog anzeigen
     };
 
-    // Termin löschen
+    /**
+     * Löscht das ausgewählte Event aus der Datenbank und aktualisiert den Kalender.
+     * - Verwendet die Supabase-Datenbank zum Löschen.
+     */
     const deleteEvent = async () => {
       if (selectedEvent.value) {
         try {
+          // Löschen des Events aus der Tabelle "termine"
           const { error } = await supabase
             .from("termine")
             .delete()
@@ -97,44 +115,61 @@ export default {
             return;
           }
 
-          // Entferne das Event aus FullCalendar
+          // Event aus dem Kalender entfernen
           calendarInstance.getEventById(selectedEvent.value.id)?.remove();
 
           alert("Termin erfolgreich gelöscht!");
-          props.onDelete(); // Aktualisiere die Events
+          props.onDelete(); // Events in der übergeordneten Komponente aktualisieren
         } catch (err) {
           console.error("Fehler:", err.message);
         } finally {
-          closeDetailsDialog();
+          closeDetailsDialog(); // Dialog schließen
         }
       }
     };
 
-    // Dialog schließen
+    /**
+     * Schließt den Detail-Dialog und setzt die Auswahl zurück.
+     */
     const closeDetailsDialog = () => {
       showDetailsDialog.value = false;
       selectedEvent.value = null;
     };
 
-    // Datum formatieren
+    /**
+     * Formatiert ein Datum in ein lesbares Format.
+     * @param {Date} date - Datum, das formatiert werden soll.
+     * @returns {string} Formatierter Datums-String.
+     */
     const formatDate = (date) => {
       if (!date) return "-";
-      return new Date(date).toLocaleString();
+      return new Date(date).toLocaleString(); // Lokales Datumsformat anwenden
     };
 
-    // Events im Kalender aktualisieren
+    /**
+     * Beobachtet Änderungen in den übergebenen Events und aktualisiert den Kalender entsprechend.
+     * - Entfernt alte Events und fügt neue hinzu.
+     */
     watch(
-      () => props.events,
+      () => props.events, // Beobachtet die "events"-Prop
       (newEvents) => {
         if (calendarInstance) {
-          calendarInstance.removeAllEvents();
-          calendarInstance.addEventSource(newEvents);
+          calendarInstance.removeAllEvents(); // Alle bestehenden Events entfernen
+          calendarInstance.addEventSource(newEvents); // Neue Events hinzufügen
         }
       }
     );
 
-    // Initialisierung und Zerstörung
+    /**
+     * Lifecycle-Hook: Wird ausgeführt, sobald die Komponente in den DOM eingefügt wird.
+     * - Initialisiert den Kalender.
+     */
     onMounted(() => initializeCalendar());
+
+    /**
+     * Lifecycle-Hook: Wird ausgeführt, bevor die Komponente zerstört wird.
+     * - Entfernt die FullCalendar-Instanz.
+     */
     onBeforeUnmount(() => calendarInstance?.destroy());
 
     return {

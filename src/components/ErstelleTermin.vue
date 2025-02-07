@@ -41,67 +41,80 @@
 </template>
 
 <script>
-import { supabase } from "@/services/supabase.js";
+import { supabase } from "@/services/supabase.js"; // Verbindung zur Supabase-Datenbank
 
 export default {
+  name: "ErstelleTermin", // Name der Komponente, wichtig für Debugging und Wiederverwendbarkeit
+
   data() {
     return {
-      name: "",
-      start: "",
-      end: "",
-      address: "",
-      repeatPattern: "none", // Behalten der Logik für das Frontend
+      name: "", // Name des Termins
+      start: "", // Startdatum und -uhrzeit des Termins
+      end: "", // Enddatum und -uhrzeit des Termins
+      address: "", // Adresse des Termins
+      repeatPattern: "none", // Wiederholungsmuster (Standard: keine Wiederholung)
     };
   },
+
   methods: {
+    /**
+     * Fügt einen neuen Termin hinzu, basierend auf den eingegebenen Daten und dem Wiederholungsmuster.
+     * - Berechnet Wiederholungen (falls erforderlich).
+     * - Speichert die Termine in der Supabase-Datenbank.
+     */
     async addTerm() {
+      // Überprüft, ob der Benutzer eingeloggt ist
       const user = (await supabase.auth.getUser()).data.user;
 
       if (!user) {
-        alert("Sie müssen eingeloggt sein, um Termine hinzuzufügen.");
+        alert("Sie müssen eingeloggt sein, um Termine hinzuzufügen."); // Benutzerwarnung
         return;
       }
 
       try {
-        // Berechne alle Termine basierend auf dem Wiederholungsmuster
+        // Berechnet die zu speichernden Termine basierend auf dem Wiederholungsmuster
         const dates = this.calculateDates();
 
-        // Erstelle die Terminobjekte für die Supabase
+        // Erstellt Terminobjekte für die Datenbank
         const events = dates.map((date) => ({
-          name: this.name,
-          start: date.start,
-          ende: date.end,
-          adresse: this.address,
-          profil_id: user.id,
+          name: this.name, // Name des Termins
+          start: date.start, // Startzeitpunkt
+          ende: date.end, // Endzeitpunkt
+          adresse: this.address, // Adresse
+          profil_id: user.id, // ID des aktuellen Benutzers
         }));
 
-        // Speichere die Termine in der Supabase
+        // Speichert die Termine in der Tabelle "termine" in der Supabase
         const { error } = await supabase.from("termine").insert(events);
 
         if (error) {
-          console.error("Fehler beim Speichern der Termine:", error.message);
-          alert("Fehler beim Hinzufügen der Termine: " + error.message);
+          console.error("Fehler beim Speichern der Termine:", error.message); // Fehler in der Konsole
+          alert("Fehler beim Hinzufügen der Termine: " + error.message); // Benutzerwarnung
         } else {
-          alert("Termine erfolgreich hinzugefügt!");
-          this.$emit("term-added");
-          this.resetForm();
+          alert("Termine erfolgreich hinzugefügt!"); // Erfolgsbenachrichtigung
+          this.$emit("term-added"); // Benachrichtigt die übergeordnete Komponente
+          this.resetForm(); // Zurücksetzen des Formulars
         }
       } catch (err) {
-        console.error("Unerwarteter Fehler:", err);
+        console.error("Unerwarteter Fehler:", err.message); // Unerwartete Fehler behandeln
       }
     },
+
+    /**
+     * Berechnet alle Termine basierend auf dem ausgewählten Wiederholungsmuster.
+     * @returns {Array} Array von Objekten mit Start- und Endzeitpunkten.
+     */
     calculateDates() {
       const dates = [];
-      const startDate = new Date(this.start);
-      const endDate = new Date(this.end);
+      const startDate = new Date(this.start); // Konvertierung des Startzeitpunkts in ein Date-Objekt
+      const endDate = new Date(this.end); // Konvertierung des Endzeitpunkts in ein Date-Objekt
 
-      // Dauer zwischen Start und Ende des Termins
-      const duration = endDate - startDate;
+      const duration = endDate - startDate; // Dauer des Termins in Millisekunden
 
-      // Anzahl der Wiederholungen (1 bei "none", 27 bei Wiederholung)
+      // Anzahl der Wiederholungen (1 bei "none", 27 bei wiederkehrenden Terminen)
       const iterations = this.repeatPattern === "none" ? 1 : 27;
 
-      // Intervall in Millisekunden (je nach Wiederholungsmuster)
+      // Zeitintervall für Wiederholungen in Millisekunden
       let interval = 0;
       if (this.repeatPattern === "weekly") {
         interval = 7 * 24 * 60 * 60 * 1000; // Eine Woche
@@ -113,25 +126,29 @@ export default {
         interval = 365 * 24 * 60 * 60 * 1000; // Ein Jahr
       }
 
-      // Berechne die Termine
+      // Berechnet Termine basierend auf dem Intervall
       for (let i = 0; i < iterations; i++) {
-        const currentStart = new Date(startDate.getTime() + i * interval);
-        const currentEnd = new Date(currentStart.getTime() + duration);
+        const currentStart = new Date(startDate.getTime() + i * interval); // Startzeitpunkt der Wiederholung
+        const currentEnd = new Date(currentStart.getTime() + duration); // Endzeitpunkt der Wiederholung
 
         dates.push({
-          start: currentStart.toISOString(),
+          start: currentStart.toISOString(), // ISO-Format für die Datenbank
           end: currentEnd.toISOString(),
         });
       }
 
-      return dates;
+      return dates; // Rückgabe der berechneten Termine
     },
+
+    /**
+     * Setzt das Formular zurück, um alle Eingabefelder zu leeren.
+     */
     resetForm() {
-      this.name = "";
-      this.start = "";
-      this.end = "";
-      this.address = "";
-      this.repeatPattern = "none";
+      this.name = ""; // Zurücksetzen des Namens
+      this.start = ""; // Zurücksetzen der Startzeit
+      this.end = ""; // Zurücksetzen der Endzeit
+      this.address = ""; // Zurücksetzen der Adresse
+      this.repeatPattern = "none"; // Zurücksetzen des Wiederholungsmusters
     },
   },
 };
