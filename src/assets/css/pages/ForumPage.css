@@ -1,0 +1,90 @@
+.forum-page {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Nachrichten-Container */
+  .forum-container {
+    height: 400px;
+    width: 100%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Einzelne Nachricht */
+  .message {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .message:last-child {
+    border-bottom: none;
+  }
+  
+  .timestamp {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+  }
+  
+  /* Antworten */
+  .replies {
+    margin-left: 20px;
+    border-left: 2px solid #ddd;
+    padding-left: 10px;
+  }
+  
+  .reply {
+    padding: 8px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+  
+  /* Antwortformular */
+  .reply-form {
+    margin-top: 10px;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #009260;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3b7b5b;
+  }
+  
+  .toggle-replies-button {
+    margin-top: 5px;
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .toggle-replies-button:hover {
+    background-color: #5a6268;
+  }

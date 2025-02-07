@@ -2,28 +2,30 @@
   <div class="homePage">
     <!-- Suchkomponente -->
     <SearchComponent />
-<!-- Abschnitt mit Hintergrundbild -->
-<div class="hero-section">
-  <div class="hero-content">
-    <h2>Willkommen auf unserer Plattform!</h2>
-    <p>Entdecke die neuesten Fahrten, das Forum und vieles mehr!</p>
-  
-  </div>
-</div>
+    <!-- Abschnitt mit Hintergrundbild -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h2>Willkommen auf unserer Plattform!</h2>
+        <p>Entdecke die neuesten Fahrten, das Forum und vieles mehr!</p>
 
-<div class="sticky-note">
-    <h2>Willkommen bei UniDrive! 🚗</h2>
-    <p>Schön, dass du hier bist! <strong>UniDrive</strong> ist die Plattform für Studierende, die gemeinsam zur Uni pendeln möchten.  
-    Ob du eine Mitfahrgelegenheit suchst oder selbst eine Fahrt anbietest – hier findest du schnell die passende Verbindung.</p>
+      </div>
+    </div>
 
-    <ul>
+    <div class="sticky-note">
+      <h2>Willkommen bei UniDrive! 🚗</h2>
+      <p>Schön, dass du hier bist! <strong>UniDrive</strong> ist die Plattform für Studierende, die gemeinsam zur Uni
+        pendeln möchten.
+        Ob du eine Mitfahrgelegenheit suchst oder selbst eine Fahrt anbietest – hier findest du schnell die passende
+        Verbindung.</p>
+
+      <ul>
         <li>🌍 <strong>Nachhaltig & Günstig</strong> – Spare Geld und schone die Umwelt.</li>
         <li>🤝 <strong>Gemeinsam statt einsam</strong> – Lerne neue Leute kennen und teile die Fahrt.</li>
         <li>📍 <strong>Flexibel & Einfach</strong> – Finde Fahrten, die zu deinem Zeitplan passen.</li>
-    </ul>
+      </ul>
 
-    <p><strong>Melde dich jetzt an</strong> und werde Teil unserer Mitfahr-Community! 🚀</p>
-</div>
+      <p><strong>Melde dich jetzt an</strong> und werde Teil unserer Mitfahr-Community! 🚀</p>
+    </div>
 
     <!-- Hauptinhalt -->
     <div class="main-content">

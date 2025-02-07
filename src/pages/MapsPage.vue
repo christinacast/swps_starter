@@ -84,35 +84,5 @@ export default {
 </script>
 
 <style scoped>
-/* Container for the entire page */
-.map-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
-  font-family: sans-serif;
-}
-
-/* A nice heading style to show a page title */
-.map-page h2 {
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-/* Container that holds the map; adjust width/height as desired */
-.map-container {
-  width: 80%;            /* you can fine-tune this */
-  height: 60vh;          /* or this */
-  margin: 20px auto;     /* centers it within .map-page */
-  border: 2px solid #eee;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;      /* ensures the map doesn't overflow the rounded corners */
-}
-
-/* The map div must fill its parent’s size */
-#map {
-  width: 100%;
-  height: 100%;
-}
+@import '@/assets/css/pages/MapsPage.css';
 </style>

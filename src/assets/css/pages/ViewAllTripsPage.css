@@ -1,0 +1,175 @@
+.advanced-filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    background-color: #eaf4f1;
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-advanced {
+    padding: 10px 20px;
+    background-color: #006b4c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.filter-advanced:hover {
+    background-color: #004c3a;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.filter-input,
+.filter-select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 180px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+    border-color: #009260;
+}
+
+.filter-button {
+    padding: 10px 20px;
+    background-color: #009260;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+    background-color: #007b4c;
+}
+
+.filter-clear {
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.filter-clear:hover {
+    background-color: #c0392b;
+}
+
+.fahrten-container {
+    padding-bottom: 7%;
+}
+
+.fahrten-section {
+    max-width: 1300px;
+    margin: 40px auto 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.fahrten-heading {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.fahrten-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.fahrten-table th,
+.fahrten-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.table-sort-info {
+    font-size: 14px;
+    color: #555;
+    /* Neutral text color */
+    font-style: italic;
+    /* Subtle emphasis */
+    text-align: center;
+    margin: 10px 0 20px;
+    /* Space between heading and table */
+    background-color: #f3f7f6;
+    /* Subtle background to separate it */
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Light shadow for depth */
+}
+
+.fahrten-table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+}
+
+.fahrten-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.fahrten-table tr:hover {
+    background-color: #e9e9e9;
+}
+
+.join-button {
+    padding: 8px 16px;
+    background-color: #009260;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.join-button:hover {
+    background-color: #007b4c;
+}
+
+
+@media (max-width: 600px) {
+    .fahrten-table {
+        font-size: 12px;
+    }
+
+    .fahrten-table th,
+    .fahrten-table td {
+        padding: 5px;
+    }
+}
