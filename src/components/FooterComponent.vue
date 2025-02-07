@@ -1,5 +1,5 @@
 <template>
-    <footer class="Impressum-bar">
+    <footer class="footer-bar">
       <router-link to="/impressum" class="bottom-bar-references">
         Impressum
       </router-link>

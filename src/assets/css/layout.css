@@ -153,7 +153,7 @@
     /* Shrink effect on click */
 }
 
-.Impressum-bar {
+.footer-bar {
     background-color: #009260;
     /* Background color */
     color: white;
@@ -172,9 +172,10 @@
     /* Position at the very bottom */
     z-index: 1000;
     /* Keep it above other content */
+    box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1); /* Schatten nach oben */
 }
 
-.Impressum-bar .bottom-bar-references {
+.footer-bar .bottom-bar-references {
     color: #ffffff;
     /* Link color */
     text-decoration: none;
@@ -182,7 +183,7 @@
     /* Spacing between links */
 }
 
-.Impressum-bar .bottom-bar-references:hover {
+.footer-bar .bottom-bar-references:hover {
     text-decoration: underline;
     /* Underline on hover */
 }
