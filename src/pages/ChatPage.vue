@@ -264,12 +264,13 @@ export default {
           return;
         }
 
+        // Benutzer aus Teilnehmerliste entfernen
         const participants = (ride.participants || []).filter((id) => id !== this.currentUserId);
 
-        // Aktualisierte Teilnehmerliste in die Datenbank schreiben
+        // Aktualisierte Teilnehmerliste in die Datenbank schreiben und die Spalte verlassen was in supabase ein Trigger Event zu Terminlöschung auslöst
         const { error: updateError } = await supabase
           .from("rides")
-          .update({ participants })
+          .update({ participants, verlassen: this.currentUserId }) // nur `verlassen` setzen
           .eq("ride_id", rideId);
 
         if (updateError) {

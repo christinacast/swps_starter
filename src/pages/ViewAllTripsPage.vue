@@ -213,10 +213,10 @@ export default {
         // Benutzer der Teilnehmerliste hinzufügen
         participants.push(userId);
 
-        // Teilnehmerliste in der Datenbank aktualisieren
+        // Teilnehmerliste in der Datenbank aktualisieren und userID in neustes_mitglies schreiben um Trigger in Supabase auszulösen, dass automatisch einen Termin erstellt
         const { error: updateError } = await supabase
           .from('rides')
-          .update({ participants })
+          .update({ participants, neustes_mitglied: this.currentUserId  })
           .eq('ride_id', rideId);
 
         if (updateError) {
